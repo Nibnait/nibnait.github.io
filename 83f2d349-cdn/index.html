@@ -115,12 +115,12 @@
 <meta property="og:site_name" content="田彬的博客园">
 <meta property="og:description" content="参考：https://shup.cn/2017/11/21/cdn.html">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://tianbin.org/image/83f2d349-1.png">
-<meta property="og:updated_time" content="2019-06-29T05:47:17.723Z">
+<meta property="og:image" content="https://tb.nsfocus.co/image/83f2d349-1.png">
+<meta property="og:updated_time" content="2019-06-29T18:55:42.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo启用cdn加速">
 <meta name="twitter:description" content="参考：https://shup.cn/2017/11/21/cdn.html">
-<meta name="twitter:image" content="https://tianbin.org/image/83f2d349-1.png">
+<meta name="twitter:image" content="https://tb.nsfocus.co/image/83f2d349-1.png">
 
 
 
@@ -258,22 +258,6 @@
         
         
           
-          <li class="menu-item menu-item-tags">
-
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags</a>
-
-  </li>
-        
-        
-        
-          
           <li class="menu-item menu-item-categories">
 
     
@@ -284,6 +268,22 @@
     
 
     <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags</a>
 
   </li>
         
@@ -432,9 +432,25 @@
                 
               
 
-              <time title="Created: 2019-06-29 13:47:17" itemprop="dateCreated datePublished" datetime="2019-06-29T13:47:17+08:00">2019-06-29</time>
+              <time title="Created: 2019-06-29 15:06:00" itemprop="dateCreated datePublished" datetime="2019-06-29T15:06:00+08:00">2019-06-29</time>
             
 
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-30 02:55:42" itemprop="dateModified" datetime="2019-06-30T02:55:42+08:00">2019-06-30</time>
+              
             
           </span>
 
@@ -456,7 +472,7 @@
                 
               
             </span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：461</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：463</span>
             <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈1分钟</span>
 
           
@@ -505,8 +521,8 @@
 <li>定制页面效果js<br>即NexT主题中定制的某些特效，例如实现页面响应式效果的Bootstrap，或者增强移动端滚动及动画效果的Motion等等。这些js理论上也是公共js，只不过NexT主题作者修改了代码，以适用于NexT主题。这些js文件存放在本地Hexo目录hexo\themes\next\source\js\src下。</li>
 <li>第三方插件js<br>这个不用多说了吧，Hexo默认安装了不少实用的第三方插件，比如，可直接在网页中显示数学公式的MathJax，优化SEO的Baidu-push等等。这些插件可在主题配置文件_config.yml中进行配置。相关js文件有些存放在hexo\themes\next\layout_third-party中，有些则通过外部引用形式加载。<h2 id="图片-音、视频"><a href="#图片-音、视频" class="headerlink" title="图片(音、视频)"></a>图片(音、视频)</h2>如果博客文章很多，绝大部分的带宽都会消耗在这部分静态数据上。这个不多说了。</li>
 </ol>
-<h1 id="解决：逐个优化"><a href="#解决：逐个优化" class="headerlink" title="解决：逐个优化"></a>解决：逐个优化</h1><h2 id="公共js加速"><a href="#公共js加速" class="headerlink" title="公共js加速"></a>公共js加速</h2><p>修改<a href="../../themes/next/_config.yml">_config.yml</a>中vendors的配置<br>全部映射到BootCDN上去</p>
-<h2 id="第三方js文件、图片-音、视频-加速"><a href="#第三方js文件、图片-音、视频-加速" class="headerlink" title="第三方js文件、图片(音、视频)加速"></a>第三方js文件、图片(音、视频)加速</h2><p>我用的七牛云，<a href="https://blog.qiniu.com/archives/8874" target="_blank" rel="noopener">每月 10 G的标准存储 CDN 回源流量免费额度</a><a href="https://blog.qiniu.com/archives/8874)。" target="_blank" rel="noopener">https://blog.qiniu.com/archives/8874)。</a><br><img src="../image/83f2d349-1.png" alt="七牛云"></p>
+<h1 id="解决：逐个优化"><a href="#解决：逐个优化" class="headerlink" title="解决：逐个优化"></a>解决：逐个优化</h1><h2 id="公共js加速"><a href="#公共js加速" class="headerlink" title="公共js加速"></a>公共js加速</h2><p>修改<a href="../../themes/next/_config.yml">_config.yml</a>中 vendors 的配置<br>全部映射到BootCDN上去</p>
+<h2 id="第三方js文件、图片-音、视频-加速"><a href="#第三方js文件、图片-音、视频-加速" class="headerlink" title="第三方js文件、图片(音、视频)加速"></a>第三方js文件、图片(音、视频)加速</h2><p>我用的七牛云，<a href="https://blog.qiniu.com/archives/8874" target="_blank" rel="noopener">每月 10 G的标准存储 CDN 回源流量免费额度</a><a href="https://blog.qiniu.com/archives/8874)。" target="_blank" rel="noopener">https://blog.qiniu.com/archives/8874)。</a><br><img src="https://tb.nsfocus.co/image/83f2d349-1.png" alt="七牛云"></p>
 
       
     </div>
@@ -528,8 +544,8 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <p><span>本文标题:</span><a href="/83f2d349-cdn/">Hexo启用cdn加速</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
-  <p><span>发布时间:</span>2019年06月29日 - 13:06</p>
-  <p><span>最后更新:</span>2019年06月29日 - 13:06</p>
+  <p><span>发布时间:</span>2019年06月29日 - 15:06</p>
+  <p><span>最后更新:</span>2019年06月30日 - 02:06</p>
   <p><span>原始链接:</span><a href="/83f2d349-cdn/" title="Hexo启用cdn加速">https://tianbin.org/83f2d349-cdn/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/83f2d349-cdn/"  aria-label="复制成功！"></i></span>
   </p>
@@ -600,8 +616,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/hello-world/" rel="prev" title="Hello World Mac版">
-                Hello World Mac版 <i class="fa fa-chevron-right"></i>
+              <a href="/reading/58316970-computer_networking_basis/" rel="prev" title="计算机网络 - 基础">
+                计算机网络 - 基础 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -671,7 +687,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -690,7 +706,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -711,7 +733,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -883,7 +913,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共1.8k字
+        博客全站共9.2k字
       </span>
     </div>
 
