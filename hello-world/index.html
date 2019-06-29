@@ -29,7 +29,7 @@
     
     
   <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
-  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css?v=1.0.2">
 
 
 
@@ -109,7 +109,7 @@
 <meta property="og:site_name" content="田彬的博客园">
 <meta property="og:description" content="安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-28T21:20:38.990Z">
+<meta property="og:updated_time" content="2019-06-29T04:34:36.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello World Mac版">
 <meta name="twitter:description" content="安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v">
@@ -422,7 +422,7 @@
                 
               
 
-              <time title="Created: 2019-06-29 05:20:38" itemprop="dateCreated datePublished" datetime="2019-06-29T05:20:38+08:00">2019-06-29</time>
+              <time title="Created: 2019-06-29 12:34:36" itemprop="dateCreated datePublished" datetime="2019-06-29T12:34:36+08:00">2019-06-29</time>
             
 
             
@@ -447,7 +447,7 @@
               
             </span>
             <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：1.2k</span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈5分钟</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈6分钟</span>
 
           
 
@@ -509,7 +509,13 @@
 </blockquote>
 <p>在Hexo 3.0 后server被单独出来了，需要安装server</p>
 <blockquote>
-<p>sudo npm install hexo-server -save<br>sudo npm install hexo-deployer-git –save<br>hexo server</p>
+<p>sudo npm install hexo-server -save<br>sudo npm install hexo-deployer-git –save</p>
+</blockquote>
+<h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><blockquote>
+<p>hexo s</p>
+</blockquote>
+<h1 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h1><blockquote>
+<p>hexo d -g</p>
 </blockquote>
 <h1 id="安装调试主题"><a href="#安装调试主题" class="headerlink" title="安装调试主题"></a>安装调试主题</h1><p>参考：</p>
 <ul>
@@ -546,8 +552,10 @@ post_wordcount:
   wordcount: true # 字数统计
   min2read: true # 预计阅读时长
   totalcount: true # 总字数统计
-  separated_meta: true</code></pre><h2 id="添加网页顶部进度加载条"><a href="#添加网页顶部进度加载条" class="headerlink" title="添加网页顶部进度加载条"></a>添加网页顶部进度加载条</h2><p>编辑主题配置文件，command+F搜索pace，将其值改为ture就可以了，选择一款你喜欢的样式。</p>
-<h2 id="添加基于Valine的评论模块"><a href="#添加基于Valine的评论模块" class="headerlink" title="添加基于Valine的评论模块"></a>添加基于<a href="https://valine.js.org/" target="_blank" rel="noopener">Valine</a>的评论模块</h2><h2 id="添加基于Mob-ShareSDK的分享功能"><a href="#添加基于Mob-ShareSDK的分享功能" class="headerlink" title="添加基于Mob ShareSDK的分享功能"></a>添加基于<a href="http://www.mob.com/" target="_blank" rel="noopener">Mob ShareSDK</a>的分享功能</h2><h2 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h2><ul>
+  separated_meta: true</code></pre><h2 id="添加网页顶部进度加载条"><a href="#添加网页顶部进度加载条" class="headerlink" title="添加网页顶部进度加载条"></a>添加网页顶部进度加载条</h2><p>编辑主题配置文件，command+F搜索pace，将其值改为ture就可以了，选择一款你喜欢的样式。<br>Installation 参考：<a href="https://github.com/theme-next/theme-next-pace" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-pace</a></p>
+<pre><code>pace: true</code></pre><h2 id="浏览页面的时候显示当前浏览进度"><a href="#浏览页面的时候显示当前浏览进度" class="headerlink" title="浏览页面的时候显示当前浏览进度"></a>浏览页面的时候显示当前浏览进度</h2><pre><code># Scroll percent label in b2t button.
+scrollpercent: true</code></pre><h2 id="添加基于Valine的评论模块"><a href="#添加基于Valine的评论模块" class="headerlink" title="添加基于Valine的评论模块"></a>添加基于<a href="https://valine.js.org/" target="_blank" rel="noopener">Valine</a>的评论模块</h2><h2 id="添加基于Mob-ShareSDK的分享功能"><a href="#添加基于Mob-ShareSDK的分享功能" class="headerlink" title="添加基于Mob ShareSDK的分享功能"></a>添加基于<a href="http://www.mob.com/" target="_blank" rel="noopener">Mob ShareSDK</a>的分享功能</h2><p>参考：<a href="https://hadronw.com/2018/05-28/hexo-addshares/" target="_blank" rel="noopener">https://hadronw.com/2018/05-28/hexo-addshares/</a></p>
+<h2 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h2><ul>
 <li>修改hexo-generator-index插件，把node_modules/hexo-generator-index/lib/generator.js中代码替换为：</li>
 </ul>
 <pre><code>&apos;use strict&apos;;
@@ -679,8 +687,8 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <p><span>本文标题:</span><a href="/hello-world/">Hello World Mac版</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
-  <p><span>发布时间:</span>2019年06月29日 - 05:06</p>
-  <p><span>最后更新:</span>2019年06月29日 - 05:06</p>
+  <p><span>发布时间:</span>2019年06月29日 - 12:06</p>
+  <p><span>最后更新:</span>2019年06月29日 - 12:06</p>
   <p><span>原始链接:</span><a href="/hello-world/" title="Hello World Mac版">http://tianbin.org/hello-world/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://tianbin.org/hello-world/" aria-label="复制成功！"></i></span>
   </p>
@@ -732,22 +740,6 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
       
       
 
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/hello-world2/" rel="next" title="Hello World Mac版">
-                <i class="fa fa-chevron-left"></i> Hello World Mac版
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
       
 
       
@@ -813,7 +805,7 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">1</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -973,7 +965,7 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装node"><span class="nav-number">1.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装hexo"><span class="nav-number">3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试-1"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化hexo"><span class="nav-number">5.</span> <span class="nav-text">初始化hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装调试主题"><span class="nav-number">6.</span> <span class="nav-text">安装调试主题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改网站图标-favicon"><span class="nav-number">6.1.</span> <span class="nav-text">修改网站图标 favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改菜单栏"><span class="nav-number">6.2.</span> <span class="nav-text">修改菜单栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去-themes-next-source-tags的index-md文件中，添加type-“tags”"><span class="nav-number">6.3.</span> <span class="nav-text">去/themes/next/source/tags的index.md文件中，添加type: “tags”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开github-banner"><span class="nav-number">6.4.</span> <span class="nav-text">打开github_banner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加RSS"><span class="nav-number">6.5.</span> <span class="nav-text">添加RSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改底部标签样式"><span class="nav-number">6.6.</span> <span class="nav-text">修改底部标签样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#侧边栏社交小图标设置"><span class="nav-number">6.7.</span> <span class="nav-text">侧边栏社交小图标设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网站底部加上访问量"><span class="nav-number">6.8.</span> <span class="nav-text">网站底部加上访问量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计博客全站字数"><span class="nav-number">6.9.</span> <span class="nav-text">统计博客全站字数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计文章字数、阅读时间"><span class="nav-number">6.10.</span> <span class="nav-text">统计文章字数、阅读时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加网页顶部进度加载条"><span class="nav-number">6.11.</span> <span class="nav-text">添加网页顶部进度加载条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加基于Valine的评论模块"><span class="nav-number">6.12.</span> <span class="nav-text">添加基于Valine的评论模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加基于Mob-ShareSDK的分享功能"><span class="nav-number">6.13.</span> <span class="nav-text">添加基于Mob ShareSDK的分享功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博文置顶"><span class="nav-number">6.14.</span> <span class="nav-text">博文置顶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加侧栏推荐阅读"><span class="nav-number">6.15.</span> <span class="nav-text">添加侧栏推荐阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改字体大小"><span class="nav-number">6.16.</span> <span class="nav-text">修改字体大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在文章底部增加版权信息"><span class="nav-number">6.17.</span> <span class="nav-text">在文章底部增加版权信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo博客添加站内搜索"><span class="nav-number">6.18.</span> <span class="nav-text">Hexo博客添加站内搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为文章中的代码块增加一键复制功能"><span class="nav-number">6.19.</span> <span class="nav-text">为文章中的代码块增加一键复制功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动备份Hexo博客源文件"><span class="nav-number">7.</span> <span class="nav-text">自动备份Hexo博客源文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装node"><span class="nav-number">1.</span> <span class="nav-text">安装node</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装hexo"><span class="nav-number">3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试-1"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化hexo"><span class="nav-number">5.</span> <span class="nav-text">初始化hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#预览"><span class="nav-number">6.</span> <span class="nav-text">预览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布"><span class="nav-number">7.</span> <span class="nav-text">发布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装调试主题"><span class="nav-number">8.</span> <span class="nav-text">安装调试主题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改网站图标-favicon"><span class="nav-number">8.1.</span> <span class="nav-text">修改网站图标 favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改菜单栏"><span class="nav-number">8.2.</span> <span class="nav-text">修改菜单栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去-themes-next-source-tags的index-md文件中，添加type-“tags”"><span class="nav-number">8.3.</span> <span class="nav-text">去/themes/next/source/tags的index.md文件中，添加type: “tags”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开github-banner"><span class="nav-number">8.4.</span> <span class="nav-text">打开github_banner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加RSS"><span class="nav-number">8.5.</span> <span class="nav-text">添加RSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改底部标签样式"><span class="nav-number">8.6.</span> <span class="nav-text">修改底部标签样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#侧边栏社交小图标设置"><span class="nav-number">8.7.</span> <span class="nav-text">侧边栏社交小图标设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网站底部加上访问量"><span class="nav-number">8.8.</span> <span class="nav-text">网站底部加上访问量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计博客全站字数"><span class="nav-number">8.9.</span> <span class="nav-text">统计博客全站字数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统计文章字数、阅读时间"><span class="nav-number">8.10.</span> <span class="nav-text">统计文章字数、阅读时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加网页顶部进度加载条"><span class="nav-number">8.11.</span> <span class="nav-text">添加网页顶部进度加载条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览页面的时候显示当前浏览进度"><span class="nav-number">8.12.</span> <span class="nav-text">浏览页面的时候显示当前浏览进度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加基于Valine的评论模块"><span class="nav-number">8.13.</span> <span class="nav-text">添加基于Valine的评论模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加基于Mob-ShareSDK的分享功能"><span class="nav-number">8.14.</span> <span class="nav-text">添加基于Mob ShareSDK的分享功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博文置顶"><span class="nav-number">8.15.</span> <span class="nav-text">博文置顶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加侧栏推荐阅读"><span class="nav-number">8.16.</span> <span class="nav-text">添加侧栏推荐阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改字体大小"><span class="nav-number">8.17.</span> <span class="nav-text">修改字体大小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在文章底部增加版权信息"><span class="nav-number">8.18.</span> <span class="nav-text">在文章底部增加版权信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo博客添加站内搜索"><span class="nav-number">8.19.</span> <span class="nav-text">Hexo博客添加站内搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为文章中的代码块增加一键复制功能"><span class="nav-number">8.20.</span> <span class="nav-text">为文章中的代码块增加一键复制功能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动备份Hexo博客源文件"><span class="nav-number">9.</span> <span class="nav-text">自动备份Hexo博客源文件</span></a></li></ol></div>
             
 
           </div>
@@ -1023,7 +1015,7 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共1.4k字
+        博客全站共1.2k字
       </span>
     </div>
 
@@ -1073,6 +1065,8 @@ permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#
     
       <div class="back-to-top">
         <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
         
       </div>
     
