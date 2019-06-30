@@ -1,137 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title><![CDATA[JVM实战]]></title>
-    <url>%2Fstudy%2F1f93cae3-jvm_action%2F</url>
-    <content type="text"><![CDATA[常用的Jvm启动参数 -Xmx512m：设置JVM最大可用内存为512M。 -Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。 -Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右） -verbose:gc：开启gc日志 -Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面) -XX:+PrintGCDetails：打印GC详情 -XX:+PrintGCDateStamps：打印GC时间戳 以JxlTest为例，通过gc日志，fix FGC问题。参考占小狼的博客idea JVM参数设置]]></content>
+<search> 
+  
+  
+    
+    <entry>
+      <title>JVM实战</title>
+      <link href="/study/1f93cae3-jvm_action/"/>
+      <url>/study/1f93cae3-jvm_action/</url>
+      
+        <content type="html"><![CDATA[<h1 id="常用的Jvm启动参数"><a href="#常用的Jvm启动参数" class="headerlink" title="常用的Jvm启动参数"></a>常用的Jvm启动参数</h1><ul><li><p>-Xmx512m：设置JVM最大可用内存为512M。</p></li><li><p>-Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。<a id="more"></a></p></li><li><p>-Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右）</p></li><li><p>-verbose:gc：开启gc日志</p></li><li><p>-Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面)</p></li><li><p>-XX:+PrintGCDetails：打印GC详情</p></li><li><p>-XX:+PrintGCDateStamps：打印GC时间戳 </p></li></ul><p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/_9o4mcJ3Kqc6117KbTWpig" target="_blank" rel="noopener">占小狼的博客</a><br>idea JVM参数设置<br><img src="../../image/1.png" alt="idea配置参数示例"> </p>]]></content>
+      
+      
       <categories>
-        <category>学习笔记</category>
+          
+          <category> 学习笔记 </category>
+          
       </categories>
-      <tags>
-        <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Java虚拟机 - 概念]]></title>
-    <url>%2Freading%2F6f8dd084-JVM%2F</url>
-    <content type="text"><![CDATA[书单列表： 《实战Java虚拟机》 目录： Java虚拟机的基本结构 常用的垃圾回收算法 引用计数法 标记清除法 复制算法 标记压缩法 分代算法 分区算法 垃圾回收器 串行回收器 并行回收器 CMS回收器 G1回收器 Class装载系统 类装载步骤 双亲委托模式 字节码执行 Class文件结构 JIT Java虚拟机的基本结构 Java栈：由栈帧组成，一个函数对应一个栈帧(函数被调用–&gt;入栈)，[栈顶—当前正在运行的函数]，[弹栈–&gt;①函数正常return;②Exception] 方法区： JDK1.6、1.7 ==&gt; 又叫永久区(Perm) JDK1.8 ==&gt; 叫元数据区(Metaspace)，(默认 可以吃掉所有系统可用内存) 常用的垃圾回收算法“垃圾”：内存中，不会再被使用的对象。 1. 引用计数法==&gt;缺点：①无法处理循环引用；②&apos;+&apos;、&apos;-&apos;计数器浪费性能2. 标记清除法 标记：标记从 根节点 开始的所有可达对象 清除：清除所有未被标记的对象 ==&gt;缺点：回收后的空间不是连续的，在给大对象分配堆空间时 效率低。 3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)例：将内存(Java堆)平均分为两块A、B，每次清理只需要将A中存活的对象复制到B中，然后清空A。 从而解决了 回收后空间不连续的问题4. 标记压缩清除法(适用于老年代) 标记 从 根节点 开始的所有可达对象 压缩到内存的一端 清除边界外的所有垃圾 5. 分代算法即 新生代用“**改良的复制算法**”，老年代用“**标记压缩清除法**” ![改良的复制算法](https://tb.nsfocus.co/image/6f8dd084-3.png) - 栈上分配：基于逃逸分析技术，将线程私有的*小对象*打散分配到Java栈上。（函数调用结束后，会自行销毁，不需要垃圾回收器介入从而提高了性能） - 逃逸分析：对象的作用域未逃出函数体(-server模式下 默认开启) - TLAB（Thread-local allocation buffer）：线程本地分配缓存(是一个线程专用的内存分配)。（实质：线程专属区间 ⊂ Eden区间） - 在老年代引入**卡表**(比特位集合，每一位表示老年代的4k空间)，（1：有被新生代引用的对象，0：无,,,,,,）以应对新生代的高频率GC，每次只需扫描卡表中为1的空间即可。6. 分区算法将整个堆划分成连续的不同的小区间，每个小区间独立使用，独立回收。 从而能够更好地控制一次GC产生的停顿时间垃圾回收器 回收器 串行/并行 算法 特点 新生代串行回收器 单线程 复制算法 实现简单 逻辑处理高效 老年代串行回收器 单线程 标记压缩清除 (堆空间较大时)停顿时间长 新生代ParNew回收器 多线程 复制算法 性能要看CPU的并发能力 新生代ParallelGC回收器 多线程 复制算法 [MaxGCPauseMillis][GCTimeRatio] 关注吞吐量 老年代ParallelGC回收器 多线程 标记压缩清除 关注吞吐量 1. CMS回收器[关注系统停顿时间]（Concurrent Mark Sweep）并发标记清除 初始标记：【STW】 标记根对象 并发标记：标记所有可达对象 预清理：正式清理前的准备和检查(并发)，尝试控制一次停顿时间 重新标记：【STW】 修正并发标记 并发清理：(并发)回收垃圾对象 并发充值：重新初始化CMS数据结构和数据 2. G1回收器(Garbage First) 新生代GC：回收处理Eden和SurvivorA区。==&gt; 老年代的区域增多 并发标记周期：SATB(Snapshot-At-The-beginning)：在初始标记时为存活对象建立的快照 混合回收 正常的年轻代GC(改良的复制算法) 优先清理回收集中垃圾比例较高的区域 必要时的Full GC（回收时，内存不足的时候） 新生代GC时，survivor区和老年代区无法容纳幸存对象时 并发标记时，老年代被快速填充 混合GC时，发生空间不足 Class装载系统1. 类装载步骤 - 加载：解析类方法区内的数据结构 并创建实例 - 验证：class文件格式、语义检查、字节码验证、符号引用验证… - 准备：为类在Java堆中分配空间，设置初始值 - 解析：将 类、接口、字段、方法的符号引用转为直接引用 - 初始化：编译器自动生成并执行类的初始化方法123456## 2. 双亲委托模式(系统默认使用)![](https://tb.nsfocus.co/image/6f8dd084-7.png)在类加载的时候， if（当前类已经被加载）{ return 当前可用类; } else { 请求其双亲加载器加载此类； if（success）{ return 可用的类； } else{ 自己加载； return 类； } } ``` 字节码执行 本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。本文地址：http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/]]></content>
+      
+      
+        <tags>
+            
+            <tag> JVM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java虚拟机 - 概念</title>
+      <link href="/reading/6f8dd084-JVM/"/>
+      <url>/reading/6f8dd084-JVM/</url>
+      
+        <content type="html"><![CDATA[<p>书单列表：  </p><ul><li><a href="https://book.douban.com/subject/26354292/" target="_blank" rel="noopener">《实战Java虚拟机》</a></li></ul><p>目录：</p><ul><li>Java虚拟机的基本结构  </li><li>常用的垃圾回收算法  <a id="more"></a><ol><li>引用计数法</li><li>标记清除法</li><li>复制算法</li><li>标记压缩法</li><li>分代算法</li><li>分区算法  </li></ol></li><li>垃圾回收器  <ol><li>串行回收器</li><li>并行回收器</li><li>CMS回收器</li><li>G1回收器  </li></ol></li><li>Class装载系统  <ol><li>类装载步骤</li><li>双亲委托模式</li></ol></li><li>字节码执行<ol><li>Class文件结构</li><li>JIT</li></ol></li></ul><h1 id="Java虚拟机的基本结构"><a href="#Java虚拟机的基本结构" class="headerlink" title="Java虚拟机的基本结构"></a>Java虚拟机的基本结构</h1><p><img src="https://tb.nsfocus.co/image/6f8dd084-1.png" alt="Java虚拟机的基本结构"></p><ul><li>Java栈：由<strong>栈帧</strong>组成，一个函数对应一个栈帧(函数被调用–&gt;入栈)，[栈顶—当前正在运行的函数]，[弹栈–&gt;①函数正常return;②Exception]<img src="https://tb.nsfocus.co/image/6f8dd084-2.png" alt="栈帧的结构"></li><li>方法区：<ul><li>JDK1.6、1.7 ==&gt; 又叫永久区(Perm)</li><li>JDK1.8 ==&gt; 叫元数据区(Metaspace)，(默认 可以吃掉所有系统可用内存)</li></ul></li></ul><h1 id="常用的垃圾回收算法"><a href="#常用的垃圾回收算法" class="headerlink" title="常用的垃圾回收算法"></a>常用的垃圾回收算法</h1><p>“垃圾”：内存中，不会再被使用的对象。</p><h2 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="1. 引用计数法"></a>1. 引用计数法</h2><pre><code>==&gt;缺点：①无法处理循环引用；②&apos;+&apos;、&apos;-&apos;计数器浪费性能</code></pre><h2 id="2-标记清除法"><a href="#2-标记清除法" class="headerlink" title="2. 标记清除法"></a>2. 标记清除法</h2><ul><li><p>标记：标记从 <em>根节点</em> 开始的所有可达对象  </p></li><li><p>清除：清除所有未被标记的对象</p><p> ==&gt;缺点：回收后的空间不是连续的，在给大对象分配堆空间时 效率低。</p></li></ul><h2 id="3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代"><a href="#3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代" class="headerlink" title="3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)"></a>3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)</h2><pre><code>例：将内存(Java堆)平均分为两块A、B，每次清理只需要将A中存活的对象复制到B中，然后清空A。  从而解决了 回收后空间不连续的问题</code></pre><h2 id="4-标记压缩清除法-适用于老年代"><a href="#4-标记压缩清除法-适用于老年代" class="headerlink" title="4. 标记压缩清除法(适用于老年代)"></a>4. 标记压缩清除法(适用于老年代)</h2><ul><li>标记 从 <em>根节点</em> 开始的所有可达对象</li><li>压缩到内存的一端</li><li>清除边界外的所有垃圾</li></ul><h2 id="5-分代算法"><a href="#5-分代算法" class="headerlink" title="5. 分代算法"></a>5. 分代算法</h2><pre><code>即 新生代用“**改良的复制算法**”，老年代用“**标记压缩清除法**”![改良的复制算法](https://tb.nsfocus.co/image/6f8dd084-3.png) - 栈上分配：基于逃逸分析技术，将线程私有的*小对象*打散分配到Java栈上。（函数调用结束后，会自行销毁，不需要垃圾回收器介入从而提高了性能） - 逃逸分析：对象的作用域未逃出函数体(-server模式下 默认开启) - TLAB（Thread-local allocation buffer）：线程本地分配缓存(是一个线程专用的内存分配)。（实质：线程专属区间 ⊂ Eden区间） - 在老年代引入**卡表**(比特位集合，每一位表示老年代的4k空间)，（1：有被新生代引用的对象，0：无,,,,,,）以应对新生代的高频率GC，每次只需扫描卡表中为1的空间即可。</code></pre><h2 id="6-分区算法"><a href="#6-分区算法" class="headerlink" title="6. 分区算法"></a>6. 分区算法</h2><pre><code>将整个堆划分成连续的不同的小区间，每个小区间独立使用，独立回收。  从而能够更好地控制一次GC产生的停顿时间</code></pre><h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><table><thead><tr><th align="center">回收器</th><th align="center">串行/并行</th><th align="center">算法</th><th align="center">特点</th></tr></thead><tbody><tr><td align="center">新生代串行回收器</td><td align="center">单线程</td><td align="center">复制算法</td><td align="center">实现简单 逻辑处理高效</td></tr><tr><td align="center">老年代串行回收器</td><td align="center">单线程</td><td align="center">标记压缩清除</td><td align="center">(堆空间较大时)停顿时间长</td></tr><tr><td align="center">新生代ParNew回收器</td><td align="center">多线程</td><td align="center">复制算法</td><td align="center">性能要看CPU的并发能力</td></tr><tr><td align="center">新生代ParallelGC回收器</td><td align="center">多线程</td><td align="center">复制算法</td><td align="center">[MaxGCPauseMillis]<br>[GCTimeRatio]<br> <strong>关注吞吐量</strong></td></tr><tr><td align="center">老年代ParallelGC回收器</td><td align="center">多线程</td><td align="center">标记压缩清除</td><td align="center"><strong>关注吞吐量</strong></td></tr></tbody></table><h2 id="1-CMS回收器-关注系统停顿时间"><a href="#1-CMS回收器-关注系统停顿时间" class="headerlink" title="1. CMS回收器[关注系统停顿时间]"></a>1. CMS回收器[<strong>关注系统停顿时间</strong>]</h2><pre><code>（Concurrent Mark Sweep）并发标记清除</code></pre><ul><li>初始标记：【STW】 标记根对象</li><li>并发标记：标记所有可达对象</li><li>预清理：正式清理前的准备和检查(并发)，尝试控制一次停顿时间</li><li>重新标记：【STW】 修正<em>并发标记</em></li><li>并发清理：(并发)回收垃圾对象</li><li>并发充值：重新初始化CMS数据结构和数据</li></ul><h2 id="2-G1回收器-Garbage-First"><a href="#2-G1回收器-Garbage-First" class="headerlink" title="2. G1回收器(Garbage First)"></a>2. G1回收器(Garbage First)</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-4.png" alt></p><ul><li>新生代GC：回收处理Eden和SurvivorA区。==&gt; 老年代的区域增多</li><li>并发标记周期：<br><img src="https://tb.nsfocus.co/image/6f8dd084-5.png" alt><br>SATB(Snapshot-At-The-beginning)：在初始标记时为存活对象建立的快照</li><li>混合回收<ul><li>正常的年轻代GC(改良的复制算法)</li><li>优先清理回收集中垃圾比例较高的区域</li></ul></li><li>必要时的Full GC（回收时，内存不足的时候）<ul><li>新生代GC时，survivor区和老年代区无法容纳幸存对象时</li><li>并发标记时，老年代被快速填充</li><li>混合GC时，发生空间不足</li></ul></li></ul><h1 id="Class装载系统"><a href="#Class装载系统" class="headerlink" title="Class装载系统"></a>Class装载系统</h1><h2 id="1-类装载步骤"><a href="#1-类装载步骤" class="headerlink" title="1. 类装载步骤"></a>1. 类装载步骤</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-6.png" alt><br>     - 加载：解析类方法区内的数据结构 并创建实例<br>     - 验证：class文件格式、语义检查、字节码验证、符号引用验证…<br>     - 准备：为类在Java堆中分配空间，设置初始值<br>     - 解析：将 类、接口、字段、方法的符号引用转为直接引用<br>     - 初始化：编译器自动生成并执行类的初始化方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">## 2. 双亲委托模式(系统默认使用)</span><br><span class="line">![](https://tb.nsfocus.co/image/6f8dd084-7.png)</span><br><span class="line"></span><br><span class="line">在类加载的时候，</span><br></pre></td></tr></table></figure></p><pre><code>if（当前类已经被加载）{      return 当前可用类;  } else {      请求其双亲加载器加载此类；      if（success）{          return 可用的类；      } else{          自己加载；          return 类；      }  }  </code></pre><p>```</p><h2 id="字节码执行"><a href="#字节码执行" class="headerlink" title="字节码执行"></a>字节码执行</h2><hr><p>本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。<br>本文地址：<a href="http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/" target="_blank" rel="noopener">http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/</a></p>]]></content>
+      
+      
       <categories>
-        <category>读书笔记</category>
+          
+          <category> 读书笔记 </category>
+          
       </categories>
-      <tags>
-        <tag>JVM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[计算机网络发展史]]></title>
-    <url>%2Freading%2Fc500696f-computer_networking_history%2F</url>
-    <content type="text"><![CDATA[首先分享一段 《互联网 发展 历史》 的8分钟小视频 概念：将一个个独立的计算机连接起来，即组成了计算机网络。再结合这张图，不难看出 计算机的发展史，也就是计算机网络的发展史 计算机网络的基础知识在计算机网络发展的初期，各家计算机厂商都发明了一套自己的计算机通信协议，不同品牌的计算机无法进行通信，于是ISO▼制定了一个国际标准 OSI协议。 OSI七层参考模型▼： 搭建网络的主要设备 设备 别名 作用 网卡 NIC▼/网络适配器/LAN卡 使计算机连网 中继器(Repeater) 集线器(Hub)==多口中继器 在物理层，将减弱的信号放大并发送 网桥(Bridge) 2层交换机/以太网交换机/链路层交换机/交换集线器(具有网桥功能的Hub) 在数据链路层，校验并转发 数据帧 （将损坏的数据直接丢弃）（ 传送门：各种校验-CRC▼） 路由器(Router) 3层交换机 在网络层，通过IP协议根据IP地址对 数据报 进行转发 4~7层交换机 · 负载均衡· 防火墙(网关)· 带宽控制(优先处理一些及时性要求比较高的通信请求：语音通话)· 特殊应用访问加速、广域网加速器…. 网关(Gateway) · 协议的转换(表示层)与数据的转发(4~7层) 应用网关 代理服务器 · 是网关的一种· 可以从传输层到应用层对数据和访问进行各种控制和处理 ##传输方式的分类 1. 面向有连接型与面向无连接型 面向有连接型 TCP 打电话建##立/断开连接的时候、 面向无连接型 UDP、IP 邮局寄包裹(不需要确认收件人的详细地址是否真实存在)、视频/语音通信的过程(没有必要保证每一帧都成功的传送到达目的地)、 2. 电路交换与分组交换 电路交换 主要用于：过去的电话网。 两台主机通信时 是独占整个电路的。同一电路的其他多台计算机只能等待正在通信的计算机收发信息完毕以后 才有机会使用这条电路。 分组交换 主要用于：现代计算机网络 处理过程：发送端计算机将数据分组发送给路由器，路由器收到这些分组数据以后，缓存到自己的缓冲区，然后再转发给目标计算机 限制：根据网络的拥堵情况，数据到达目标地址的时间有长有短。路由器的缓存饱和或溢出时，容易造成数据丢失。 3. 按接收端的数量分类 单播(Unicast) 1v1通信，打电话。 广播(Broadcast)：同一数据链路内的所有主机 电视频道、收音机频道。 多播(Muticast)：与特定组内的计算机通信 电话/视频会议 “1年1班的同学们，请起立！” 任播(Anycast)：解析特定组内的任意一台计算机 DNS根域名解析服务器(负载均衡) “1年1班的哪位同学上来领一下奖状？” “飞机上哪位乘客是医生？” 本文中提到的一些专有名词： ISO：国际标准化组织(International Organization for Standards) OSI：开放式通信系统互联参考模型(Open System Interconnection) NIC：网络接口卡(Network Interface Card) CRC：循环冗余校验(Cyclic Redundancy Check) WAN：广域网(Wide Area Netword) LAN：局域网(Local Area Network) Internet：网际网（WAN√、LAN√） The Internet：互联网]]></content>
+      
+      
+        <tags>
+            
+            <tag> JVM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机网络发展史</title>
+      <link href="/reading/c500696f-computer_networking_history/"/>
+      <url>/reading/c500696f-computer_networking_history/</url>
+      
+        <content type="html"><![CDATA[<p>首先分享一段 <a href="http://v.youku.com/v_show/id_XNjU3MTE2MTY=.html" target="_blank" rel="noopener">《互联网 发展 历史》 的8分钟小视频</a> </p><a id="more"></a><iframe height="498" width="510" src="http://player.youku.com/embed/XNjU3MTE2MTY=" frameborder="0" allowfullscreen></iframe><p>概念：将一个个独立的计算机连接起来，即组成了计算机网络。<br>再结合这张图，不难看出 计算机的发展史，也就是计算机网络的发展史<br><img src="https://tb.nsfocus.co/image/c500696f-1.png" alt="《图解TCP/IP》 P10 表1.1"></p><h1 id="计算机网络的基础知识"><a href="#计算机网络的基础知识" class="headerlink" title="计算机网络的基础知识"></a>计算机网络的基础知识</h1><p>在计算机网络发展的初期，各家计算机厂商都发明了一套自己的计算机通信协议，不同品牌的计算机无法进行通信，于是ISO▼制定了一个国际标准 OSI协议。  </p><p>OSI七层参考模型▼：  </p><p><img src="https://tb.nsfocus.co/image/c500696f-2.png" alt="《图解TCP/IP》 P20 图1.19"></p><h2 id="搭建网络的主要设备"><a href="#搭建网络的主要设备" class="headerlink" title="搭建网络的主要设备"></a>搭建网络的主要设备</h2><table><thead><tr><th align="left">设备</th><th align="left">别名</th><th align="left">作用</th></tr></thead><tbody><tr><td align="left">网卡</td><td align="left">NIC▼/网络适配器/LAN卡</td><td align="left">使计算机连网</td></tr><tr><td align="left">中继器(Repeater)</td><td align="left">集线器(Hub)==多口中继器</td><td align="left">在物理层，将减弱的信号放大并发送</td></tr><tr><td align="left">网桥(Bridge)</td><td align="left">2层交换机/以太网交换机/链路层交换机/交换集线器(具有网桥功能的Hub)</td><td align="left">在数据链路层，校验并转发 数据帧 （将损坏的数据直接丢弃）（ 传送门：<a href="http://nibnait.com/d4c81fd3-error-detection-and-correction/" target="_blank" rel="noopener">各种校验-CRC▼</a>）</td></tr><tr><td align="left">路由器(Router)</td><td align="left">3层交换机</td><td align="left">在网络层，通过IP协议根据IP地址对 数据报 进行转发</td></tr><tr><td align="left">4~7层交换机</td><td align="left"></td><td align="left">· 负载均衡<br>· 防火墙(网关)<br>· 带宽控制(优先处理一些及时性要求比较高的通信请求：语音通话)<br>· 特殊应用访问加速、广域网加速器….</td></tr><tr><td align="left">网关(Gateway)</td><td align="left"></td><td align="left">· 协议的转换(表示层)与数据的转发(4~7层)</td></tr><tr><td align="left">应用网关</td><td align="left">代理服务器</td><td align="left">· 是网关的一种<br>· 可以从传输层到应用层对数据和访问进行各种控制和处理</td></tr></tbody></table><p>##传输方式的分类</p><h3 id="1-面向有连接型与面向无连接型"><a href="#1-面向有连接型与面向无连接型" class="headerlink" title="1. 面向有连接型与面向无连接型"></a>1. 面向有连接型与面向无连接型</h3><ul><li>面向有连接型<ul><li>TCP</li><li>打电话建##立/断开连接的时候、</li></ul></li><li>面向无连接型<ul><li>UDP、IP</li><li>邮局寄包裹(不需要确认收件人的详细地址是否真实存在)、视频/语音通信的过程(没有必要保证每一帧都成功的传送到达目的地)、</li></ul></li></ul><h3 id="2-电路交换与分组交换"><a href="#2-电路交换与分组交换" class="headerlink" title="2. 电路交换与分组交换"></a>2. 电路交换与分组交换</h3><ul><li><p>电路交换</p><ul><li>主要用于：过去的<strong>电话网</strong>。</li><li>两台主机通信时 是独占整个电路的。同一电路的其他多台计算机只能等待正在通信的计算机收发信息完毕以后 才有机会使用这条电路。</li></ul></li><li><p>分组交换</p><ul><li>主要用于：<strong>现代计算机网络</strong></li><li>处理过程：发送端计算机将数据分组发送给路由器，路由器收到这些分组数据以后，缓存到自己的缓冲区，然后再转发给目标计算机</li><li>限制：根据网络的拥堵情况，数据到达目标地址的时间有长有短。路由器的缓存饱和或溢出时，容易造成数据丢失。</li></ul></li></ul><h3 id="3-按接收端的数量分类"><a href="#3-按接收端的数量分类" class="headerlink" title="3. 按接收端的数量分类"></a>3. 按接收端的数量分类</h3><ul><li>单播(Unicast)<ul><li>1v1通信，打电话。</li></ul></li><li>广播(Broadcast)：同一数据链路内的所有主机<ul><li>电视频道、收音机频道。</li></ul></li><li>多播(Muticast)：与特定组内的计算机通信<ul><li>电话/视频会议</li><li>“1年1班的同学们，请起立！”</li></ul></li><li>任播(Anycast)：解析特定组内的任意一台计算机<ul><li>DNS根域名解析服务器(负载均衡)</li><li>“1年1班的哪位同学上来领一下奖状？”</li><li>“飞机上哪位乘客是医生？”</li></ul></li></ul><hr><p>本文中提到的一些专有名词：</p><ul><li>ISO：国际标准化组织(International Organization for Standards)</li><li>OSI：开放式通信系统互联参考模型(Open System Interconnection)</li><li>NIC：网络接口卡(Network Interface Card)</li><li>CRC：循环冗余校验(Cyclic Redundancy Check)</li><li>WAN：广域网(Wide Area Netword)</li><li>LAN：局域网(Local Area Network)</li><li>Internet：网际网（WAN√、LAN√）</li><li>The Internet：互联网</li></ul>]]></content>
+      
+      
       <categories>
-        <category>读书笔记</category>
+          
+          <category> 读书笔记 </category>
+          
       </categories>
-      <tags>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[计算机网络 - 进阶]]></title>
-    <url>%2Freading%2Fb3dcfa99-computer_networking_advance%2F</url>
-    <content type="text"><![CDATA[目录： 网络层 IP多播 IP隧道 IPv6的地址结构 路径MTU发现 ICMP报文消息类型详解 ICMPv6的邻居探索 #1. 网络层 IP多播： 附：既定已知的多播地址.png IP隧道 用处： MobileIP 多播包的转播（使用IP隧道，使路由器用单播的形式发包） IPv4网络中传送IPv6的包 √ IPv6网络中传送IPv4的包 √ 将数据链路的PPP包用IP包转发时 IPv6的地址结构 路径MTU发现 ICMP报文消息类型详解 ICMP目标不可达消息（类型3） 错误代码1（主机不可达）：路由表中没有该主机信息，或该主机(关机)没有连接到网络 错误代码2（协议不可达）(Protocol Unreachable) 错误代码3（端口不可达）(Port Unreachable) 错误代码4（Fragmentation Needed and Don’t Fragment was Set）：用于MTU探索 ICMP重定向消息（类型5） ICMP超时消息（类型11） 当TTL==0时，IP路由器就会给发送端主机返回一个 ICMP超时消息。 应用：tracerouter。 ICMP回送消息（类型0、8） 用于进行通信的主机或路由器之间，判断所发送的数据包是否已经成功到达对端的一种消息。 应用：ping命令。 ICMP路由探索消息（类型9、10） 主要用于发现与自己相连的网络中的路由器。当一台主机发出ICMP路由请求（Router Solicitaion，类型10）时，路由器则返回ICMP路由器通告消息（Router Advertisement，类型9）给主机。 ICMP地址掩码消息（类型17、18） 主要用于主机或路由器想要了解子网掩码的情况。可以向那些目标主机或路由器发送ICMP地址掩码请求消息（ICMP Address Mask Request，类型17），然后通过接收ICMP地址掩码应答消息（ICMP Address Mask Reply，类型18）获取子网掩码的信息。 ICMPv6的邻居探索 附：ICMPv6常用的报文消息类型 本文中提到的一些专有名词： IGMP：Internet Group Management Protocol MLD(Multicast Listener Discovery)：多播监听发现。 MSS：最大段长度 链路本地单播地址：同一链路内唯一的地址。 AS(Autonomous System)：自治系统 本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。本文地址：http://nibnait.com/b3dcfa99-Computer-Networking-advanced/]]></content>
+      
+      
+        <tags>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机网络 - 进阶</title>
+      <link href="/reading/b3dcfa99-computer_networking_advance/"/>
+      <url>/reading/b3dcfa99-computer_networking_advance/</url>
+      
+        <content type="html"><![CDATA[<p>目录：</p><ol><li><p>网络层</p><ul><li>IP多播</li><li>IP隧道 </li><li>IPv6的地址结构</li><li>路径MTU发现</li><li>ICMP报文消息类型详解</li><li>ICMPv6的邻居探索</li></ul></li></ol><a id="more"></a><p>#1. 网络层</p><h2 id="IP多播："><a href="#IP多播：" class="headerlink" title="IP多播："></a>IP多播：</h2><p><img src="https://tb.nsfocus.co/image/b3dcfa99-1.png" alt></p><p>附：<a href="https://tb.nsfocus.co/image/b3dcfa99-2.png" target="_blank" rel="noopener">既定已知的多播地址.png</a></p><h2 id="IP隧道"><a href="#IP隧道" class="headerlink" title="IP隧道"></a>IP隧道</h2><p><img src="https://tb.nsfocus.co/image/b3dcfa99-3.png" alt></p><p>用处：</p><ul><li>MobileIP</li><li>多播包的转播（使用IP隧道，使路由器用单播的形式发包）</li><li>IPv4网络中传送IPv6的包 √</li><li>IPv6网络中传送IPv4的包 √</li><li>将数据链路的PPP包用IP包转发时</li></ul><h2 id="IPv6的地址结构"><a href="#IPv6的地址结构" class="headerlink" title="IPv6的地址结构"></a>IPv6的地址结构</h2><p><img src="https://tb.nsfocus.co/image/b3dcfa99-4.png" alt></p><h2 id="路径MTU发现"><a href="#路径MTU发现" class="headerlink" title="路径MTU发现"></a>路径MTU发现</h2><p><img src="https://tb.nsfocus.co/image/b3dcfa99-5.png" alt></p><h2 id="ICMP报文消息类型详解"><a href="#ICMP报文消息类型详解" class="headerlink" title="ICMP报文消息类型详解"></a>ICMP报文消息类型详解</h2><ul><li><p>ICMP目标不可达消息（类型3）</p><ul><li>错误代码1（主机不可达）：路由表中没有该主机信息，或该主机(关机)没有连接到网络</li><li>错误代码2（协议不可达）(Protocol Unreachable)</li><li>错误代码3（端口不可达）(Port Unreachable)</li><li>错误代码4（Fragmentation Needed and Don’t Fragment was Set）：用于MTU探索</li></ul></li><li><p>ICMP重定向消息（类型5）</p></li></ul><p><img src="https://tb.nsfocus.co/image/b3dcfa99-6.png" alt></p><ul><li><p>ICMP超时消息（类型11）</p><p>  当TTL==0时，IP路由器就会给发送端主机返回一个 ICMP超时消息。<br> 应用：tracerouter。<br><img src="https://tb.nsfocus.co/image/b3dcfa99-7.png" alt></p></li><li><p>ICMP回送消息（类型0、8）</p><p> 用于进行通信的主机或路由器之间，判断所发送的数据包是否已经成功到达对端的一种消息。<br> 应用：ping命令。</p></li><li><p>ICMP路由探索消息（类型9、10）</p><p> 主要用于发现与自己相连的网络中的路由器。当一台主机发出ICMP路由请求（Router Solicitaion，类型10）时，路由器则返回ICMP路由器通告消息（Router Advertisement，类型9）给主机。</p></li><li><p>ICMP地址掩码消息（类型17、18）</p><p> 主要用于主机或路由器想要了解子网掩码的情况。可以向那些目标主机或路由器发送ICMP地址掩码请求消息（ICMP Address Mask Request，类型17），然后通过接收ICMP地址掩码应答消息（ICMP Address Mask Reply，类型18）获取子网掩码的信息。</p></li></ul><h2 id="ICMPv6的邻居探索"><a href="#ICMPv6的邻居探索" class="headerlink" title="ICMPv6的邻居探索"></a>ICMPv6的邻居探索</h2><p><img src="https://tb.nsfocus.co/image/b3dcfa99-9.png" alt></p><p>附：<a href="https://tb.nsfocus.co/image/b3dcfa99-10.png" target="_blank" rel="noopener">ICMPv6常用的报文消息类型</a></p><hr><p>本文中提到的一些专有名词：</p><ul><li>IGMP：Internet Group Management Protocol</li><li>MLD(Multicast Listener Discovery)：多播监听发现。</li><li>MSS：最大段长度</li><li>链路本地单播地址：同一链路内唯一的地址。</li><li>AS(Autonomous System)：自治系统</li></ul><hr><p>本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。<br>本文地址：<a href="http://nibnait.com/b3dcfa99-Computer-Networking-advanced/" target="_blank" rel="noopener">http://nibnait.com/b3dcfa99-Computer-Networking-advanced/</a></p>]]></content>
+      
+      
       <categories>
-        <category>读书笔记</category>
+          
+          <category> 读书笔记 </category>
+          
       </categories>
-      <tags>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[计算机网络 - 基础]]></title>
-    <url>%2Freading%2F58316970-computer_networking_basis%2F</url>
-    <content type="text"><![CDATA[书单列表： 《图解TCP/IP(第5版)》 《计算机网络：自顶向下方法(原书第6版)》 目录： 数据链路层 共享介质型网络 非共享介质型网络 以太网 VLAN PPP协议 网络层 IPv4编址 NAT技术 IPv6与IPv4数据报格式对比 IP报文的分片与重组 IP协议相关技术 ARP RARP ICMP ICMPv6 DHCP 路由选择算法 距离向量算法 - RIP、RIP2 链路状态算法 - OSPF BGP - 路径向量型协议 传输层 UDP - 用户数据报协议 TCP - 传输控制协议 其他传输层协议 应用层 远程登录 – TELNET、SSH 文件传输 – FTP 电子邮件 – MIME、SMTP、POP、IMAP WWW – HTTP 网络管理 – SNMP、MIB、RMON TCP/IP的诞生： 20世纪90年代，ISO展开了OSI这一国际标准协议的标准化进程。然而，OSI协议并没有得到普及，真正被广泛使用的是TCP/IP协议。究其原因，是因为TCP/IP的标准化过程是一个极其注重实用性的一个流程。 TCP/IP与OSI参考模型 数据链路层在LAN内，校验并转发 数据帧(根据MAC地址▼) 共享介质型网络 多个设备共享同一个载波信道进行发送和接收数据帧，半双工通信▼。 争用方式：CSMA/CD▼ 发前先听 边发边听 冲突即停 延时重发（指数退避等待） 令牌传递方式： 提高网络性能的两种方法：令牌释放(不等待接收方的数据到达确认就将令牌发送给下一站)、令牌追加(多个令牌同时循环) 非共享介质型网络 不共享介质。网络中的每个站直连交换机，由交换机负责转发数据帧。由于发送端和接收端并不共享通信介质，所以这种通信方式是全双工的。 以太网交换机(网桥)：转发表自学原理： 学习源地址 转发同网帧 丢弃异网帧 广播未知帧 环路检测技术： 生成树协议(STP▼)：通过检查网络的结构 以某一个网桥为构造树根，并对每个端口配置权重，来指定优先使用哪些端口以及发生问题时该使用哪些端口。 以太网——有线局域网技术历史：共享介质型网络–&gt;非共享介质型网络 以太网帧格式： VLAN(virtual LAN，虚拟局域网) 在链路层交换机(网桥)上，使用软件将一些端口逻辑地划分成的一个个网段。 可以跨越不同子网、不同类型网络(以太网、FDDI▼、ATM▼等)从而简化网络管理，减少设备投资。 交换机根据VLAN ID， 可以过滤多余的包，从而达到控制流量 减少了网络负载 并 提高了网络的安全性。 PPP(Point-to-Point Protocol): 拨号上网时，一个将IP数据报封装到串行链路的方法。 主要功能： - LCP(链路控制协议)：负责建立、(加密拨号登陆)配置和测试数据链路连接 - NCP(网络控制协议)：负责设置IP地址(IPCP)、连接上一层网络层IP协议：尽力而为(面向无连接的) 一些特殊的IP地址： 网络号 主机号 10进制表示 源地址 目的地址 含义 0 0 0.0.0.0 ✔️ ❌ 本网络上的本主机 0 host-id ✔️ ❌ 本网络上的某台host-id任播 全1 全1 255.255.255.255 ❌ ✔️ 本网络上的广播,不能被路由器转发 net-id 全1 ❌ ✔️ 指定net-id上的所有主机广播 127 任何数(但不能都是0或1) 127.×××.×××.×××（默认：127.0.0.1=localhost） ✔️ ✔️ 本地回环测试地址 NAT▼技术：极大的缓解了IPv4地址不够用的囧境 在本地网络中使用私有地址，在连接互联网时转而使用全局IP地址的技术。 潜在问题：①无法从NAT外部向内部服务器建立连接；②转换表的生成与转换操作都会产生一定的开销。 解决地址短缺的最佳途径还是：普及IPv6。 IPv6 附：IPv4与IPv6数据报格式详解.png IP报文的分片与重组 IPv4:在路由器上分片，在接收端主机上重组。 IPv6:在发送端主机上分配，接收端主机重组。最小的MTU==1280字节 通过“路径MTU发现▼”，以确定分片时最大的MTU的大小。 主要利用一个ICMP不可达消息 将数据链路上MTU的值返回给发送机 ARP▼ 发送端主机根据IP地址，广播寻找其对应的MAC地址，（只适用于IPv4，IPv6中则可以用ICMPv6替代ARP发送邻居探索消息）实现链路内的IP通信。 附：ARP包格式.png ARP缓存表 通常发送端和接受端会把自己接收到的 带有IP地址和MAC地址的ARP响应包/ARP请求包中的信息缓存20分钟。以防止ARP包在网络中被大量广播，造成网络拥塞。 tips：虽然IP地址直到到达目标主机时都没有发生变化，但是数据链路的目标地址(MAC地址)却根据每个链路的不同而发生着变化。 MAC地址和IP地址缺一不可 在以太网上发送IP包时，“下次要经过哪个路由器发送数据报”中的“下一个路由器”就是其相应的MAC地址。 而如果没有IP地址，各个主机通信全靠广播MAC地址，那对于网桥来说将是一场灾难。 RARP 将ARP反过来，从MAC地址定位IP地址。用于将打印机服务器等小型嵌入式设备接入到网络时。 辅助IP的ICMP▼ 用于IP通信过程中，确认网络是否正常工作，以及遇到异常时进行问题的诊断。 附：《计算机网络-进阶》–ICMP报文消息类型详解 ICMPv6 附：《计算机网络-进阶》–ICMPv6的邻居探索 DHCP 在使用DHCP之前，需先将DHCP所要分配的IP地址池、相应的子网掩码，默认路由控制信息，DNS服务器地址设置到服务器上。 DHCP中继代理 使用DHCP中继代理之后，对不同网段的IP地址的分配也可以由一个DHCP服务器统一进行管理和维护。 路由选择算法距离向量算法(Distance-Vector) 根据网络中的距离(跳数)和方向两种信息生成路由控制表。 RIP▼ 选择经过路由器个数最少的路径 每隔30秒与其他相邻的路由器交换自己的路由表 直接相连的网络距离为0。距离的最大值为16，防止发生“无限计数”问题。 缺点： 网络的个数越多，每次所要交换的路由控制信息就越大。 在网络比较稳定时，还要定期交换信息，浪费贷款。 由于每个路由器掌握的信息都不同，其正确性很难保证。 无法实现可变长度子网构造的网络路由控制（路由器未交换子网掩码）。 RIP2 与RIP第一版的工作机制基本相同，增加了一些新的特点： 链路状态算法(Link-State) 在了解网络整个链接状态的基础上，所有路由器都持有相同的路由控制表。 OSPF▼ 选择总的代价较小的路径。 允许多条费用相同的路径(而RIP仅一条路径) 对每条链路，对不同的TOS(服务类型)，设置多种费用测度 在大规模网络中，用层次的OSPF 附：OSPF的工作机制.png 层次OSPF BGP▼ - 路径向量型协议 边界网关协议是连接不同组织机构(不同自治系统)的一种协议。主要用于ISP之间的相互连接。 根据所要经过的AS路径信息访问列表▼进行路由控制。 AS路径信息访问列表(AS Path List)：包含转发方向、距离以及途径所有AS的编号。 传输层 网络层的IP协议相当于邮递员，把IP数据包送到指定IP的目标主机上， 传输层的TCP/UDP则负责 根据包裹信息（应用程序、端口号），判断信息的最终接收人（哪一个应用程序）。 UDP——用户数据报协议 不提供复杂的控制机制，利用IP提供面向无连接的通信服务。并且它是将应用程序发来的数据在收到的那一刻，立刻按照原样发送到网上的一种机制。 即使出现网络拥堵，UDP也无法进行流量控制等避免网络拥堵的行为。此外，传输途中即使出现丢包，UDP也不负责重发。甚至当出现包的到达顺序乱掉时也没有纠正的功能。如果需要这些细节控制，那么不得不交由采用UDP的应用程序去处理。UDP有点类似于用户说什么听什么的机制，但是需要用户充分考虑好上层协议类型并制作相应的应用程序。因此，也可以说，UDP按照“制作程序的那些用户的指示行事”。 由于UDP面向无连接，它可以随时发送数据。再加上UDP本身处理既简单又高效，因此经常用于以下几个方面： 包总量少的通信（DNS、SNMP等） 视频、音频等多媒体通信（即时通信） 限定于LAN等特定网络中的应用通信 广播通信（广播、多播） 首部格式： 附：UDP数据报首部“校验和”字段详解.png TCP——传输控制协议目的：通过IP数据报实现可靠性传输 特点： 丢包时的重发控制 对次序乱掉的分包进行顺序控制 面向有连接的协议，只有在确认对端存在时才会发送数据，从而可以控制通信流量的浪费 使用序列号和确认应答号实现顺序控制、窗口控制与重发控制。 使用窗口大小来实现对TCP的流量大小的控制 和 拥塞控制 首部格式： 附：TCP数据报首部格式各字段详解.png TCP连接的建立与终止：(传说中的三次握手与四次挥手) 在数据通信之前，主机A通过TCP首部发送一个SYN包作为建立连接的请求（ACK=0,SYN=1，声明一个起始序号seq=x）等待确认应答 主机B收到A要建立连接的请求，返回一个允许连接的SYNACK报文段（ACK=1,SYN=1，主机B的起始序号seq=y，确认应答号ack=x+1） 为防止“已失效的连接请求报文段▼”突然又传回B，主机A再进行一次确认（ACK=1,SYN=0，主机A的起始序列号seq=x+1，确认应答号ack=y+1） 数据传输结束之后，主机A可以发送一个TCP首部（FIN=1，主机A的起始序列号seq=u），请求断开连接。 主机B收到“A不再发送数据的消息”后，返回一个确认报文（ACK=1,seq=v，ack=u+1）A收到B的确认后，进入等待状态，等待B请求释放连接。 B数据发送完成之后，向A请求断开连接（FIN=1,ACK=1,seq=w，ack=u+1） A收到B的断开请求后，回复一个确认信息，并进入TIME_WAIT状态▼，等待2MSL时间。 虽然三次握手方式管理TCP连接可以更好地避免无连接，但这种协议为DOS攻击▼（更确切的说是SYN洪泛攻击▼）提供了可乘之机。 使用序列号和确认应答号实现顺序控制、窗口控制与重发控制 ##其他传输层协议 UDP-Lite（Lightweight User Datagram Protocol，轻量级用户数据报协议） SCTP（Stream Control Transmission Protocol，流控制传输协议） DCCP（Datagram Congestion Control Protocol，数据报拥塞控制协议） 附：已经步入实用阶段的几个传输层协议详解.png 应用层。。。写不动了 附：几道常考的计算题.pptx 本文中提到的一些专有名词： MAC地址(Media Access Control Address)：介质访问控制地址。系统在网络上的唯一硬件编号，每个网卡都需要有一个唯一的MAC地址。 CSMA/CD(Carrier Sense Mutiple Access/Collision Detection)：具有碰撞检测的载波侦听多路访问 半双工：只发送或只接受的通信方式。比如：无线电收发器，若两端同时说话，是听不见对方说的话的。 全双工：发送数据的同时也可以接收数据。比如：打电话。 STP：Spanning Tree Protocol SFD：Start Frame Delimiter FDDI(Fiber Distribute Data Interface)：分布式光纤数据接口。 ATM(Asynchronous Transfer Mode)：一种以信元为单位的异步传输模式。 网络收敛：网络拥堵时，路由器或交换机发生丢包的现象。 PPPoE(PPP over Ethernet)：利用PPP的验证功能使各家ISP▼有效地管理终端用户的使用，实现按时计费。 ISP:Internet Service Provider NAT：Network Address Translator Path MTU Discovery：发现路径中存在的所有数据链路中最小的MTU▼ MTU：Maximum Transmission Unit。参见《计算机网络-进阶》–路径MTU发现 ARP(Address Resolution Protocol)：地址解析协议 RARP：Reverse Address Resolution Protocol ICMP：Internet Control Managemet Protocol DHCP：Dynamic Host Configuration Protocol RIP：Routing Information Protocol OSPF：Open Shortest Path First BGP(Border Gateway Protocol)：边界网关协议 已失效的连接请求报文段： DOS攻击：deny of service SYN洪泛攻击:攻击者发送大量的TCP SYN报文段，而有意不进行第三次握手的步骤，直至服务器消耗完为第一次握手连接保留的有限资源。 TIME_WAIT状态： 在TIME_WAIT状态中，如果TCP client端最后一次发送的ACK丢失了，它将重新发送。TIME_WAIT状态中所需要的时间是依赖于实现方法的。典型的值为30秒、1分钟和2分钟。等待之后连接正式关闭，并且所有的资源(包括端口号)都被释放。 2MSL(Maximum Segment Lifetime,最大报文生存时间)：虽然按道理，四个报文都发送完毕，我们可以直接进入CLOSE状态了，但是我们必须假想网络是不可靠的，有可能最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。]]></content>
+      
+      
+        <tags>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>计算机网络 - 基础</title>
+      <link href="/reading/58316970-computer_networking_basis/"/>
+      <url>/reading/58316970-computer_networking_basis/</url>
+      
+        <content type="html"><![CDATA[<p>书单列表：</p><ul><li><a href="https://book.douban.com/subject/24737674/" target="_blank" rel="noopener">《图解TCP/IP(第5版)》</a></li><li><a href="https://book.douban.com/subject/26176870/" target="_blank" rel="noopener">《计算机网络：自顶向下方法(原书第6版)》</a></li></ul><a id="more"></a><p>目录：</p><ol><li><p>数据链路层  </p><ul><li>共享介质型网络</li><li>非共享介质型网络</li><li>以太网<ul><li>VLAN</li><li>PPP协议</li></ul></li></ul></li><li><p>网络层</p><ul><li>IPv4编址</li><li>NAT技术</li><li>IPv6与IPv4数据报格式对比</li><li>IP报文的分片与重组</li><li>IP协议相关技术<ul><li>ARP</li><li>RARP</li><li>ICMP</li><li>ICMPv6</li><li>DHCP</li></ul></li><li>路由选择算法<ul><li>距离向量算法 - RIP、RIP2</li><li>链路状态算法 - OSPF</li><li>BGP - 路径向量型协议</li></ul></li></ul></li><li><p>传输层</p><ul><li>UDP - 用户数据报协议</li><li>TCP - 传输控制协议</li><li>其他传输层协议</li></ul></li><li><p>应用层</p><ul><li>远程登录 – TELNET、SSH</li><li>文件传输 – FTP</li><li>电子邮件 – MIME、SMTP、POP、IMAP</li><li>WWW – HTTP</li><li>网络管理 – SNMP、MIB、RMON</li></ul></li></ol><h2 id="TCP-IP的诞生："><a href="#TCP-IP的诞生：" class="headerlink" title="TCP/IP的诞生："></a>TCP/IP的诞生：</h2><p><img src="https://tb.nsfocus.co/image/58316970-1.png" alt="《图解TCP/IP》 P53 表2.1"></p><p>20世纪90年代，ISO展开了OSI这一国际标准协议的标准化进程。然而，OSI协议并没有得到普及，真正被广泛使用的是TCP/IP协议。究其原因，是因为<a href="http://nibnait.com/c09ed94b-TCP-IP-standardization-process/" target="_blank" rel="noopener">TCP/IP的标准化过程</a>是一个极其<strong>注重实用性</strong>的一个流程。</p><h2 id="TCP-IP与OSI参考模型"><a href="#TCP-IP与OSI参考模型" class="headerlink" title="TCP/IP与OSI参考模型"></a>TCP/IP与OSI参考模型</h2><p><img src="https://tb.nsfocus.co/image/58316970-2.png" alt="《图解TCP/IP》 P64 图2.8"></p><h1 id="数据链路层"><a href="#数据链路层" class="headerlink" title="数据链路层"></a>数据链路层</h1><p>在LAN内，校验并转发 数据帧(根据MAC地址▼)</p><h2 id="共享介质型网络"><a href="#共享介质型网络" class="headerlink" title="共享介质型网络"></a>共享介质型网络</h2><blockquote><p>   多个设备共享同一个载波信道进行发送和接收数据帧，半双工通信▼。</p></blockquote><ul><li><p>争用方式：CSMA/CD▼</p><ul><li>发前先听</li><li>边发边听</li><li>冲突即停</li><li>延时重发（指数退避等待）</li></ul></li><li><p>令牌传递方式：</p><p>  提高网络性能的两种方法：令牌释放(不等待接收方的数据到达确认就将令牌发送给下一站)、令牌追加(多个令牌同时循环)</p></li></ul><h2 id="非共享介质型网络"><a href="#非共享介质型网络" class="headerlink" title="非共享介质型网络"></a>非共享介质型网络</h2><blockquote><p>   不共享介质。网络中的每个站直连交换机，由交换机负责转发数据帧。由于发送端和接收端并不共享通信介质，所以这种通信方式是全双工的。</p></blockquote><ul><li><p>以太网交换机(网桥)：<strong>转发表</strong>自学原理：</p><ul><li>学习源地址</li><li>转发同网帧</li><li>丢弃异网帧</li><li>广播未知帧</li></ul></li><li><p>环路检测技术：</p><ul><li>生成树协议(STP▼)：通过检查网络的结构 以某一个网桥为构造<strong>树根</strong>，并对每个端口配置<strong>权重</strong>，来指定优先使用哪些端口以及发生问题时该使用哪些端口。</li></ul></li></ul><h2 id="以太网——有线局域网技术"><a href="#以太网——有线局域网技术" class="headerlink" title="以太网——有线局域网技术"></a>以太网——有线局域网技术</h2><p>历史：共享介质型网络–&gt;非共享介质型网络</p><ul><li>以太网帧格式：</li></ul><p><img src="https://tb.nsfocus.co/image/58316970-3.png" alt="Ethernet V2"></p><ul><li>VLAN(virtual LAN，虚拟局域网)</li></ul><blockquote><p>在链路层交换机(网桥)上，使用软件将一些端口逻辑地划分成的一个个网段。</p></blockquote><ul><li>可以跨越不同子网、不同类型网络(以太网、FDDI▼、ATM▼等)从而<strong>简化网络管理，减少设备投资</strong>。</li><li>交换机根据VLAN ID， 可以过滤多余的包，从而达到<strong>控制流量 减少了网络负载</strong> 并 <strong>提高了网络的安全性</strong>。 </li></ul><h2 id="PPP-Point-to-Point-Protocol"><a href="#PPP-Point-to-Point-Protocol" class="headerlink" title="PPP(Point-to-Point Protocol):"></a>PPP(Point-to-Point Protocol):</h2><blockquote><p>   拨号上网时，一个将IP数据报<strong>封装</strong>到串行链路的<strong>方法</strong>。</p></blockquote><p><img src="https://tb.nsfocus.co/image/58316970-4.png" alt="Ethernet V2"></p><p>主要功能：</p><pre><code>-  LCP(链路控制协议)：负责建立、(加密拨号登陆)配置和测试数据链路连接-  NCP(网络控制协议)：负责设置IP地址(IPCP)、连接上一层</code></pre><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><h2 id="IP协议：尽力而为-面向无连接的"><a href="#IP协议：尽力而为-面向无连接的" class="headerlink" title="IP协议：尽力而为(面向无连接的)"></a>IP协议：尽力而为(面向无连接的)</h2><p><img src="https://tb.nsfocus.co/image/58316970-5.png" alt="IPv4地址的定义"></p><p>一些特殊的IP地址：</p><table><thead><tr><th align="center">网络号</th><th align="center">主机号</th><th>10进制表示</th><th align="center">源地址</th><th align="center">目的地址</th><th>含义</th></tr></thead><tbody><tr><td align="center">0</td><td align="center">0</td><td>0.0.0.0</td><td align="center">✔️</td><td align="center">❌</td><td>本网络上的本主机</td></tr><tr><td align="center">0</td><td align="center">host-id</td><td></td><td align="center">✔️</td><td align="center">❌</td><td>本网络上的某台host-id任播</td></tr><tr><td align="center">全1</td><td align="center">全1</td><td>255.255.255.255</td><td align="center">❌</td><td align="center">✔️</td><td>本网络上的广播,不能被路由器转发</td></tr><tr><td align="center">net-id</td><td align="center">全1</td><td></td><td align="center">❌</td><td align="center">✔️</td><td>指定net-id上的所有主机广播</td></tr><tr><td align="center">127</td><td align="center">任何数<br>(但不能都是0或1)</td><td>127.×××.×××.×××<br>（默认：127.0.0.1=localhost）</td><td align="center">✔️</td><td align="center">✔️</td><td>本地回环测试地址</td></tr></tbody></table><h2 id="NAT▼技术：极大的缓解了IPv4地址不够用的囧境"><a href="#NAT▼技术：极大的缓解了IPv4地址不够用的囧境" class="headerlink" title="NAT▼技术：极大的缓解了IPv4地址不够用的囧境"></a>NAT▼技术：极大的缓解了IPv4地址不够用的囧境</h2><blockquote><p>在本地网络中使用私有地址，在连接互联网时转而使用全局IP地址的技术。</p></blockquote><p><img src="https://tb.nsfocus.co/image/58316970-6.png" alt></p><ul><li><p>潜在问题：①无法从NAT外部向内部服务器建立连接；②转换表的生成与转换操作都会产生一定的开销。</p></li><li><p>解决地址短缺的最佳途径还是：普及IPv6。</p></li></ul><h2 id="IPv6"><a href="#IPv6" class="headerlink" title="IPv6"></a>IPv6</h2><p><img src="https://tb.nsfocus.co/image/58316970-7.png" alt></p><p>附：<a href="https://tb.nsfocus.co/image/58316970-ipv4-ipv6.png" target="_blank" rel="noopener">IPv4与IPv6数据报格式详解.png</a></p><h2 id="IP报文的分片与重组"><a href="#IP报文的分片与重组" class="headerlink" title="IP报文的分片与重组"></a>IP报文的分片与重组</h2><blockquote><ul><li>IPv4:在路由器上分片，在接收端主机上重组。</li><li>IPv6:在发送端主机上分配，接收端主机重组。最小的MTU==1280字节</li></ul></blockquote><ol><li>通过“路径MTU发现▼”，以确定分片时最大的MTU的大小。<ul><li>主要利用一个ICMP不可达消息 将数据链路上MTU的值返回给发送机</li></ul></li></ol><h2 id="ARP▼"><a href="#ARP▼" class="headerlink" title="ARP▼"></a>ARP▼</h2><blockquote><p>   发送端主机根据IP地址，广播寻找其对应的MAC地址，（只适用于IPv4，IPv6中则可以用ICMPv6替代ARP发送邻居探索消息）实现链路内的IP通信。</p></blockquote><p><img src="https://tb.nsfocus.co/image/58316970-8.png" alt="ARP工作机制"></p><p>附：<a href="https://tb.nsfocus.co/image/58316970-9.png" target="_blank" rel="noopener">ARP包格式.png</a></p><ul><li>ARP缓存表<br> 通常发送端和接受端会把自己接收到的 带有IP地址和MAC地址的ARP响应包/ARP请求包中的信息缓存20分钟。以防止ARP包在网络中被大量广播，造成网络拥塞。</li><li>tips：虽然IP地址直到到达目标主机时都没有发生变化，但是数据链路的目标地址(MAC地址)却根据每个链路的不同而发生着变化。</li><li>MAC地址和IP地址缺一不可<ul><li>在以太网上发送IP包时，“下次要经过哪个路由器发送数据报”中的“下一个路由器”就是其相应的MAC地址。</li><li>而如果没有IP地址，各个主机通信全靠广播MAC地址，那对于网桥来说将是一场灾难。</li></ul></li></ul><h2 id="RARP"><a href="#RARP" class="headerlink" title="RARP"></a>RARP</h2><blockquote><p>   将ARP反过来，从MAC地址定位IP地址。用于将打印机服务器等小型嵌入式设备接入到网络时。</p></blockquote><p><img src="https://tb.nsfocus.co/image/58316970-10.png" alt="RARP工作机制"></p><h2 id="辅助IP的ICMP▼"><a href="#辅助IP的ICMP▼" class="headerlink" title="辅助IP的ICMP▼"></a>辅助IP的ICMP▼</h2><blockquote><p>   用于IP通信过程中，确认网络是否正常工作，以及遇到异常时进行问题的诊断。</p></blockquote><p><img src="https://tb.nsfocus.co/image/58316970-11.png" alt></p><p><img src="https://tb.nsfocus.co/image/58316970-12.png" alt></p><p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–ICMP报文消息类型详解</a></p><h2 id="ICMPv6"><a href="#ICMPv6" class="headerlink" title="ICMPv6"></a>ICMPv6</h2><p><img src="https://tb.nsfocus.co/image/58316970-13.png" alt></p><p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–ICMPv6的邻居探索</a></p><h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><ul><li><p>在使用DHCP之前，需先将DHCP所要分配的IP地址池、相应的子网掩码，默认路由控制信息，DNS服务器地址设置到服务器上。</p><p> <img src="https://tb.nsfocus.co/image/58316970-14.png" alt="DHCP的工作原理"></p></li><li><p>DHCP中继代理</p><p> 使用DHCP中继代理之后，对不同网段的IP地址的分配也可以由一个DHCP服务器统一进行管理和维护。</p><p> <img src="https://tb.nsfocus.co/image/58316970-15.png" alt></p></li></ul><h2 id="路由选择算法"><a href="#路由选择算法" class="headerlink" title="路由选择算法"></a>路由选择算法</h2><h3 id="距离向量算法-Distance-Vector"><a href="#距离向量算法-Distance-Vector" class="headerlink" title="距离向量算法(Distance-Vector)"></a>距离向量算法(Distance-Vector)</h3><blockquote><p>   根据网络中的距离(跳数)和方向两种信息生成路由控制表。</p></blockquote><ul><li><p>RIP▼</p><ul><li>选择经过路由器个数最少的路径</li><li>每隔30秒与其他相邻的路由器交换自己的路由表</li><li>直接相连的网络距离为0。距离的最大值为16，防止发生“无限计数”问题。</li><li>缺点：<ul><li>网络的个数越多，每次所要交换的路由控制信息就越大。</li><li>在网络比较稳定时，还要定期交换信息，浪费贷款。</li><li>由于每个路由器掌握的信息都不同，其正确性很难保证。</li><li>无法实现可变长度子网构造的网络路由控制（路由器未交换子网掩码）。</li></ul></li></ul></li><li><p>RIP2<br> 与RIP第一版的工作机制基本相同，增加了一些新的特点：<br> <img src="https://tb.nsfocus.co/image/58316970-16.png" alt>        </p></li></ul><h3 id="链路状态算法-Link-State"><a href="#链路状态算法-Link-State" class="headerlink" title="链路状态算法(Link-State)"></a>链路状态算法(Link-State)</h3><blockquote><p>   在了解网络整个链接状态的基础上，所有路由器都持有相同的路由控制表。</p></blockquote><ul><li><p>OSPF▼</p><ul><li><p>选择总的代价较小的路径。</p></li><li><p>允许多条费用相同的路径(而RIP仅一条路径)</p></li><li><p>对每条链路，对不同的TOS(服务类型)，设置多种费用测度</p></li><li><p>在大规模网络中，用层次的OSPF</p><p>附：<a href="https://tb.nsfocus.co/image/58316970-18.png" target="_blank" rel="noopener">OSPF的工作机制.png</a></p></li><li><p>层次OSPF<br><img src="https://tb.nsfocus.co/image/58316970-17.png" alt></p></li></ul></li></ul><h3 id="BGP▼-路径向量型协议"><a href="#BGP▼-路径向量型协议" class="headerlink" title="BGP▼ - 路径向量型协议"></a>BGP▼ - 路径向量型协议</h3><blockquote><p>   边界网关协议是连接不同组织机构(不同自治系统)的一种协议。主要用于ISP之间的相互连接。</p></blockquote><ul><li>根据所要经过的<strong>AS路径信息访问列表</strong>▼进行路由控制。</li><li>AS路径信息访问列表(AS Path List)：包含转发方向、距离以及途径所有AS的编号。</li></ul><h1 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h1><blockquote><p>   网络层的IP协议相当于邮递员，把IP数据包送到指定IP的目标主机上，<br>   传输层的TCP/UDP则负责 根据包裹信息（应用程序、端口号），判断信息的最终接收人（哪一个应用程序）。</p></blockquote><h2 id="UDP——用户数据报协议"><a href="#UDP——用户数据报协议" class="headerlink" title="UDP——用户数据报协议"></a>UDP——用户数据报协议</h2><blockquote><p>  不提供复杂的控制机制，利用IP提供面向无连接的通信服务。并且它是将应用程序发来的数据在收到的那一刻，立刻按照原样发送到网上的一种机制。 </p></blockquote><p>即使出现网络拥堵，UDP也无法进行流量控制等避免网络拥堵的行为。此外，传输途中即使出现丢包，UDP也不负责重发。甚至当出现包的到达顺序乱掉时也没有纠正的功能。如果需要这些细节控制，那么不得不交由采用UDP的应用程序去处理。UDP有点类似于用户说什么听什么的机制，但是需要用户充分考虑好上层协议类型并制作相应的应用程序。因此，也可以说，UDP按照“制作程序的那些用户的指示行事”。</p><p>由于UDP面向无连接，它可以随时发送数据。再加上UDP本身处理既简单又高效，因此经常用于以下几个方面：</p><ul><li>包总量少的通信（DNS、SNMP等）</li><li>视频、音频等多媒体通信（即时通信）</li><li>限定于LAN等特定网络中的应用通信</li><li>广播通信（广播、多播）</li></ul><p>首部格式：  </p><p><img src="https://tb.nsfocus.co/image/58316970-19.png" alt="UDP数据报格式"></p><p>附：<a href="https://tb.nsfocus.co/image/58316970-UDP.png" target="_blank" rel="noopener">UDP数据报首部“校验和”字段详解.png</a></p><h2 id="TCP——传输控制协议"><a href="#TCP——传输控制协议" class="headerlink" title="TCP——传输控制协议"></a>TCP——传输控制协议</h2><p>目的：通过IP数据报实现可靠性传输</p><p>特点：</p><ul><li>丢包时的<strong>重发控制</strong></li><li>对次序乱掉的分包进行<strong>顺序控制</strong></li><li><strong>面向有连接的协议</strong>，只有在确认对端存在时才会发送数据，从而可以<strong>控制通信流量</strong>的浪费</li><li>使用序列号和确认应答号实现顺序控制、窗口控制与重发控制。</li><li>使用窗口大小来实现对TCP的<strong>流</strong>量大小的<strong>控制</strong> 和 <strong>拥塞控制</strong></li></ul><p>首部格式：  </p><p><img src="https://tb.nsfocus.co/image/58316970-20.png" alt="TCP数据报格式"></p><p>附：<a href="https://tb.nsfocus.co/image/58316970-TCP.png" target="_blank" rel="noopener">TCP数据报首部格式各字段详解.png</a></p><h3 id="TCP连接的建立与终止："><a href="#TCP连接的建立与终止：" class="headerlink" title="TCP连接的建立与终止："></a>TCP连接的建立与终止：</h3><p>(传说中的三次握手与四次挥手)  </p><p><img src="https://tb.nsfocus.co/image/58316970-21.png" alt></p><ol><li><p>在数据通信之前，主机A通过TCP首部发送一个SYN包作为建立连接的请求（ACK=0,SYN=1，声明一个起始序号seq=x）等待确认应答</p></li><li><p>主机B收到A要建立连接的请求，返回一个允许连接的SYNACK报文段（ACK=1,SYN=1，主机B的起始序号seq=y，确认应答号ack=x+1）</p></li><li><p>为防止“已失效的连接请求报文段▼”突然又传回B，主机A再进行一次确认（ACK=1,SYN=0，主机A的起始序列号seq=x+1，确认应答号ack=y+1）</p></li><li><p>数据传输结束之后，主机A可以发送一个TCP首部（FIN=1，主机A的起始序列号seq=u），请求断开连接。</p></li><li><p>主机B收到“A不再发送数据的消息”后，返回一个确认报文（ACK=1,seq=v，ack=u+1）<br>A收到B的确认后，进入等待状态，等待B请求释放连接。</p></li><li><p>B数据发送完成之后，向A请求断开连接（FIN=1,ACK=1,seq=w，ack=u+1）  </p></li><li><p>A收到B的断开请求后，回复一个确认信息，并进入TIME_WAIT状态▼，等待2MSL时间。</p><ul><li>虽然三次握手方式管理TCP连接可以更好地避免无连接，但这种协议为DOS攻击▼（更确切的说是SYN洪泛攻击▼）提供了可乘之机。</li></ul></li></ol><h3 id="使用序列号和确认应答号实现顺序控制、窗口控制与重发控制"><a href="#使用序列号和确认应答号实现顺序控制、窗口控制与重发控制" class="headerlink" title="使用序列号和确认应答号实现顺序控制、窗口控制与重发控制"></a>使用序列号和确认应答号实现顺序控制、窗口控制与重发控制</h3><p><img src="https://tb.nsfocus.co/image/58316970-23.png" alt="确认应答未能返回"></p><p><img src="https://tb.nsfocus.co/image/58316970-24.png" alt="数据报文未能送达"></p><h2 id="其他传输层协议"><a href="#其他传输层协议" class="headerlink" title="其他传输层协议"></a>其他传输层协议</h2><ul><li>UDP-Lite（Lightweight User Datagram Protocol，轻量级用户数据报协议）</li><li>SCTP（Stream Control Transmission Protocol，流控制传输协议）</li><li>DCCP（Datagram Congestion Control Protocol，数据报拥塞控制协议）</li></ul><p>附：<a href="https://tb.nsfocus.co/image/58316970-25.png" target="_blank" rel="noopener">已经步入实用阶段的几个传输层协议详解.png</a></p><h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><p>。。。写不动了</p><p>附：<a href="https://tb.nsfocus.co/ppt/58316970-%E8%AE%A1%E7%AE%97%E9%A2%98.pptx" target="_blank" rel="noopener">几道常考的计算题.pptx</a></p><hr><p>本文中提到的一些专有名词：</p><ul><li>MAC地址(Media Access Control Address)：介质访问控制地址。系统在网络上的唯一硬件编号，每个网卡都需要有一个唯一的MAC地址。</li><li>CSMA/CD(Carrier Sense Mutiple Access/Collision Detection)：具有碰撞检测的载波侦听多路访问</li><li>半双工：只发送或只接受的通信方式。比如：无线电收发器，若两端同时说话，是听不见对方说的话的。</li><li>全双工：发送数据的同时也可以接收数据。比如：打电话。</li><li>STP：Spanning Tree Protocol</li><li>SFD：Start Frame Delimiter</li><li>FDDI(Fiber Distribute Data Interface)：<a href="http://baike.baidu.com/view/876931.htm" target="_blank" rel="noopener">分布式光纤数据接口。</a></li><li>ATM(Asynchronous Transfer Mode)：一种以信元为单位的异步传输模式。</li><li>网络收敛：网络拥堵时，路由器或交换机发生丢包的现象。</li><li>PPPoE(PPP over Ethernet)：利用PPP的验证功能使各家ISP▼有效地管理终端用户的使用，实现按时计费。</li><li>ISP:Internet Service Provider </li><li>NAT：Network Address Translator</li><li>Path MTU Discovery：发现路径中存在的所有数据链路中最小的MTU▼</li><li>MTU：Maximum Transmission Unit。参见<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–路径MTU发现</a></li><li>ARP(Address Resolution Protocol)：地址解析协议</li><li>RARP：Reverse Address Resolution Protocol</li><li>ICMP：Internet Control Managemet Protocol</li><li>DHCP：Dynamic Host Configuration Protocol </li><li>RIP：Routing Information Protocol</li><li>OSPF：Open Shortest Path First</li><li>BGP(Border Gateway Protocol)：边界网关协议</li><li>已失效的连接请求报文段：<br> <img src="https://tb.nsfocus.co/image/58316970-22.png" alt="已失效的连接请求报文段"></li><li>DOS攻击：deny of service</li><li>SYN洪泛攻击:攻击者发送大量的TCP SYN报文段，而有意不进行第三次握手的步骤，直至服务器消耗完为第一次握手连接保留的有限资源。</li><li>TIME_WAIT状态： 在TIME_WAIT状态中，如果TCP client端最后一次发送的ACK丢失了，它将重新发送。TIME_WAIT状态中所需要的时间是依赖于实现方法的。典型的值为30秒、1分钟和2分钟。等待之后连接正式关闭，并且所有的资源(包括端口号)都被释放。</li><li>2MSL(Maximum Segment Lifetime,最大报文生存时间)：虽然按道理，四个报文都发送完毕，我们可以直接进入CLOSE状态了，但是我们必须假想网络是不可靠的，有可能最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。</li></ul>]]></content>
+      
+      
       <categories>
-        <category>读书笔记</category>
+          
+          <category> 读书笔记 </category>
+          
       </categories>
-      <tags>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[我的MBP]]></title>
-    <url>%2Ftool%2Fbc5d8083-my_mbp%2F</url>
-    <content type="text"><![CDATA[必备工具ChromeiTerm2 + Homebrew + zsh Alfred 有道 workflow 剪切板[支持正版，自行购买下载] 万年历直接App Store免费下载 CleanMyMac彻底卸载App[支持正版，自行购买下载] 效率工具ManicoApp切换直接App Store免费下载，建议将IntelliJ IDEA加入静默模式 Spectacle分屏工具[支持正版，自行购买下载] Sublime Text 3download ctrl + ` 获取package control最新安装代码：https://packagecontrol.io/installation cmd+shift+ppackage control: install packagecmd+shift+ppretty json 专业工具Parallels Desktop虚拟机 Java开发环境JDK JDK 1.8：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html JDK 1.7：http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html JDK 1.6：http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html JDK 1.5：http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase5-419410.html MavenIDEAdownloadlanyus 算法测试Code Templates: 12345678910111213141516#if ($&#123;PACKAGE_NAME&#125; &amp;&amp; $&#123;PACKAGE_NAME&#125; != "")package $&#123;PACKAGE_NAME&#125;;#end#parse("File Header.java")import junit.framework.TestCase;import org.junit.Test;/* */public class $&#123;NAME&#125; extends TestCase &#123; @Test public void testCase() &#123; &#125;&#125; XmindVisual ParadigmDiffMerge文本比较工具download Charles装X工具Aerial桌面屏保 iStat Menus[支持正版，自行购买下载] uBarwin风格的任务栏[支持正版，自行购买下载] Commander One文件管理[支持正版，自行购买下载]]]></content>
+      
+      
+        <tags>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的MBP</title>
+      <link href="/tool/bc5d8083-my_mbp/"/>
+      <url>/tool/bc5d8083-my_mbp/</url>
+      
+        <content type="html"><![CDATA[<h1 id="必备工具"><a href="#必备工具" class="headerlink" title="必备工具"></a>必备工具</h1><h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a><a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Chrome</a></h2><h2 id="iTerm2-Homebrew-zsh"><a href="#iTerm2-Homebrew-zsh" class="headerlink" title="iTerm2 + Homebrew + zsh"></a><a href="https://www.jianshu.com/p/e7af448d01b0" target="_blank" rel="noopener">iTerm2</a> + <a href="https://www.jianshu.com/p/2b4f00a8e4da" target="_blank" rel="noopener">Homebrew</a> + zsh</h2><a id="more"></a><h2 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a>Alfred</h2><ul><li>有道 workflow</li><li>剪切板<br>[支持正版，自行购买下载]</li></ul><h2 id="万年历"><a href="#万年历" class="headerlink" title="万年历"></a>万年历</h2><p>直接App Store免费下载</p><h2 id="CleanMyMac"><a href="#CleanMyMac" class="headerlink" title="CleanMyMac"></a>CleanMyMac</h2><p>彻底卸载App[支持正版，自行购买下载]</p><h1 id="效率工具"><a href="#效率工具" class="headerlink" title="效率工具"></a>效率工具</h1><h2 id="Manico"><a href="#Manico" class="headerlink" title="Manico"></a>Manico</h2><p>App切换<br>直接App Store免费下载，建议将IntelliJ IDEA加入静默模式</p><h2 id="Spectacle"><a href="#Spectacle" class="headerlink" title="Spectacle"></a>Spectacle</h2><p>分屏工具[支持正版，自行购买下载]</p><h2 id="Sublime-Text-3"><a href="#Sublime-Text-3" class="headerlink" title="Sublime Text 3"></a>Sublime Text 3</h2><p><a href="https://www.sublimetext.com/" target="_blank" rel="noopener">download</a></p><p>ctrl + `</p><p>获取package control最新安装代码：<a href="https://packagecontrol.io/installation" target="_blank" rel="noopener">https://packagecontrol.io/installation</a></p><p>cmd+shift+p<br>package control: install package<br>cmd+shift+p<br>pretty json</p><h1 id="专业工具"><a href="#专业工具" class="headerlink" title="专业工具"></a>专业工具</h1><h2 id="Parallels-Desktop"><a href="#Parallels-Desktop" class="headerlink" title="Parallels Desktop"></a>Parallels Desktop</h2><p>虚拟机</p><h2 id="Java开发环境"><a href="#Java开发环境" class="headerlink" title="Java开发环境"></a><a href="https://cloud.tencent.com/developer/article/1113909" target="_blank" rel="noopener">Java开发环境</a></h2><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><ul><li>JDK 1.8：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></li><li>JDK 1.7：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</a></li><li>JDK 1.6：<a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html</a></li><li>JDK 1.5：<a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase5-419410.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase5-419410.html</a></li></ul><h2 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a><a href="https://www.jianshu.com/p/96021a36e000" target="_blank" rel="noopener">Maven</a></h2><h2 id="IDEA"><a href="#IDEA" class="headerlink" title="IDEA"></a>IDEA</h2><p><a href="https://www.jetbrains.com/idea/download/#section=mac" target="_blank" rel="noopener">download</a><br><a href="http://idea.lanyus.com/" target="_blank" rel="noopener">lanyus</a></p><p>算法测试Code Templates: </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#if ($&#123;PACKAGE_NAME&#125; &amp;&amp; $&#123;PACKAGE_NAME&#125; != "")package $&#123;PACKAGE_NAME&#125;;#end</span><br><span class="line">#parse("File Header.java")</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> $</span>&#123;NAME&#125; extends TestCase &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="Xmind"><a href="#Xmind" class="headerlink" title="Xmind"></a>Xmind</h2><h2 id="Visual-Paradigm"><a href="#Visual-Paradigm" class="headerlink" title="Visual Paradigm"></a>Visual Paradigm</h2><h2 id="DiffMerge"><a href="#DiffMerge" class="headerlink" title="DiffMerge"></a>DiffMerge</h2><p>文本比较工具<br><a href="https://sourcegear.com/diffmerge/downloads.php" target="_blank" rel="noopener">download</a></p><h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a>Charles</h2><h1 id="装X工具"><a href="#装X工具" class="headerlink" title="装X工具"></a>装X工具</h1><h2 id="Aerial"><a href="#Aerial" class="headerlink" title="Aerial"></a>Aerial</h2><p>桌面屏保</p><h2 id="iStat-Menus"><a href="#iStat-Menus" class="headerlink" title="iStat Menus"></a>iStat Menus</h2><p>[支持正版，自行购买下载]</p><h2 id="uBar"><a href="#uBar" class="headerlink" title="uBar"></a>uBar</h2><p>win风格的任务栏<br>[支持正版，自行购买下载]</p><h2 id="Commander-One"><a href="#Commander-One" class="headerlink" title="Commander One"></a>Commander One</h2><p>文件管理<br>[支持正版，自行购买下载]</p>]]></content>
+      
+      
       <categories>
-        <category>工具</category>
+          
+          <category> 工具 </category>
+          
       </categories>
-      <tags>
-        <tag>Mac</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Linux常用命令]]></title>
-    <url>%2Ftool%2F34fef994-linux_command%2F</url>
-    <content type="text"><![CDATA[查看大文件进入根目录，查看那个目录的利用率(used)达到了100% df -lh #查看磁盘空间占用情况（每天一个linux命令（33）：df 命令） 进入log目录， du -h #显示当前目录下的文件的磁盘空间使用情况相当于 ls -aslh（每天一个linux命令（34）：du 命令） grephttps://www.cnblogs.com/peida/archive/2012/12/17/2821195.html less每天一个linux命令（13）：less 命令]]></content>
+      
+      
+        <tags>
+            
+            <tag> Mac </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Linux常用命令</title>
+      <link href="/tool/34fef994-linux_command/"/>
+      <url>/tool/34fef994-linux_command/</url>
+      
+        <content type="html"><![CDATA[<h1 id="查看大文件"><a href="#查看大文件" class="headerlink" title="查看大文件"></a>查看大文件</h1><p>进入根目录，查看那个目录的利用率(used)达到了100%</p><blockquote><p>df -lh #查看磁盘空间占用情况<br>（<a href="https://www.cnblogs.com/peida/archive/2012/12/07/2806483.html" target="_blank" rel="noopener">每天一个linux命令（33）：df 命令</a>）</p></blockquote><a id="more"></a><p>进入log目录，</p><blockquote><p>du -h #显示当前目录下的文件的磁盘空间使用情况<br>相当于 ls -aslh<br>（<a href="https://www.cnblogs.com/peida/archive/2012/12/10/2810755.html" target="_blank" rel="noopener">每天一个linux命令（34）：du 命令</a>）</p></blockquote><h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><a href="https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html" target="_blank" rel="noopener">https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html</a></p><blockquote></blockquote><h1 id="less"><a href="#less" class="headerlink" title="less"></a>less</h1><p><a href="https://www.cnblogs.com/peida/archive/2012/11/05/2754477.html" target="_blank" rel="noopener">每天一个linux命令（13）：less 命令</a></p>]]></content>
+      
+      
       <categories>
-        <category>工具</category>
+          
+          <category> 工具 </category>
+          
       </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Git小技巧]]></title>
-    <url>%2Ftool%2F7e6679d9-git_skills%2F</url>
-    <content type="text"><![CDATA[批量删除分支git branch | grep &apos;hotfix&apos; | xargs git branch -D git rebase统计代码行数git log --author=&quot;username&quot; --pretty=tformat: --numstat | awk &apos;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&apos; - git log --author=&quot;nibnait&quot; --pretty=tformat: --numstat | awk &apos;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&apos;]]></content>
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Git小技巧</title>
+      <link href="/tool/7e6679d9-git_skills/"/>
+      <url>/tool/7e6679d9-git_skills/</url>
+      
+        <content type="html"><![CDATA[<h1 id="批量删除分支"><a href="#批量删除分支" class="headerlink" title="批量删除分支"></a>批量删除分支</h1><pre><code>git branch | grep &apos;hotfix&apos; | xargs git branch -D</code></pre><a id="more"></a><h1 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h1><h1 id="统计代码行数"><a href="#统计代码行数" class="headerlink" title="统计代码行数"></a>统计代码行数</h1><pre><code>git log --author=&quot;username&quot; --pretty=tformat: --numstat | awk &apos;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&apos; -git log --author=&quot;nibnait&quot; --pretty=tformat: --numstat | awk &apos;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&apos;</code></pre>]]></content>
+      
+      
       <categories>
-        <category>工具</category>
+          
+          <category> 工具 </category>
+          
       </categories>
-      <tags>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Mac小技巧]]></title>
-    <url>%2Ftool%2F378ad01b-mac_skills%2F</url>
-    <content type="text"><![CDATA[解压.rar、.7z文件 unrar x 1.rar7z e 1.7z before: brew install unrar brew search 7zbrew install p7zip 坑Updating Homebrew... 法1： 替换brew.git:cd “$(brew –repo)”git remote set-url origin https://mirrors.ustc.edu.cn/brew.git 替换homebrew-core.git:cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git 法2: 重置brew.git:cd “$(brew –repo)”git remote set-url origin https://github.com/Homebrew/brew.git 重置homebrew-core.git:cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”git remote set-url origin https://github.com/Homebrew/homebrew-core.git]]></content>
+      
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Mac小技巧</title>
+      <link href="/tool/378ad01b-mac_skills/"/>
+      <url>/tool/378ad01b-mac_skills/</url>
+      
+        <content type="html"><![CDATA[<h1 id="解压-rar、-7z文件"><a href="#解压-rar、-7z文件" class="headerlink" title="解压.rar、.7z文件"></a>解压.rar、.7z文件</h1><blockquote><p>unrar x 1.rar<br>7z e 1.7z</p></blockquote><a id="more"></a><h2 id="before"><a href="#before" class="headerlink" title="before:"></a>before:</h2><blockquote><p>brew install unrar</p></blockquote><blockquote><p>brew search 7z<br>brew install p7zip </p></blockquote><h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p><code>Updating Homebrew...</code></p><ul><li>法1：</li></ul><p>替换brew.git:<br>cd “$(brew –repo)”<br>git remote set-url origin <a href="https://mirrors.ustc.edu.cn/brew.git" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/brew.git</a></p><p>替换homebrew-core.git:<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”<br>git remote set-url origin <a href="https://mirrors.ustc.edu.cn/homebrew-core.git" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-core.git</a> </p><ul><li>法2: </li></ul><p>重置brew.git:<br>cd “$(brew –repo)”<br>git remote set-url origin <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a></p><p>重置homebrew-core.git:<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”<br>git remote set-url origin <a href="https://github.com/Homebrew/homebrew-core.git" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-core.git</a></p>]]></content>
+      
+      
       <categories>
-        <category>工具</category>
+          
+          <category> 工具 </category>
+          
       </categories>
-      <tags>
-        <tag>Mac</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hexo启用cdn加速]]></title>
-    <url>%2F83f2d349-cdn%2F</url>
-    <content type="text"><![CDATA[参考：https://shup.cn/2017/11/21/cdn.html 分析：哪些因素会影响加载速度？js文件js文件就是JavaScript脚本文件，用来实现各种酷炫的动态效果。一般是加载在html页面的部分，所以页面加载速度首先要考虑这一块。Hexo的js文件大致包含以下3类： 公共js公共js是通用型，比如实现图片放大效果的Fancybox，或者实现图片慢加载的LazyLoad等等。这些js已经开发好，直接在html里引用(存放在镜像网站上，如BootCDN)js文件链接即可实现效果。 定制页面效果js即NexT主题中定制的某些特效，例如实现页面响应式效果的Bootstrap，或者增强移动端滚动及动画效果的Motion等等。这些js理论上也是公共js，只不过NexT主题作者修改了代码，以适用于NexT主题。这些js文件存放在本地Hexo目录hexo\themes\next\source\js\src下。 第三方插件js这个不用多说了吧，Hexo默认安装了不少实用的第三方插件，比如，可直接在网页中显示数学公式的MathJax，优化SEO的Baidu-push等等。这些插件可在主题配置文件_config.yml中进行配置。相关js文件有些存放在hexo\themes\next\layout_third-party中，有些则通过外部引用形式加载。图片(音、视频)如果博客文章很多，绝大部分的带宽都会消耗在这部分静态数据上。这个不多说了。 解决：逐个优化公共js加速修改_config.yml中 vendors 的配置全部映射到BootCDN上去 第三方js文件、图片(音、视频)加速我用的七牛云，每月 10 G的标准存储 CDN 回源流量免费额度https://blog.qiniu.com/archives/8874)。]]></content>
+      
+      
+        <tags>
+            
+            <tag> Mac </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hexo启用cdn加速</title>
+      <link href="/83f2d349-cdn/"/>
+      <url>/83f2d349-cdn/</url>
+      
+        <content type="html"><![CDATA[<p>参考：<a href="https://shup.cn/2017/11/21/cdn.html" target="_blank" rel="noopener">https://shup.cn/2017/11/21/cdn.html</a></p><a id="more"></a><h1 id="分析：哪些因素会影响加载速度？"><a href="#分析：哪些因素会影响加载速度？" class="headerlink" title="分析：哪些因素会影响加载速度？"></a>分析：哪些因素会影响加载速度？</h1><h2 id="js文件"><a href="#js文件" class="headerlink" title="js文件"></a>js文件</h2><p>js文件就是JavaScript脚本文件，用来实现各种酷炫的动态效果。一般是加载在html页面的<head><meta name="generator" content="Hexo 3.9.0">部分，所以页面加载速度首先要考虑这一块。Hexo的js文件大致包含以下3类：</head></p><ol><li>公共js<br>公共js是通用型，比如实现图片放大效果的Fancybox，或者实现图片慢加载的LazyLoad等等。这些js已经开发好，直接在html里引用(存放在镜像网站上，如<a href="https://www.bootcdn.cn/" target="_blank" rel="noopener">BootCDN</a>)js文件链接即可实现效果。</li><li>定制页面效果js<br>即NexT主题中定制的某些特效，例如实现页面响应式效果的Bootstrap，或者增强移动端滚动及动画效果的Motion等等。这些js理论上也是公共js，只不过NexT主题作者修改了代码，以适用于NexT主题。这些js文件存放在本地Hexo目录hexo\themes\next\source\js\src下。</li><li>第三方插件js<br>这个不用多说了吧，Hexo默认安装了不少实用的第三方插件，比如，可直接在网页中显示数学公式的MathJax，优化SEO的Baidu-push等等。这些插件可在主题配置文件_config.yml中进行配置。相关js文件有些存放在hexo\themes\next\layout_third-party中，有些则通过外部引用形式加载。<h2 id="图片-音、视频"><a href="#图片-音、视频" class="headerlink" title="图片(音、视频)"></a>图片(音、视频)</h2>如果博客文章很多，绝大部分的带宽都会消耗在这部分静态数据上。这个不多说了。</li></ol><h1 id="解决：逐个优化"><a href="#解决：逐个优化" class="headerlink" title="解决：逐个优化"></a>解决：逐个优化</h1><h2 id="公共js加速"><a href="#公共js加速" class="headerlink" title="公共js加速"></a>公共js加速</h2><p>修改<a href="../../themes/next/_config.yml">_config.yml</a>中 vendors 的配置<br>全部映射到BootCDN上去</p><h2 id="第三方js文件、图片-音、视频-加速"><a href="#第三方js文件、图片-音、视频-加速" class="headerlink" title="第三方js文件、图片(音、视频)加速"></a>第三方js文件、图片(音、视频)加速</h2><p>我用的七牛云，<a href="https://blog.qiniu.com/archives/8874" target="_blank" rel="noopener">每月 10 G的标准存储 CDN 回源流量免费额度</a><a href="https://blog.qiniu.com/archives/8874)。" target="_blank" rel="noopener">https://blog.qiniu.com/archives/8874)。</a><br><img src="https://tb.nsfocus.co/image/83f2d349-1.png" alt="七牛云"></p>]]></content>
+      
+      
       <categories>
-        <category>杂</category>
+          
+          <category> 杂 </category>
+          
       </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hexo启用https加密连接]]></title>
-    <url>%2Fa2a28780-https%2F</url>
-    <content type="text"><![CDATA[CloudFlare 提供免费的SSL证书和cdn加速服务。目前还在研究中。]]></content>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hexo启用https加密连接</title>
+      <link href="/a2a28780-https/"/>
+      <url>/a2a28780-https/</url>
+      
+        <content type="html"><![CDATA[<p><a href="(https://www.cloudflare.com/)">CloudFlare</a> 提供免费的SSL证书和cdn加速服务。目前还在研究中。</p><a id="more"></a>]]></content>
+      
+      
       <categories>
-        <category>杂</category>
+          
+          <category> 杂 </category>
+          
       </categories>
-      <tags>
-        <tag>hexo</tag>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Hello World Mac版]]></title>
-    <url>%2Fhello-world%2F</url>
-    <content type="text"><![CDATA[安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v 安装hexo sudo npm install hexo –savesudo npm install -g hexo 测试 hexo -v 初始化hexo mkdir hexocd hexohexo init Install dependencies时，出现了一些mkdir权限的问题，日志提示要手动npm install sudo npm install hexo generate 在Hexo 3.0 后server被单独出来了，需要安装server sudo npm install hexo-server -savesudo npm install hexo-deployer-git –save 预览 hexo s 发布 hexo d -g 安装调试主题参考： https://www.jianshu.com/p/9f0e90cc32c2 http://eternalzttz.com/hexo-next.html修改网站图标 favicon修改菜单栏 hexo new page “tags” 去/themes/next/source/tags的index.md文件中，添加type: “tags”打开github_banner添加RSS&gt; npm install hexo-generator-feed --save 在/_config.yml 中添加 plugins: hexo-generate-feed 修改底部标签样式修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索rel=&quot;tag&quot;&gt;#，将#替换成&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;。输入以下命令，查看效果： 侧边栏社交小图标设置social: 网站底部加上访问量 在themes/next/layout/_partials/footer.swig第一行加上 &lt;script async src=&quot;https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;&lt;/script&gt; busuanzi_count: enable: true统计博客全站字数 npm install hexo-wordcount –save /themes/next/layout/_partials/footer.swig &lt;div class=&quot;theme-info&quot;&gt; &lt;div class=&quot;powered-by&quot;&gt;&lt;/div&gt; &lt;span class=&quot;post-count&quot;&gt;博客全站共{{ totalcount(site) }}字&lt;/span&gt; &lt;/div&gt; symbols_count_time: item_text_total: true统计文章字数、阅读时间&lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-print&quot;&gt;&lt;/i&gt; 字数统计：{{ wordcount(post.content) }}&lt;/span&gt; &lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-clock&quot;&gt;&lt;/i&gt; 阅读时长≈{{ min2read(post.content, {cn: 300, en: 160}) }}分钟&lt;/span&gt; # Post wordcount display settings # Dependencies: https://github.com/willin/hexo-wordcount post_wordcount: item_text: true wordcount: true # 字数统计 min2read: true # 预计阅读时长 totalcount: true # 总字数统计 separated_meta: true添加网页顶部进度加载条编辑主题配置文件，command+F搜索pace，将其值改为ture就可以了，选择一款你喜欢的样式。Installation 参考：https://github.com/theme-next/theme-next-pace pace: true浏览页面的时候显示当前浏览进度# Scroll percent label in b2t button. scrollpercent: true添加基于Valine的评论模块添加基于Mob ShareSDK的分享功能参考：https://hadronw.com/2018/05-28/hexo-addshares/ 博文置顶 修改hexo-generator-index插件，把node_modules/hexo-generator-index/lib/generator.js中代码替换为： &apos;use strict&apos;; var pagination = require(&apos;hexo-pagination&apos;); module.exports = function(locals){ var config = this.config; var posts = locals.posts; posts.data = posts.data.sort(function(a, b) { if(a.top &amp;&amp; b.top) { // 两篇文章top都有定义 if(a.top == b.top) return b.date - a.date; // 若top值一样则按照文章日期降序排 else return b.top - a.top; // 否则按照top值降序排 } else if(a.top &amp;&amp; !b.top) { // 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233） return -1; } else if(!a.top &amp;&amp; b.top) { return 1; } else return b.date - a.date; // 都没定义按照文章日期降序排 }); var paginationDir = config.pagination_dir || &apos;page&apos;; return pagination(&apos;&apos;, posts, { perPage: config.index_generator.per_page, layout: [&apos;index&apos;, &apos;archive&apos;], format: paginationDir + &apos;/%d/&apos;, data: { __index: true } }); }; 文章添加Top值，值越大，越靠前： --- title: Hexo-NexT主题配置 date: 2018-01-20 20:41:08 categories: Hexo tags: - Hexo - NexT top: 100 --- 添加侧栏推荐阅读编辑主题配置文件，如下配置即可： # Blog rolls links_icon: link links_title: 推荐阅读 #links_layout: block links_layout: inline links: Swift 4: https://developer.apple.com/swift/ Objective-C: https://developer.apple.com/documentation/objectivec修改字体大小编辑Blog/themes/next/source/css/_variables/base.styl，command+F搜索$font-size-base，修改为你想要的大小： // Font size $font-size-base = 16px在文章底部增加版权信息 在目录Blog/themes/next/layout/_macro/，添加文件 my-copyright.swig，内容如下：my-copyright.swig 在目录Blog/themes/next/source/css/_common/components/post/下添加文件my-post-copyright.styl，添加以下代码：my-post-copyright.styl 修改Blog/themes/next/layout/_macro/post.swig，在如图位置添加以下代码： &lt;div&gt; {% if not is_index %} {% include 'my-copyright.swig' %} {% endif %} &lt;/div&gt; 在Blog/themes/next/source/css/_common/components/post/post.styl文件最后加入下面的代码： @import &quot;my-post-copyright&quot; 在Markdown文章中加入 copyright : ture --- title: Hexo-NexT主题配置 date: 2018-01-20 20:41:08 categories: Hexo tags: - Hexo - NexT top: 100 copyright: ture --- 配置根目录下的_config.yml文件，配置为： # URL ## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos; url: http://tianbin.org root: / permalink: :year/:month/:day/:title/ permalink_defaults:Hexo博客添加站内搜索 NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。下面介绍Local Search的安装吧。 安装 hexo-generator-search npm install hexo-generator-search –save 安装 hexo-generator-searchdb npm install hexo-generator-searchdb –save 打开local_search local_search: enable: ture为文章中的代码块增加一键复制功能copy_button: enable: true404公益页面 在source下新建404.md --- comments: false --- &lt;script type=&quot;text/javascript&quot; src=&quot;//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js&quot; homepagename=&apos;返回主页&apos; homepageurl=&quot;/&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt; 修改theme/_config.yml menu: commonweal: /404/ || heartbeat移动端启用侧边栏目录# Enable sidebar on narrow view (only for Muse | Mist). onmobile: true 自动备份Hexo博客源文件参考：备份Hexo博客源文件 安装shelljs模块 npm install –save shelljs 编写脚本文件，内容如下：auto_backup_script.js]]></content>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> 网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World Mac版</title>
+      <link href="/hello-world/"/>
+      <url>/hello-world/</url>
+      
+        <content type="html"><![CDATA[<h1 id="安装node"><a href="#安装node" class="headerlink" title="安装node"></a>安装node</h1><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a></p><h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><blockquote><p>npm -v<br>node -v</p></blockquote><a id="more"></a><h1 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h1><blockquote><p>sudo npm install hexo –save<br>sudo npm install -g hexo</p></blockquote><h1 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h1><blockquote><p>hexo -v</p></blockquote><h1 id="初始化hexo"><a href="#初始化hexo" class="headerlink" title="初始化hexo"></a>初始化hexo</h1><blockquote><p>mkdir hexo<br>cd hexo<br>hexo init  </p></blockquote><p>Install dependencies时，出现了一些mkdir权限的问题，日志提示要手动npm install</p><blockquote><p>sudo npm install</p></blockquote><blockquote><p>hexo generate</p></blockquote><p>在Hexo 3.0 后server被单独出来了，需要安装server</p><blockquote><p>sudo npm install hexo-server -save<br>sudo npm install hexo-deployer-git –save</p></blockquote><h1 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h1><blockquote><p>hexo s</p></blockquote><h1 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h1><blockquote><p>hexo d -g</p></blockquote><h1 id="安装调试主题"><a href="#安装调试主题" class="headerlink" title="安装调试主题"></a>安装调试主题</h1><p>参考：</p><ul><li><a href="https://www.jianshu.com/p/9f0e90cc32c2" target="_blank" rel="noopener">https://www.jianshu.com/p/9f0e90cc32c2</a></li><li><a href="http://eternalzttz.com/hexo-next.html" target="_blank" rel="noopener">http://eternalzttz.com/hexo-next.html</a><h2 id="修改网站图标-favicon"><a href="#修改网站图标-favicon" class="headerlink" title="修改网站图标 favicon"></a>修改网站图标 favicon</h2><h2 id="修改菜单栏"><a href="#修改菜单栏" class="headerlink" title="修改菜单栏"></a>修改菜单栏</h2><blockquote><p>hexo new page “tags”</p></blockquote></li></ul><h2 id="去-themes-next-source-tags的index-md文件中，添加type-“tags”"><a href="#去-themes-next-source-tags的index-md文件中，添加type-“tags”" class="headerlink" title="去/themes/next/source/tags的index.md文件中，添加type: “tags”"></a>去/themes/next/source/tags的index.md文件中，添加type: “tags”</h2><h2 id="打开github-banner"><a href="#打开github-banner" class="headerlink" title="打开github_banner"></a>打开github_banner</h2><h2 id="添加RSS"><a href="#添加RSS" class="headerlink" title="添加RSS"></a>添加RSS</h2><pre><code>&gt; npm install hexo-generator-feed --save</code></pre><p>  在/_config.yml 中添加 plugins: hexo-generate-feed</p><h2 id="修改底部标签样式"><a href="#修改底部标签样式" class="headerlink" title="修改底部标签样式"></a>修改底部标签样式</h2><p>修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#替换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code>。输入以下命令，查看效果：</p><h2 id="侧边栏社交小图标设置"><a href="#侧边栏社交小图标设置" class="headerlink" title="侧边栏社交小图标设置"></a>侧边栏社交小图标设置</h2><p>social:</p><h2 id="网站底部加上访问量"><a href="#网站底部加上访问量" class="headerlink" title="网站底部加上访问量"></a>网站底部加上访问量</h2><p>  在themes/next/layout/_partials/footer.swig第一行加上</p><pre><code>&lt;script async src=&quot;https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;&lt;/script&gt;busuanzi_count:  enable: true</code></pre><h2 id="统计博客全站字数"><a href="#统计博客全站字数" class="headerlink" title="统计博客全站字数"></a>统计博客全站字数</h2><blockquote><p>npm install hexo-wordcount –save</p></blockquote><p>/themes/next/layout/_partials/footer.swig</p><pre><code>&lt;div class=&quot;theme-info&quot;&gt;  &lt;div class=&quot;powered-by&quot;&gt;&lt;/div&gt;  &lt;span class=&quot;post-count&quot;&gt;博客全站共{{ totalcount(site) }}字&lt;/span&gt;&lt;/div&gt;symbols_count_time:    item_text_total: true</code></pre><h2 id="统计文章字数、阅读时间"><a href="#统计文章字数、阅读时间" class="headerlink" title="统计文章字数、阅读时间"></a>统计文章字数、阅读时间</h2><pre><code>&lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-print&quot;&gt;&lt;/i&gt; 字数统计：{{ wordcount(post.content) }}&lt;/span&gt;&lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-clock&quot;&gt;&lt;/i&gt; 阅读时长≈{{ min2read(post.content, {cn: 300, en: 160}) }}分钟&lt;/span&gt;# Post wordcount display settings# Dependencies: https://github.com/willin/hexo-wordcountpost_wordcount:  item_text: true  wordcount: true # 字数统计  min2read: true # 预计阅读时长  totalcount: true # 总字数统计  separated_meta: true</code></pre><h2 id="添加网页顶部进度加载条"><a href="#添加网页顶部进度加载条" class="headerlink" title="添加网页顶部进度加载条"></a>添加网页顶部进度加载条</h2><p>编辑主题配置文件，command+F搜索pace，将其值改为ture就可以了，选择一款你喜欢的样式。<br>Installation 参考：<a href="https://github.com/theme-next/theme-next-pace" target="_blank" rel="noopener">https://github.com/theme-next/theme-next-pace</a></p><pre><code>pace: true</code></pre><h2 id="浏览页面的时候显示当前浏览进度"><a href="#浏览页面的时候显示当前浏览进度" class="headerlink" title="浏览页面的时候显示当前浏览进度"></a>浏览页面的时候显示当前浏览进度</h2><pre><code># Scroll percent label in b2t button.scrollpercent: true</code></pre><h2 id="添加基于Valine的评论模块"><a href="#添加基于Valine的评论模块" class="headerlink" title="添加基于Valine的评论模块"></a>添加基于<a href="https://valine.js.org/" target="_blank" rel="noopener">Valine</a>的评论模块</h2><h2 id="添加基于Mob-ShareSDK的分享功能"><a href="#添加基于Mob-ShareSDK的分享功能" class="headerlink" title="添加基于Mob ShareSDK的分享功能"></a>添加基于<a href="http://www.mob.com/" target="_blank" rel="noopener">Mob ShareSDK</a>的分享功能</h2><p>参考：<a href="https://hadronw.com/2018/05-28/hexo-addshares/" target="_blank" rel="noopener">https://hadronw.com/2018/05-28/hexo-addshares/</a></p><h2 id="博文置顶"><a href="#博文置顶" class="headerlink" title="博文置顶"></a>博文置顶</h2><ul><li>修改hexo-generator-index插件，把node_modules/hexo-generator-index/lib/generator.js中代码替换为：</li></ul><pre><code>&apos;use strict&apos;;var pagination = require(&apos;hexo-pagination&apos;);module.exports = function(locals){  var config = this.config;  var posts = locals.posts;    posts.data = posts.data.sort(function(a, b) {        if(a.top &amp;&amp; b.top) { // 两篇文章top都有定义            if(a.top == b.top) return b.date - a.date; // 若top值一样则按照文章日期降序排            else return b.top - a.top; // 否则按照top值降序排        }        else if(a.top &amp;&amp; !b.top) { // 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233）            return -1;        }        else if(!a.top &amp;&amp; b.top) {            return 1;        }        else return b.date - a.date; // 都没定义按照文章日期降序排    });  var paginationDir = config.pagination_dir || &apos;page&apos;;  return pagination(&apos;&apos;, posts, {    perPage: config.index_generator.per_page,    layout: [&apos;index&apos;, &apos;archive&apos;],    format: paginationDir + &apos;/%d/&apos;,    data: {      __index: true    }  });};</code></pre><ul><li>文章添加Top值，值越大，越靠前：</li></ul><pre><code class="markdown">---title: Hexo-NexT主题配置date: 2018-01-20 20:41:08categories: Hexotags:<span class="bullet">- </span>Hexo<span class="bullet">- </span>NexTtop: 100---    </code></pre><h2 id="添加侧栏推荐阅读"><a href="#添加侧栏推荐阅读" class="headerlink" title="添加侧栏推荐阅读"></a>添加侧栏推荐阅读</h2><p>编辑主题配置文件，如下配置即可：</p><pre><code># Blog rollslinks_icon: linklinks_title: 推荐阅读#links_layout: blocklinks_layout: inlinelinks:  Swift 4: https://developer.apple.com/swift/  Objective-C: https://developer.apple.com/documentation/objectivec</code></pre><h2 id="修改字体大小"><a href="#修改字体大小" class="headerlink" title="修改字体大小"></a>修改字体大小</h2><p>编辑Blog/themes/next/source/css/_variables/base.styl，command+F搜索$font-size-base，修改为你想要的大小：</p><pre><code>// Font size$font-size-base           = 16px</code></pre><h2 id="在文章底部增加版权信息"><a href="#在文章底部增加版权信息" class="headerlink" title="在文章底部增加版权信息"></a>在文章底部增加版权信息</h2><ul><li>在目录Blog/themes/next/layout/_macro/，添加文件 my-copyright.swig，内容如下：<a href="../../themes/next/layout/_macro/my-copyright.swig">my-copyright.swig</a></li><li>在目录Blog/themes/next/source/css/_common/components/post/下添加文件my-post-copyright.styl，添加以下代码：<a href="../../themes/next/source/css/_common/components/post/my-post-copyright.styl">my-post-copyright.styl</a></li><li>修改Blog/themes/next/layout/_macro/post.swig，在如图位置添加以下代码：    </li></ul><pre><code>&lt;div&gt;      {% if not is_index %}            {% include 'my-copyright.swig' %}          {% endif %}&lt;/div&gt;</code></pre><ul><li>在Blog/themes/next/source/css/_common/components/post/post.styl文件最后加入下面的代码：</li></ul><pre><code>@import &quot;my-post-copyright&quot;    </code></pre><ul><li>在Markdown文章中加入  copyright : ture</li></ul><pre><code class="markdown">---title: Hexo-NexT主题配置date: 2018-01-20 20:41:08categories: Hexotags:<span class="bullet">- </span>Hexo<span class="bullet">- </span>NexTtop: 100copyright: ture---</code></pre><ul><li>配置根目录下的_config.yml文件，配置为：</li></ul><pre><code># URL## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos;url: http://tianbin.orgroot: /permalink: :year/:month/:day/:title/permalink_defaults:</code></pre><h2 id="Hexo博客添加站内搜索"><a href="#Hexo博客添加站内搜索" class="headerlink" title="Hexo博客添加站内搜索"></a>Hexo博客添加站内搜索</h2><ul><li>NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。下面介绍Local Search的安装吧。</li><li>安装 hexo-generator-search<blockquote><p> npm install hexo-generator-search –save</p></blockquote></li><li>安装 hexo-generator-searchdb<blockquote><p> npm install hexo-generator-searchdb –save</p></blockquote></li><li>打开local_search</li></ul><pre><code>local_search:  enable: ture</code></pre><h2 id="为文章中的代码块增加一键复制功能"><a href="#为文章中的代码块增加一键复制功能" class="headerlink" title="为文章中的代码块增加一键复制功能"></a>为文章中的代码块增加一键复制功能</h2><pre><code>copy_button:  enable: true</code></pre><h2 id="404公益页面"><a href="#404公益页面" class="headerlink" title="404公益页面"></a>404公益页面</h2><ul><li>在source下新建404.md</li></ul><pre><code>---comments: false---&lt;script type=&quot;text/javascript&quot; src=&quot;//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js&quot; homepagename=&apos;返回主页&apos; homepageurl=&quot;/&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;         </code></pre><ul><li>修改theme/_config.yml</li></ul><pre><code>menu:      commonweal: /404/ || heartbeat</code></pre><h2 id="移动端启用侧边栏目录"><a href="#移动端启用侧边栏目录" class="headerlink" title="移动端启用侧边栏目录"></a>移动端启用侧边栏目录</h2><pre><code># Enable sidebar on narrow view (only for Muse | Mist).onmobile: true        </code></pre><h1 id="自动备份Hexo博客源文件"><a href="#自动备份Hexo博客源文件" class="headerlink" title="自动备份Hexo博客源文件"></a>自动备份Hexo博客源文件</h1><p>参考：<a href="https://notes.doublemine.me/2015-07-06-%E8%87%AA%E5%8A%A8%E5%A4%87%E4%BB%BDHexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6.html" target="_blank" rel="noopener">备份Hexo博客源文件</a></p><ul><li><p>安装shelljs模块</p><blockquote><p>npm install –save shelljs</p></blockquote></li><li><p>编写脚本文件，内容如下：<a href="../../scripts/auto_backup_script.js">auto_backup_script.js</a></p></li></ul>]]></content>
+      
+      
       <categories>
-        <category>杂</category>
+          
+          <category> 杂 </category>
+          
       </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>
