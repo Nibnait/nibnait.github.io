@@ -18,8 +18,8 @@
   
   <entry>
     <title>Valine初始化头像</title>
-    <link href="https://tianbin.org/%E6%9D%82/d6b91886-valine_avatar/"/>
-    <id>https://tianbin.org/杂/d6b91886-valine_avatar/</id>
+    <link href="https://tianbin.org/misc/d6b91886-valine_avatar/"/>
+    <id>https://tianbin.org/misc/d6b91886-valine_avatar/</id>
     <published>2019-06-30T07:56:25.000Z</published>
     <updated>2019-06-30T09:17:40.818Z</updated>
     
@@ -47,9 +47,9 @@
     <link href="https://tianbin.org/study/1f93cae3-jvm_action/"/>
     <id>https://tianbin.org/study/1f93cae3-jvm_action/</id>
     <published>2019-06-29T19:31:35.000Z</published>
-    <updated>2019-06-29T20:38:18.475Z</updated>
+    <updated>2019-06-30T17:59:30.998Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="常用的Jvm启动参数"><a href="#常用的Jvm启动参数" class="headerlink" title="常用的Jvm启动参数"></a>常用的Jvm启动参数</h1><ul><li><p>-Xmx512m：设置JVM最大可用内存为512M。</p></li><li><p>-Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。<a id="more"></a></p></li><li><p>-Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右）</p></li><li><p>-verbose:gc：开启gc日志</p></li><li><p>-Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面)</p></li><li><p>-XX:+PrintGCDetails：打印GC详情</p></li><li><p>-XX:+PrintGCDateStamps：打印GC时间戳 </p></li></ul><p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/_9o4mcJ3Kqc6117KbTWpig" target="_blank" rel="noopener">占小狼的博客</a><br>idea JVM参数设置<br><img src="../../image/1.png" alt="idea配置参数示例"> </p>]]></content>
+    <content type="html"><![CDATA[<h1 id="常用的Jvm启动参数"><a href="#常用的Jvm启动参数" class="headerlink" title="常用的Jvm启动参数"></a>常用的Jvm启动参数</h1><ul><li><p>-Xmx512m：设置JVM最大可用内存为512M。</p></li><li><p>-Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。<a id="more"></a></p></li><li><p>-Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右）</p></li><li><p>-verbose:gc：开启gc日志</p></li><li><p>-Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面)</p></li><li><p>-XX:+PrintGCDetails：打印GC详情</p></li><li><p>-XX:+PrintGCDateStamps：打印GC时间戳 </p></li></ul><p>参考：<br><a href="https://blog.csdn.net/renfufei/column/info/14851" target="_blank" rel="noopener">GC性能优化</a><br><a href="https://tech.meituan.com/2017/12/29/jvm-optimize.html" target="_blank" rel="noopener">美团 - 从实际案例聊聊Java应用的GC优化</a></p><h1 id="FGC实战"><a href="#FGC实战" class="headerlink" title="FGC实战"></a>FGC实战</h1><p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/0VeZYuoMG8PimeHk4CbjTQ" target="_blank" rel="noopener">阿飞的博客-FGC实战</a></p><p>阅读一下GC日志</p>]]></content>
     
     <summary type="html">
     

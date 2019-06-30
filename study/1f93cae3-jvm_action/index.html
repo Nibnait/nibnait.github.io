@@ -115,12 +115,10 @@
 <meta property="og:site_name" content="田彬的博客园">
 <meta property="og:description" content="常用的Jvm启动参数 -Xmx512m：设置JVM最大可用内存为512M。  -Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://tianbin.org/image/1.png">
-<meta property="og:updated_time" content="2019-06-29T20:38:18.475Z">
+<meta property="og:updated_time" content="2019-06-30T17:59:30.998Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM实战">
 <meta name="twitter:description" content="常用的Jvm启动参数 -Xmx512m：设置JVM最大可用内存为512M。  -Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。">
-<meta name="twitter:image" content="https://tianbin.org/image/1.png">
 
 
 
@@ -430,12 +428,24 @@
                 
               
 
-              <time title="Created: 2019-06-30 03:31:35 / Modified: 04:38:18" itemprop="dateCreated datePublished" datetime="2019-06-30T03:31:35+08:00">2019-06-30</time>
+              <time title="Created: 2019-06-30 03:31:35" itemprop="dateCreated datePublished" datetime="2019-06-30T03:31:35+08:00">2019-06-30</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-01 01:59:30" itemprop="dateModified" datetime="2019-07-01T01:59:30+08:00">2019-07-01</time>
               
             
           </span>
@@ -458,7 +468,7 @@
                 
               
             </span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：211</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：238</span>
             <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈1分钟</span>
 
           
@@ -526,7 +536,9 @@
 <li><p>-XX:+PrintGCDateStamps：打印GC时间戳 </p>
 </li>
 </ul>
-<p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/_9o4mcJ3Kqc6117KbTWpig" target="_blank" rel="noopener">占小狼的博客</a><br>idea JVM参数设置<br><img src="../../image/1.png" alt="idea配置参数示例"> </p>
+<p>参考：<br><a href="https://blog.csdn.net/renfufei/column/info/14851" target="_blank" rel="noopener">GC性能优化</a><br><a href="https://tech.meituan.com/2017/12/29/jvm-optimize.html" target="_blank" rel="noopener">美团 - 从实际案例聊聊Java应用的GC优化</a></p>
+<h1 id="FGC实战"><a href="#FGC实战" class="headerlink" title="FGC实战"></a>FGC实战</h1><p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/0VeZYuoMG8PimeHk4CbjTQ" target="_blank" rel="noopener">阿飞的博客-FGC实战</a></p>
+<p>阅读一下GC日志</p>
 
       
     </div>
@@ -549,7 +561,7 @@
   <p><span>本文标题:</span><a href="/study/1f93cae3-jvm_action/">JVM实战</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
   <p><span>发布时间:</span>2019年06月30日 - 03:06</p>
-  <p><span>最后更新:</span>2019年06月30日 - 04:06</p>
+  <p><span>最后更新:</span>2019年07月01日 - 01:07</p>
   <p><span>原始链接:</span><a href="/study/1f93cae3-jvm_action/" title="JVM实战">https://tianbin.org/study/1f93cae3-jvm_action/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/study/1f93cae3-jvm_action/" aria-label="复制成功！"></i></span>
   </p>
@@ -615,7 +627,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/杂/d6b91886-valine_avatar/" rel="prev" title="Valine初始化头像">
+              <a href="/misc/d6b91886-valine_avatar/" rel="prev" title="Valine初始化头像">
                 Valine初始化头像 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -866,7 +878,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的Jvm启动参数"><span class="nav-number">1.</span> <span class="nav-text">常用的Jvm启动参数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的Jvm启动参数"><span class="nav-number">1.</span> <span class="nav-text">常用的Jvm启动参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FGC实战"><span class="nav-number">2.</span> <span class="nav-text">FGC实战</span></a></li></ol></div>
             
 
           </div>
