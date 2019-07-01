@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[MySQL - 锁]]></title>
+    <url>%2Flearning%2Ffa9ec524-mysql_lock%2F</url>
+    <content type="text"><![CDATA[参考：https://tech.meituan.com/2014/08/20/innodb-lock.htmlhttps://tech.meituan.com/2014/08/20/innodb-lock.html MVCCNext-Key Lock]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>锁</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[MySQL - 基本概念]]></title>
+    <url>%2Flearning%2F64e3e7b7-mysql_basis%2F</url>
+    <content type="text"><![CDATA[关于存储引擎InnoDB存储引擎的特点：支持外键、行级锁、每个表单单独位于一个表空间。 MyISAM和InnoDB的比较： 项目 MyISAM InnoDB 索引结构 B+ 树 B- 树 事务 ❌ ✔️ 锁粒度 表级锁 表级锁&amp;行级锁(锁的是索引对应的那一行) 外键约束 ❌ ✔️ 表空间大小 相对小 相对大 全文索引 ✔️ ❌ 关注点 性能(select) 事务(work) 数据文件 每张MyISAM表存放在三个文件中：元数据：*.frm数据文件：*.MYD索引文件：*.MYI (默认)共享表空间 其他 支持全文索引、压缩索引 不支持 关于索引 项目 MyISAM InnoDB 1 升序顺序存储数据，叶子节点保持对应数据行的地址 主键节点同时保存数据行，其他辅助索引保存的是主键索引的值 2 键值分离，索引载入内存，数据缓存依赖操作系统 键值一起保存，索引与数据一起载入InnoDB缓冲池 索引的基数值 精确的 估计的 事物隔离级别参考：MySQL 四种事务隔离级的说明、 Innodb中的事务隔离级别和锁的关系 隔离级别 脏读（Dirty Read） 不可重复读（NonRepeatable Read） 幻读（Phantom Read） 解释 未提交读（Read uncommitted） ✔️ ✔️ ✔️ 允许脏读，也就是可能读取到其他会话中未提交事务修改的数据 已提交读（Read committed） ❌ ✔️ ✔️ 只能读取到已经提交的数据。Oracle等多数数据库默认级别 (不重复读) 可重复读（Repeatable read） ❌ ❌ ✔️ 可重复读。在同一个事务内的查询都是事务开始时刻一致的，InnoDB默认级别。 可串行化（Serializable ） ❌ ❌ ❌ 完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞 脏读（Dirty Read）脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。 不可重复读（NonRepeatable Read）/ 已提交读（Read committed）是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。 可重复读（Repeatable read）本身，可重复读和提交读是矛盾的。在同一个事务里，如果保证了可重复读，就会看不到其他事务的提交，违背了提交读；如果保证了提交读，就会导致前后两次读到的结果不一致，违背了可重复读。 可以这么讲，InnoDB提供了这样的机制，在默认的可重复读的隔离级别里，可以使用加锁读去查询最新的数据。 幻读（Phantom Read）第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。 当隔离级别是可重复读，且禁用innodb_locks_unsafe_for_binlog的情况下，在搜索和扫描index的时候使用的next-key locks可以避免幻读。 附：CentOS安装大法 yum –y install mysql yum –y install mysql -server service mysqld start //启动 /usr/bin/mysqladmin –u root password ‘root’ //设置密码 mysql –u root –p //进入 use mysql; select host,user,password from user; delete from user where password=’’; 12/usr/bin/mysqladmin -u root password &apos;new-password&apos;/usr/bin/mysqladmin -u root -h vultr.guest password &apos;new-password&apos;]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Valine初始化头像]]></title>
-    <url>%2Fmisc%2Fd6b91886-valine_avatar%2F</url>
+    <url>%2Ftrying%2Fd6b91886-valine_avatar%2F</url>
     <content type="text"><![CDATA[背景 添加了Valine评论插件后，发现评论者的头像是在_config.yml里面设置一种样式。 如果想改头像只能去Gravatar自行注册账号修改头像。（https://valine.js.org/avatar.html） 默认头像如果评论多了的时候，好难看： 目标本地初始化头像，使相同昵称、相同邮箱的评论者，展示相同的头像。且 兼容远程头像（用户自己去Gravatar设置过头像的，展示用户自己的头像） 行动（上述目标，其实是在经过2个小时采坑填坑之后的最终结果）大致说下采坑过程，与解题思路。感谢舍友的大力支持，不然我这前端小白2天都搞不定。/捂脸 先Google，发现个类似问题：Hexo使用Valine评论系统不显示自定义头像的解决方案 让我知道了Valine的头像是有一组值的 ds: [&quot;mp&quot;, &quot;identicon&quot;, &quot;monsterid&quot;, &quot;wavatar&quot;, &quot;robohash&quot;, &quot;retro&quot;, &quot;&quot;],这就让我有了一个大胆的想法：就用这几个官方头像模板初始化。 获取官方最新的Valine.min.js文件开始改造过程就不详细记录了，大致说下踩到的几个坑： 直接随机显示ds数组里的这几个头像，带来的问题：相同昵称（同一个人）头像可能不一样 拿到的是Valine.min.js压缩过的js，美化后（格式化），无法解析。必须直接去压缩文件中修改js代码 换个思路，将ds数组随机的值，与评论者的昵称做匹配。 看了下Valine的源码：https://github.com/xCss/Valine/blob/master/src/index.js 原来这个头像链接的组成是这样的： `&lt;img class=&quot;vimg&quot; src=&quot;${_avatarSetting[&apos;cdn&apos;]+md5(rt.get(&apos;mail&apos;))+_avatarSetting[&apos;params&apos;]}&quot;&gt;`; src=&quot;https://gravatar.loli.net/avatar/d41d8cd98f00b204e9800998ecf8427e?d=mp&amp;v=1.3.9&quot; 【cdn url】 + 【mail的md5（用于查询用户自定义的头像）】 + 【config.yml中配置的默认头像】 + 【version】 那我只需要把第三部分一改：根据nick的md5值，随机一个0-5的数字，返回ds数组中对应的值。 _nick = a(e.get(&quot;nick&quot;)), _res = _nick.match(/(\d)/)[1], _seed = _res ? Math.floor(_res / 2) : &apos;5&apos;, o = m.hide ? &quot;&quot; : &apos;&lt;img class=&quot;vimg&quot; src=&quot;&apos; + (m.cdn + a(e.get(&quot;mail&quot;)) +&quot;?d=&quot;+(m.ds[_seed] || &quot;mp&quot;) + &apos;&amp;v&apos; + m.params.split(&quot;&amp;v&quot;)[1]) + &apos;&quot;&gt;&apos;,大功告成：My Valine.min.js文件 改造后]]></content>
       <categories>
-        <category>杂</category>
+        <category>搞点事情</category>
       </categories>
       <tags>
         <tag>hexo</tag>
@@ -13,7 +36,7 @@
   </entry>
   <entry>
     <title><![CDATA[JVM实战]]></title>
-    <url>%2Fstudy%2F1f93cae3-jvm_action%2F</url>
+    <url>%2Flearning%2F1f93cae3-jvm_action%2F</url>
     <content type="text"><![CDATA[常用的Jvm启动参数 -Xmx512m：设置JVM最大可用内存为512M。 -Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。 -Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右） -verbose:gc：开启gc日志 -Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面) -XX:+PrintGCDetails：打印GC详情 -XX:+PrintGCDateStamps：打印GC时间戳 参考：GC性能优化美团 - 从实际案例聊聊Java应用的GC优化 FGC实战以JxlTest为例，通过gc日志，fix FGC问题。参考阿飞的博客-FGC实战 阅读一下GC日志]]></content>
       <categories>
         <category>学习笔记</category>
@@ -112,10 +135,10 @@
   </entry>
   <entry>
     <title><![CDATA[Hexo启用cdn加速]]></title>
-    <url>%2F83f2d349-cdn%2F</url>
+    <url>%2Ftrying%2F83f2d349-cdn%2F</url>
     <content type="text"><![CDATA[参考：https://shup.cn/2017/11/21/cdn.html 分析：哪些因素会影响加载速度？js文件js文件就是JavaScript脚本文件，用来实现各种酷炫的动态效果。一般是加载在html页面的部分，所以页面加载速度首先要考虑这一块。Hexo的js文件大致包含以下3类： 公共js公共js是通用型，比如实现图片放大效果的Fancybox，或者实现图片慢加载的LazyLoad等等。这些js已经开发好，直接在html里引用(存放在镜像网站上，如BootCDN)js文件链接即可实现效果。 定制页面效果js即NexT主题中定制的某些特效，例如实现页面响应式效果的Bootstrap，或者增强移动端滚动及动画效果的Motion等等。这些js理论上也是公共js，只不过NexT主题作者修改了代码，以适用于NexT主题。这些js文件存放在本地Hexo目录hexo\themes\next\source\js\src下。 第三方插件js这个不用多说了吧，Hexo默认安装了不少实用的第三方插件，比如，可直接在网页中显示数学公式的MathJax，优化SEO的Baidu-push等等。这些插件可在主题配置文件_config.yml中进行配置。相关js文件有些存放在hexo\themes\next\layout_third-party中，有些则通过外部引用形式加载。图片(音、视频)如果博客文章很多，绝大部分的带宽都会消耗在这部分静态数据上。这个不多说了。 解决：逐个优化公共js加速修改_config.yml中 vendors 的配置全部映射到BootCDN上去 第三方js文件、图片(音、视频)加速我用的七牛云，每月 10 G的标准存储 CDN 回源流量免费额度https://blog.qiniu.com/archives/8874)。]]></content>
       <categories>
-        <category>杂</category>
+        <category>搞点事情</category>
       </categories>
       <tags>
         <tag>hexo</tag>
@@ -124,10 +147,10 @@
   </entry>
   <entry>
     <title><![CDATA[Hexo启用https加密连接]]></title>
-    <url>%2Fa2a28780-https%2F</url>
+    <url>%2Ftrying%2Fa2a28780-https%2F</url>
     <content type="text"><![CDATA[CloudFlare 提供免费的SSL证书和cdn加速服务。目前还在研究中。]]></content>
       <categories>
-        <category>杂</category>
+        <category>搞点事情</category>
       </categories>
       <tags>
         <tag>hexo</tag>
@@ -136,7 +159,7 @@
   </entry>
   <entry>
     <title><![CDATA[Hello World Mac版]]></title>
-    <url>%2Fhello-world%2F</url>
+    <url>%2Fmisc%2Fhello-world%2F</url>
     <content type="text"><![CDATA[安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v 安装hexo sudo npm install hexo –savesudo npm install -g hexo 测试 hexo -v 初始化hexo mkdir hexocd hexohexo init Install dependencies时，出现了一些mkdir权限的问题，日志提示要手动npm install sudo npm install hexo generate 在Hexo 3.0 后server被单独出来了，需要安装server sudo npm install hexo-server -savesudo npm install hexo-deployer-git –save 预览 hexo s 发布 hexo d -g 安装调试主题参考： https://www.jianshu.com/p/9f0e90cc32c2 http://eternalzttz.com/hexo-next.html修改网站图标 favicon修改菜单栏 hexo new page “tags” 去/themes/next/source/tags的index.md文件中，添加type: “tags”打开github_banner添加RSS&gt; npm install hexo-generator-feed --save 在/_config.yml 中添加 plugins: hexo-generate-feed 修改底部标签样式修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索rel=&quot;tag&quot;&gt;#，将#替换成&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;。输入以下命令，查看效果： 侧边栏社交小图标设置social: 网站底部加上访问量 在themes/next/layout/_partials/footer.swig第一行加上 &lt;script async src=&quot;https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;&lt;/script&gt; busuanzi_count: enable: true统计博客全站字数 npm install hexo-wordcount –save /themes/next/layout/_partials/footer.swig &lt;div class=&quot;theme-info&quot;&gt; &lt;div class=&quot;powered-by&quot;&gt;&lt;/div&gt; &lt;span class=&quot;post-count&quot;&gt;博客全站共{{ totalcount(site) }}字&lt;/span&gt; &lt;/div&gt; symbols_count_time: item_text_total: true统计文章字数、阅读时间&lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-print&quot;&gt;&lt;/i&gt; 字数统计：{{ wordcount(post.content) }}&lt;/span&gt; &lt;span class=&quot;post-count&quot;&gt; &amp;nbsp | &amp;nbsp &lt;i class=&quot;fa fa-clock&quot;&gt;&lt;/i&gt; 阅读时长≈{{ min2read(post.content, {cn: 300, en: 160}) }}分钟&lt;/span&gt; # Post wordcount display settings # Dependencies: https://github.com/willin/hexo-wordcount post_wordcount: item_text: true wordcount: true # 字数统计 min2read: true # 预计阅读时长 totalcount: true # 总字数统计 separated_meta: true添加网页顶部进度加载条编辑主题配置文件，command+F搜索pace，将其值改为ture就可以了，选择一款你喜欢的样式。Installation 参考：https://github.com/theme-next/theme-next-pace pace: true浏览页面的时候显示当前浏览进度# Scroll percent label in b2t button. scrollpercent: true添加基于Valine的评论模块valine: enable: true # When enable is set to be true, leancloud_visitors is recommended to be closed for the re-initialization problem within different leancloud adk version. appid: RN3HHH17DaSH4MgBW1bwRIHj-gzGzoHsz appkey: tDXty7nXldylBkVzfPLPnuGU notify: true # mail notifier, See: https://github.com/xCss/Valine/wiki verify: true # Verification code placeholder: ヾﾉ≧∀≦)o来啊，快活啊! # comment box placeholder avatar: mp # gravatar style guest_info: nick,mail,link # custom comment header pageSize: 10 # pagination size language: zh-cn # language, available values: en, zh-cn visitor: false # leancloud-counter-security is not supported for now. When visitor is set to be true, appid and appkey are recommended to be the same as leancloud_visitors&apos; for counter compatibility. Article reading statistic https://valine.js.org/visitor.html comment_count: true # if false, comment count will only be displayed in post page, not in home page vendors: valine: https://tb.nsfocus.co/js/Valine.min_6.js添加基于Mob ShareSDK的分享功能参考：https://hadronw.com/2018/05-28/hexo-addshares/ 博文置顶 修改hexo-generator-index插件，把node_modules/hexo-generator-index/lib/generator.js中代码替换为： &apos;use strict&apos;; var pagination = require(&apos;hexo-pagination&apos;); module.exports = function(locals){ var config = this.config; var posts = locals.posts; posts.data = posts.data.sort(function(a, b) { if(a.top &amp;&amp; b.top) { // 两篇文章top都有定义 if(a.top == b.top) return b.date - a.date; // 若top值一样则按照文章日期降序排 else return b.top - a.top; // 否则按照top值降序排 } else if(a.top &amp;&amp; !b.top) { // 以下是只有一篇文章top有定义，那么将有top的排在前面（这里用异或操作居然不行233） return -1; } else if(!a.top &amp;&amp; b.top) { return 1; } else return b.date - a.date; // 都没定义按照文章日期降序排 }); var paginationDir = config.pagination_dir || &apos;page&apos;; return pagination(&apos;&apos;, posts, { perPage: config.index_generator.per_page, layout: [&apos;index&apos;, &apos;archive&apos;], format: paginationDir + &apos;/%d/&apos;, data: { __index: true } }); }; 文章添加Top值，值越大，越靠前： --- title: Hexo-NexT主题配置 date: 2018-01-20 20:41:08 categories: Hexo tags: - Hexo - NexT top: 100 --- 添加侧栏推荐阅读编辑主题配置文件，如下配置即可： # Blog rolls links_icon: link links_title: 推荐阅读 #links_layout: block links_layout: inline links: Swift 4: https://developer.apple.com/swift/ Objective-C: https://developer.apple.com/documentation/objectivec修改字体大小编辑Blog/themes/next/source/css/_variables/base.styl，command+F搜索$font-size-base，修改为你想要的大小： // Font size $font-size-base = 16px在文章底部增加版权信息 在目录Blog/themes/next/layout/_macro/，添加文件 my-copyright.swig，内容如下：my-copyright.swig 在目录Blog/themes/next/source/css/_common/components/post/下添加文件my-post-copyright.styl，添加以下代码：my-post-copyright.styl 修改Blog/themes/next/layout/_macro/post.swig，在如图位置添加以下代码： &lt;div&gt; {% if not is_index %} {% include 'my-copyright.swig' %} {% endif %} &lt;/div&gt; 在Blog/themes/next/source/css/_common/components/post/post.styl文件最后加入下面的代码： @import &quot;my-post-copyright&quot; 在Markdown文章中加入 copyright : ture --- title: Hexo-NexT主题配置 date: 2018-01-20 20:41:08 categories: Hexo tags: - Hexo - NexT top: 100 copyright: ture --- 配置根目录下的_config.yml文件，配置为： # URL ## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos; url: http://tianbin.org root: / permalink: :year/:month/:day/:title/ permalink_defaults:Hexo博客添加站内搜索 NexT主题支持集成 Swiftype、 微搜索、Local Search 和 Algolia。下面介绍Local Search的安装吧。 安装 hexo-generator-search npm install hexo-generator-search –save 安装 hexo-generator-searchdb npm install hexo-generator-searchdb –save 打开local_search local_search: enable: ture为文章中的代码块增加一键复制功能copy_button: enable: true404公益页面 在source下新建404.md --- comments: false --- &lt;script type=&quot;text/javascript&quot; src=&quot;//qzonestyle.gtimg.cn/qzone/hybrid/app/404/search_children.js&quot; homepagename=&apos;返回主页&apos; homepageurl=&quot;/&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt; 修改theme/_config.yml menu: commonweal: /404/ || heartbeat移动端启用侧边栏目录# Enable sidebar on narrow view (only for Muse | Mist). onmobile: true 自动备份Hexo博客源文件参考：备份Hexo博客源文件 安装shelljs模块 npm install –save shelljs 编写脚本文件，内容如下：auto_backup_script.js]]></content>
       <categories>
         <category>杂</category>

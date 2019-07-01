@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tianbin.org/"/>
-  <updated>2019-06-30T09:17:40.818Z</updated>
+  <updated>2019-07-01T05:57:43.862Z</updated>
   <id>https://tianbin.org/</id>
   
   <author>
@@ -17,11 +17,60 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>MySQL - 锁</title>
+    <link href="https://tianbin.org/learning/fa9ec524-mysql_lock/"/>
+    <id>https://tianbin.org/learning/fa9ec524-mysql_lock/</id>
+    <published>2019-07-01T04:38:06.000Z</published>
+    <updated>2019-07-01T05:57:43.862Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考：<a href="https://www.cnblogs.com/zhoujinyi/p/3435982.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/08/20/innodb-lock.html</a><br><a href="https://tech.meituan.com/2014/08/20/innodb-lock.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/08/20/innodb-lock.html</a></p><p>MVCC<br>Next-Key Lock</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;参考：&lt;a href=&quot;https://www.cnblogs.com/zhoujinyi/p/3435982.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://tech.meituan.com/2014/08/20/innodb-l
+      
+    
+    </summary>
+    
+      <category term="学习笔记" scheme="https://tianbin.org/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://tianbin.org/tags/MySQL/"/>
+    
+      <category term="锁" scheme="https://tianbin.org/tags/%E9%94%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL - 基本概念</title>
+    <link href="https://tianbin.org/learning/64e3e7b7-mysql_basis/"/>
+    <id>https://tianbin.org/learning/64e3e7b7-mysql_basis/</id>
+    <published>2019-07-01T04:38:06.000Z</published>
+    <updated>2019-07-01T05:51:38.006Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="关于存储引擎"><a href="#关于存储引擎" class="headerlink" title="关于存储引擎"></a>关于存储引擎</h1><p>InnoDB存储引擎的特点：支持外键、行级锁、每个表单单独位于一个表空间。</p><a id="more"></a><ul><li>MyISAM和InnoDB的比较：</li></ul><table><thead><tr><th align="center">项目</th><th align="center">MyISAM</th><th align="center">InnoDB</th></tr></thead><tbody><tr><td align="center">索引结构</td><td align="center">B+ 树</td><td align="center">B- 树</td></tr><tr><td align="center">事务</td><td align="center">❌</td><td align="center">✔️</td></tr><tr><td align="center">锁粒度</td><td align="center">表级锁</td><td align="center">表级锁&amp;行级锁(锁的是索引对应的那一行)</td></tr><tr><td align="center">外键约束</td><td align="center">❌</td><td align="center">✔️</td></tr><tr><td align="center">表空间大小</td><td align="center">相对小</td><td align="center">相对大</td></tr><tr><td align="center">全文索引</td><td align="center">✔️</td><td align="center">❌</td></tr><tr><td align="center">关注点</td><td align="center">性能(select)</td><td align="center">事务(work)</td></tr><tr><td align="center">数据文件</td><td align="center">每张MyISAM表存放在三个文件中：<br>元数据：*.frm<br>数据文件：*.MYD<br>索引文件：*.MYI</td><td align="center">(默认)共享表空间</td></tr><tr><td align="center">其他</td><td align="center">支持全文索引、压缩索引</td><td align="center">不支持</td></tr></tbody></table><h1 id="关于索引"><a href="#关于索引" class="headerlink" title="关于索引"></a>关于索引</h1><table><thead><tr><th align="center">项目</th><th align="center">MyISAM</th><th align="center">InnoDB</th></tr></thead><tbody><tr><td align="center">1</td><td align="center">升序顺序存储数据，叶子节点保持对应数据行的地址</td><td align="center">主键节点同时保存数据行，其他辅助索引保存的是主键索引的值</td></tr><tr><td align="center">2</td><td align="center">键值分离，索引载入内存，数据缓存依赖操作系统</td><td align="center">键值一起保存，索引与数据一起载入InnoDB缓冲池</td></tr><tr><td align="center">索引的基数值</td><td align="center">精确的</td><td align="center">估计的</td></tr></tbody></table><h1 id="事物隔离级别"><a href="#事物隔离级别" class="headerlink" title="事物隔离级别"></a>事物隔离级别</h1><p>参考：<a href="https://www.cnblogs.com/zhoujinyi/p/3437475.html" target="_blank" rel="noopener">MySQL 四种事务隔离级的说明</a>、<a href="https://tech.meituan.com/2014/08/20/innodb-lock.html" target="_blank" rel="noopener">Innodb中的事务隔离级别和锁的关系</a></p><table><thead><tr><th align="center">隔离级别</th><th align="center">脏读（Dirty Read）</th><th align="center">不可重复读（NonRepeatable Read）</th><th align="center">幻读（Phantom Read）</th><th align="center">解释</th></tr></thead><tbody><tr><td align="center">未提交读（Read uncommitted）</td><td align="center">✔️</td><td align="center">✔️</td><td align="center">✔️</td><td align="center">允许脏读，也就是可能读取到其他会话中未提交事务修改的数据</td></tr><tr><td align="center">已提交读（Read committed）</td><td align="center">❌</td><td align="center">✔️</td><td align="center">✔️</td><td align="center">只能读取到已经提交的数据。Oracle等多数数据库默认级别 (不重复读)</td></tr><tr><td align="center">可重复读（Repeatable read）</td><td align="center">❌</td><td align="center">❌</td><td align="center">✔️</td><td align="center">可重复读。在同一个事务内的查询都是事务开始时刻一致的，InnoDB默认级别。</td></tr><tr><td align="center">可串行化（Serializable ）</td><td align="center">❌</td><td align="center">❌</td><td align="center">❌</td><td align="center">完全串行化的读，每次读都需要获得表级共享锁，读写相互都会阻塞</td></tr></tbody></table><h2 id="脏读（Dirty-Read）"><a href="#脏读（Dirty-Read）" class="headerlink" title="脏读（Dirty Read）"></a>脏读（Dirty Read）</h2><p>脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。</p><h2 id="不可重复读（NonRepeatable-Read）-已提交读（Read-committed）"><a href="#不可重复读（NonRepeatable-Read）-已提交读（Read-committed）" class="headerlink" title="不可重复读（NonRepeatable Read）/ 已提交读（Read committed）"></a>不可重复读（NonRepeatable Read）/ 已提交读（Read committed）</h2><p>是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</p><h2 id="可重复读（Repeatable-read）"><a href="#可重复读（Repeatable-read）" class="headerlink" title="可重复读（Repeatable read）"></a>可重复读（Repeatable read）</h2><p>本身，可重复读和提交读是矛盾的。在同一个事务里，如果保证了可重复读，就会看不到其他事务的提交，违背了提交读；如果保证了提交读，就会导致前后两次读到的结果不一致，违背了可重复读。</p><p>可以这么讲，InnoDB提供了这样的机制，在默认的可重复读的隔离级别里，可以使用加锁读去查询最新的数据。</p><h2 id="幻读（Phantom-Read）"><a href="#幻读（Phantom-Read）" class="headerlink" title="幻读（Phantom Read）"></a>幻读（Phantom Read）</h2><p>第一个事务对一个表中的数据进行了修改，这种修改涉及到表中的全部数据行。同时，第二个事务也修改这个表中的数据，这种修改是向表中插入一行新数据。那么，以后就会发生操作第一个事务的用户发现表中还有没有修改的数据行，就好象发生了幻觉一样。</p><p><strong>当隔离级别是可重复读，且禁用innodb_locks_unsafe_for_binlog的情况下，在搜索和扫描index的时候使用的<a href="https://www.cnblogs.com/zhoujinyi/p/3435982.html" target="_blank" rel="noopener">next-key locks</a>可以避免幻读。</strong></p><h1 id="附：CentOS安装大法"><a href="#附：CentOS安装大法" class="headerlink" title="附：CentOS安装大法"></a>附：CentOS安装大法</h1><blockquote><ul><li>yum –y install mysql </li><li>yum –y install mysql -server</li><li>service mysqld start    //启动</li><li>/usr/bin/mysqladmin –u root password ‘root’        //设置密码 </li><li>mysql –u root –p            //进入<ul><li>use mysql;</li><li>select host,user,password from user;</li><li>delete from user where password=’’;  </li></ul></li></ul></blockquote><hr><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/mysqladmin -u root password &apos;new-password&apos;</span><br><span class="line">/usr/bin/mysqladmin -u root -h vultr.guest password &apos;new-password&apos;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;关于存储引擎&quot;&gt;&lt;a href=&quot;#关于存储引擎&quot; class=&quot;headerlink&quot; title=&quot;关于存储引擎&quot;&gt;&lt;/a&gt;关于存储引擎&lt;/h1&gt;&lt;p&gt;InnoDB存储引擎的特点：支持外键、行级锁、每个表单单独位于一个表空间。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="学习笔记" scheme="https://tianbin.org/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="MySQL" scheme="https://tianbin.org/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Valine初始化头像</title>
-    <link href="https://tianbin.org/misc/d6b91886-valine_avatar/"/>
-    <id>https://tianbin.org/misc/d6b91886-valine_avatar/</id>
+    <link href="https://tianbin.org/trying/d6b91886-valine_avatar/"/>
+    <id>https://tianbin.org/trying/d6b91886-valine_avatar/</id>
     <published>2019-06-30T07:56:25.000Z</published>
-    <updated>2019-06-30T09:17:40.818Z</updated>
+    <updated>2019-07-01T05:18:14.911Z</updated>
     
     <content type="html"><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><ol><li>添加了Valine评论插件后，发现评论者的头像是在_config.yml里面设置一种样式。  </li><li>如果想改头像只能去<a href="http://cn.gravatar.com/" target="_blank" rel="noopener">Gravatar</a>自行注册账号修改头像。（<a href="https://valine.js.org/avatar.html" target="_blank" rel="noopener">https://valine.js.org/avatar.html</a>）</li><li>默认头像如果评论多了的时候，好难看：</li></ol><a id="more"></a><p><img src="https://tb.nsfocus.co/image/d6b91886-before.png" alt="改造前"></p><h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>本地初始化头像，使相同昵称、相同邮箱的评论者，展示相同的头像。<br>且 兼容远程头像（用户自己去Gravatar设置过头像的，展示用户自己的头像）</p><h1 id="行动"><a href="#行动" class="headerlink" title="行动"></a>行动</h1><p>（上述目标，其实是在经过2个小时采坑填坑之后的最终结果）<br>大致说下采坑过程，与解题思路。感谢舍友的大力支持，不然我这前端小白2天都搞不定。/捂脸</p><p>先Google，发现个类似问题：<a href="https://www.bliner.me/2018/07/hexo_avatar_initialization/" target="_blank" rel="noopener">Hexo使用Valine评论系统不显示自定义头像的解决方案</a></p><p>让我知道了Valine的头像是有一组值的</p><pre><code>ds: [&quot;mp&quot;, &quot;identicon&quot;, &quot;monsterid&quot;, &quot;wavatar&quot;, &quot;robohash&quot;, &quot;retro&quot;, &quot;&quot;],</code></pre><p>这就让我有了一个大胆的想法：就用这几个官方头像模板初始化。</p><h2 id="获取官方最新的Valine-min-js文件"><a href="#获取官方最新的Valine-min-js文件" class="headerlink" title="获取官方最新的Valine.min.js文件"></a>获取官方最新的<a href="https://unpkg.com/valine@1.3.9/dist/Valine.min.js" target="_blank" rel="noopener">Valine.min.js文件</a></h2><h2 id="开始改造"><a href="#开始改造" class="headerlink" title="开始改造"></a>开始改造</h2><p>过程就不详细记录了，大致说下踩到的几个坑：</p><ol><li>直接随机显示ds数组里的这几个头像，带来的问题：相同昵称（同一个人）头像可能不一样</li><li>拿到的是Valine.min.js压缩过的js，美化后（格式化），无法解析。必须直接去压缩文件中修改js代码</li><li>换个思路，将ds数组随机的值，与评论者的昵称做匹配。<br> 看了下Valine的源码：<a href="https://github.com/xCss/Valine/blob/master/src/index.js" target="_blank" rel="noopener">https://github.com/xCss/Valine/blob/master/src/index.js</a><br> 原来这个头像链接的组成是这样的：</li></ol><pre><code>`&lt;img class=&quot;vimg&quot; src=&quot;${_avatarSetting[&apos;cdn&apos;]+md5(rt.get(&apos;mail&apos;))+_avatarSetting[&apos;params&apos;]}&quot;&gt;`;                   src=&quot;https://gravatar.loli.net/avatar/d41d8cd98f00b204e9800998ecf8427e?d=mp&amp;v=1.3.9&quot;【cdn url】 + 【mail的md5（用于查询用户自定义的头像）】 + 【config.yml中配置的默认头像】 + 【version】</code></pre><ol start="4"><li>那我只需要把第三部分一改：根据nick的md5值，随机一个0-5的数字，返回ds数组中对应的值。</li></ol><pre><code>_nick = a(e.get(&quot;nick&quot;)),_res = _nick.match(/(\d)/)[1],_seed = _res ? Math.floor(_res / 2) : &apos;5&apos;,o = m.hide ? &quot;&quot; : &apos;&lt;img class=&quot;vimg&quot; src=&quot;&apos; + (m.cdn + a(e.get(&quot;mail&quot;))    +&quot;?d=&quot;+(m.ds[_seed] || &quot;mp&quot;) + &apos;&amp;v&apos; + m.params.split(&quot;&amp;v&quot;)[1]) + &apos;&quot;&gt;&apos;,</code></pre><p>大功告成：<a href="https://tb.nsfocus.co/js/Valine.min_7.js" target="_blank" rel="noopener">My Valine.min.js文件</a></p><h1 id="改造后"><a href="#改造后" class="headerlink" title="改造后"></a>改造后</h1><p><img src="https://tb.nsfocus.co/image/d6b91886-after.png" alt="改造后"></p>]]></content>
     
@@ -35,7 +84,7 @@
     
     </summary>
     
-      <category term="杂" scheme="https://tianbin.org/categories/%E6%9D%82/"/>
+      <category term="搞点事情" scheme="https://tianbin.org/categories/%E6%90%9E%E7%82%B9%E4%BA%8B%E6%83%85/"/>
     
     
       <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
@@ -44,10 +93,10 @@
   
   <entry>
     <title>JVM实战</title>
-    <link href="https://tianbin.org/study/1f93cae3-jvm_action/"/>
-    <id>https://tianbin.org/study/1f93cae3-jvm_action/</id>
+    <link href="https://tianbin.org/learning/1f93cae3-jvm_action/"/>
+    <id>https://tianbin.org/learning/1f93cae3-jvm_action/</id>
     <published>2019-06-29T19:31:35.000Z</published>
-    <updated>2019-06-30T17:59:30.998Z</updated>
+    <updated>2019-07-01T05:13:21.066Z</updated>
     
     <content type="html"><![CDATA[<h1 id="常用的Jvm启动参数"><a href="#常用的Jvm启动参数" class="headerlink" title="常用的Jvm启动参数"></a>常用的Jvm启动参数</h1><ul><li><p>-Xmx512m：设置JVM最大可用内存为512M。</p></li><li><p>-Xms512m：设置JVM初始内存为512m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。<a id="more"></a></p></li><li><p>-Xmn200m：设置年轻代大小为200M。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8（young占30%左右）</p></li><li><p>-verbose:gc：开启gc日志</p></li><li><p>-Xloggc:gcc.log：将日志输出到文件xx(默认位置为桌面)</p></li><li><p>-XX:+PrintGCDetails：打印GC详情</p></li><li><p>-XX:+PrintGCDateStamps：打印GC时间戳 </p></li></ul><p>参考：<br><a href="https://blog.csdn.net/renfufei/column/info/14851" target="_blank" rel="noopener">GC性能优化</a><br><a href="https://tech.meituan.com/2017/12/29/jvm-optimize.html" target="_blank" rel="noopener">美团 - 从实际案例聊聊Java应用的GC优化</a></p><h1 id="FGC实战"><a href="#FGC实战" class="headerlink" title="FGC实战"></a>FGC实战</h1><p>以JxlTest为例，通过gc日志，fix FGC问题。参考<a href="https://mp.weixin.qq.com/s/0VeZYuoMG8PimeHk4CbjTQ" target="_blank" rel="noopener">阿飞的博客-FGC实战</a></p><p>阅读一下GC日志</p>]]></content>
     
@@ -273,10 +322,10 @@
   
   <entry>
     <title>Hexo启用cdn加速</title>
-    <link href="https://tianbin.org/83f2d349-cdn/"/>
-    <id>https://tianbin.org/83f2d349-cdn/</id>
+    <link href="https://tianbin.org/trying/83f2d349-cdn/"/>
+    <id>https://tianbin.org/trying/83f2d349-cdn/</id>
     <published>2019-06-29T07:06:00.000Z</published>
-    <updated>2019-06-29T18:55:42.187Z</updated>
+    <updated>2019-07-01T05:18:14.914Z</updated>
     
     <content type="html"><![CDATA[<p>参考：<a href="https://shup.cn/2017/11/21/cdn.html" target="_blank" rel="noopener">https://shup.cn/2017/11/21/cdn.html</a></p><a id="more"></a><h1 id="分析：哪些因素会影响加载速度？"><a href="#分析：哪些因素会影响加载速度？" class="headerlink" title="分析：哪些因素会影响加载速度？"></a>分析：哪些因素会影响加载速度？</h1><h2 id="js文件"><a href="#js文件" class="headerlink" title="js文件"></a>js文件</h2><p>js文件就是JavaScript脚本文件，用来实现各种酷炫的动态效果。一般是加载在html页面的<head><meta name="generator" content="Hexo 3.9.0">部分，所以页面加载速度首先要考虑这一块。Hexo的js文件大致包含以下3类：</head></p><ol><li>公共js<br>公共js是通用型，比如实现图片放大效果的Fancybox，或者实现图片慢加载的LazyLoad等等。这些js已经开发好，直接在html里引用(存放在镜像网站上，如<a href="https://www.bootcdn.cn/" target="_blank" rel="noopener">BootCDN</a>)js文件链接即可实现效果。</li><li>定制页面效果js<br>即NexT主题中定制的某些特效，例如实现页面响应式效果的Bootstrap，或者增强移动端滚动及动画效果的Motion等等。这些js理论上也是公共js，只不过NexT主题作者修改了代码，以适用于NexT主题。这些js文件存放在本地Hexo目录hexo\themes\next\source\js\src下。</li><li>第三方插件js<br>这个不用多说了吧，Hexo默认安装了不少实用的第三方插件，比如，可直接在网页中显示数学公式的MathJax，优化SEO的Baidu-push等等。这些插件可在主题配置文件_config.yml中进行配置。相关js文件有些存放在hexo\themes\next\layout_third-party中，有些则通过外部引用形式加载。<h2 id="图片-音、视频"><a href="#图片-音、视频" class="headerlink" title="图片(音、视频)"></a>图片(音、视频)</h2>如果博客文章很多，绝大部分的带宽都会消耗在这部分静态数据上。这个不多说了。</li></ol><h1 id="解决：逐个优化"><a href="#解决：逐个优化" class="headerlink" title="解决：逐个优化"></a>解决：逐个优化</h1><h2 id="公共js加速"><a href="#公共js加速" class="headerlink" title="公共js加速"></a>公共js加速</h2><p>修改<a href="../../themes/next/_config.yml">_config.yml</a>中 vendors 的配置<br>全部映射到BootCDN上去</p><h2 id="第三方js文件、图片-音、视频-加速"><a href="#第三方js文件、图片-音、视频-加速" class="headerlink" title="第三方js文件、图片(音、视频)加速"></a>第三方js文件、图片(音、视频)加速</h2><p>我用的七牛云，<a href="https://blog.qiniu.com/archives/8874" target="_blank" rel="noopener">每月 10 G的标准存储 CDN 回源流量免费额度</a><a href="https://blog.qiniu.com/archives/8874)。" target="_blank" rel="noopener">https://blog.qiniu.com/archives/8874)。</a><br><img src="https://tb.nsfocus.co/image/83f2d349-1.png" alt="七牛云"></p>]]></content>
     
@@ -286,7 +335,7 @@
     
     </summary>
     
-      <category term="杂" scheme="https://tianbin.org/categories/%E6%9D%82/"/>
+      <category term="搞点事情" scheme="https://tianbin.org/categories/%E6%90%9E%E7%82%B9%E4%BA%8B%E6%83%85/"/>
     
     
       <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
@@ -297,10 +346,10 @@
   
   <entry>
     <title>Hexo启用https加密连接</title>
-    <link href="https://tianbin.org/a2a28780-https/"/>
-    <id>https://tianbin.org/a2a28780-https/</id>
+    <link href="https://tianbin.org/trying/a2a28780-https/"/>
+    <id>https://tianbin.org/trying/a2a28780-https/</id>
     <published>2019-06-29T06:06:00.000Z</published>
-    <updated>2019-06-29T15:18:08.272Z</updated>
+    <updated>2019-07-01T05:18:14.917Z</updated>
     
     <content type="html"><![CDATA[<p><a href="(https://www.cloudflare.com/)">CloudFlare</a> 提供免费的SSL证书和cdn加速服务。目前还在研究中。</p><a id="more"></a>]]></content>
     
@@ -310,7 +359,7 @@
     
     </summary>
     
-      <category term="杂" scheme="https://tianbin.org/categories/%E6%9D%82/"/>
+      <category term="搞点事情" scheme="https://tianbin.org/categories/%E6%90%9E%E7%82%B9%E4%BA%8B%E6%83%85/"/>
     
     
       <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
@@ -321,8 +370,8 @@
   
   <entry>
     <title>Hello World Mac版</title>
-    <link href="https://tianbin.org/hello-world/"/>
-    <id>https://tianbin.org/hello-world/</id>
+    <link href="https://tianbin.org/misc/hello-world/"/>
+    <id>https://tianbin.org/misc/hello-world/</id>
     <published>2019-06-28T21:06:00.000Z</published>
     <updated>2019-06-30T07:53:37.587Z</updated>
     
