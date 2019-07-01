@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tianbin.org/"/>
-  <updated>2019-07-01T05:57:43.862Z</updated>
+  <updated>2019-07-01T05:59:16.624Z</updated>
   <id>https://tianbin.org/</id>
   
   <author>
@@ -20,8 +20,8 @@
     <title>MySQL - 锁</title>
     <link href="https://tianbin.org/learning/fa9ec524-mysql_lock/"/>
     <id>https://tianbin.org/learning/fa9ec524-mysql_lock/</id>
-    <published>2019-07-01T04:38:06.000Z</published>
-    <updated>2019-07-01T05:57:43.862Z</updated>
+    <published>2019-07-01T05:38:06.000Z</published>
+    <updated>2019-07-01T05:59:16.624Z</updated>
     
     <content type="html"><![CDATA[<p>参考：<a href="https://www.cnblogs.com/zhoujinyi/p/3435982.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/08/20/innodb-lock.html</a><br><a href="https://tech.meituan.com/2014/08/20/innodb-lock.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/08/20/innodb-lock.html</a></p><p>MVCC<br>Next-Key Lock</p>]]></content>
     
@@ -338,9 +338,9 @@
       <category term="搞点事情" scheme="https://tianbin.org/categories/%E6%90%9E%E7%82%B9%E4%BA%8B%E6%83%85/"/>
     
     
-      <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
-    
       <category term="网络" scheme="https://tianbin.org/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
     
   </entry>
   
@@ -362,9 +362,9 @@
       <category term="搞点事情" scheme="https://tianbin.org/categories/%E6%90%9E%E7%82%B9%E4%BA%8B%E6%83%85/"/>
     
     
-      <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
-    
       <category term="网络" scheme="https://tianbin.org/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="hexo" scheme="https://tianbin.org/tags/hexo/"/>
     
   </entry>
   
