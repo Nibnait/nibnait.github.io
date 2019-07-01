@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="田彬的博客园">
 <meta property="og:description" content="安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T11:00:47.643Z">
+<meta property="og:updated_time" content="2019-07-01T11:09:09.050Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello World Mac版">
 <meta name="twitter:description" content="安装nodehttps://nodejs.org/en/ 测试 npm -vnode -v">
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-07-01 19:00:47" itemprop="dateModified" datetime="2019-07-01T19:00:47+08:00">2019-07-01</time>
+                <time title="Modified: 2019-07-01 19:09:09" itemprop="dateModified" datetime="2019-07-01T19:09:09+08:00">2019-07-01</time>
               
             
           </span>
@@ -564,11 +564,9 @@
 <h2 id="修改底部标签样式"><a href="#修改底部标签样式" class="headerlink" title="修改底部标签样式"></a>修改底部标签样式</h2><p>修改Blog\themes\next\layout_macro\post.swig中文件，command+f搜索<code>rel=&quot;tag&quot;&gt;#</code>，将#替换成<code>&lt;i class=&quot;fa fa-tag&quot;&gt;&lt;/i&gt;</code>。输入以下命令，查看效果：</p>
 <h2 id="侧边栏社交小图标设置"><a href="#侧边栏社交小图标设置" class="headerlink" title="侧边栏社交小图标设置"></a>侧边栏社交小图标设置</h2><p>social:</p>
 <h2 id="网站底部加上访问量"><a href="#网站底部加上访问量" class="headerlink" title="网站底部加上访问量"></a>网站底部加上访问量</h2><p>不蒜子：<a href="https://busuanzi.ibruce.info/" target="_blank" rel="noopener">https://busuanzi.ibruce.info/</a></p>
-<p>  在themes/next/layout/_partials/footer.swig第一行加上</p>
-<pre><code>&lt;script async src=&quot;//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;&lt;/script&gt;
-
-busuanzi_count:
-  enable: true</code></pre><h2 id="统计博客全站字数"><a href="#统计博客全站字数" class="headerlink" title="统计博客全站字数"></a>统计博客全站字数</h2><blockquote>
+<pre><code>busuanzi_count:
+  enable: true</code></pre><p>在themes/next/layout/_partials/footer.swig 适当位置加上：</p>
+<pre><code>&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;本站总访问量&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次&lt;/span&gt;</code></pre><h2 id="统计博客全站字数"><a href="#统计博客全站字数" class="headerlink" title="统计博客全站字数"></a>统计博客全站字数</h2><blockquote>
 <p>npm install hexo-wordcount –save</p>
 </blockquote>
 <p>/themes/next/layout/_partials/footer.swig</p>
@@ -1092,8 +1090,7 @@ onmobile: true        </code></pre><h1 id="自动备份Hexo博客源文件"><a h
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
