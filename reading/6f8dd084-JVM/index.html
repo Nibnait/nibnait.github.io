@@ -120,7 +120,8 @@
 <meta property="og:image" content="https://tb.nsfocus.co/image/6f8dd084-4.png">
 <meta property="og:image" content="https://tb.nsfocus.co/image/6f8dd084-5.png">
 <meta property="og:image" content="https://tb.nsfocus.co/image/6f8dd084-6.png">
-<meta property="og:updated_time" content="2019-06-29T19:06:10.185Z">
+<meta property="og:image" content="https://tb.nsfocus.co/image/6f8dd084-7.png">
+<meta property="og:updated_time" content="2019-07-01T10:41:50.151Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java虚拟机 - 概念">
 <meta name="twitter:description" content="书单列表：    《实战Java虚拟机》  目录：  Java虚拟机的基本结构   常用的垃圾回收算法">
@@ -434,12 +435,24 @@
                 
               
 
-              <time title="Created: 2019-06-30 03:01:35 / Modified: 03:06:10" itemprop="dateCreated datePublished" datetime="2019-06-30T03:01:35+08:00">2019-06-30</time>
+              <time title="Created: 2019-06-30 03:01:35" itemprop="dateCreated datePublished" datetime="2019-06-30T03:01:35+08:00">2019-06-30</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-01 18:41:50" itemprop="dateModified" datetime="2019-07-01T18:41:50+08:00">2019-07-01</time>
               
             
           </span>
@@ -643,7 +656,9 @@
 </ul>
 </li>
 </ul>
-<h1 id="Class装载系统"><a href="#Class装载系统" class="headerlink" title="Class装载系统"></a>Class装载系统</h1><h2 id="1-类装载步骤"><a href="#1-类装载步骤" class="headerlink" title="1. 类装载步骤"></a>1. 类装载步骤</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-6.png" alt><br>     - 加载：解析类方法区内的数据结构 并创建实例<br>     - 验证：class文件格式、语义检查、字节码验证、符号引用验证…<br>     - 准备：为类在Java堆中分配空间，设置初始值<br>     - 解析：将 类、接口、字段、方法的符号引用转为直接引用<br>     - 初始化：编译器自动生成并执行类的初始化方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">## 2. 双亲委托模式(系统默认使用)</span><br><span class="line">![](https://tb.nsfocus.co/image/6f8dd084-7.png)</span><br><span class="line"></span><br><span class="line">在类加载的时候，</span><br></pre></td></tr></table></figure></p>
+<h1 id="Class装载系统"><a href="#Class装载系统" class="headerlink" title="Class装载系统"></a>Class装载系统</h1><h2 id="1-类装载步骤"><a href="#1-类装载步骤" class="headerlink" title="1. 类装载步骤"></a>1. 类装载步骤</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-6.png" alt="类装载步骤"><br>     - 加载：解析类方法区内的数据结构 并创建实例<br>     - 验证：class文件格式、语义检查、字节码验证、符号引用验证…<br>     - 准备：为类在Java堆中分配空间，设置初始值<br>     - 解析：将 类、接口、字段、方法的符号引用转为直接引用<br>     - 初始化：编译器自动生成并执行类的初始化方法<code>&lt;clinit&gt;</code>（方法<code>&lt;clinit&gt;</code>由类静态成员的赋值语句和static语句块合并产生）</p>
+<h2 id="2-双亲委托模式-系统默认使用"><a href="#2-双亲委托模式-系统默认使用" class="headerlink" title="2. 双亲委托模式(系统默认使用)"></a>2. 双亲委托模式(系统默认使用)</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-7.png" alt="双亲委托模式"></p>
+<p>在类加载的时候，</p>
 <pre><code>if（当前类已经被加载）{  
     return 当前可用类;  
 } else {  
@@ -654,8 +669,7 @@
         自己加载；  
         return 类；  
     }  
-}  </code></pre><p>```</p>
-<h2 id="字节码执行"><a href="#字节码执行" class="headerlink" title="字节码执行"></a>字节码执行</h2><hr>
+}  </code></pre><h2 id="字节码执行"><a href="#字节码执行" class="headerlink" title="字节码执行"></a>字节码执行</h2><hr>
 <p>本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。<br>本文地址：<a href="http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/" target="_blank" rel="noopener">http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/</a></p>
 
       
@@ -679,7 +693,7 @@
   <p><span>本文标题:</span><a href="/reading/6f8dd084-JVM/">Java虚拟机 - 概念</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
   <p><span>发布时间:</span>2019年06月30日 - 03:06</p>
-  <p><span>最后更新:</span>2019年06月30日 - 03:06</p>
+  <p><span>最后更新:</span>2019年07月01日 - 18:07</p>
   <p><span>原始链接:</span><a href="/reading/6f8dd084-JVM/" title="Java虚拟机 - 概念">https://tianbin.org/reading/6f8dd084-JVM/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/reading/6f8dd084-JVM/" aria-label="复制成功！"></i></span>
   </p>
@@ -1002,7 +1016,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机的基本结构"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机的基本结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的垃圾回收算法"><span class="nav-number">2.</span> <span class="nav-text">常用的垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引用计数法"><span class="nav-number">2.1.</span> <span class="nav-text">1. 引用计数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-标记清除法"><span class="nav-number">2.2.</span> <span class="nav-text">2. 标记清除法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代"><span class="nav-number">2.3.</span> <span class="nav-text">3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-标记压缩清除法-适用于老年代"><span class="nav-number">2.4.</span> <span class="nav-text">4. 标记压缩清除法(适用于老年代)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-分代算法"><span class="nav-number">2.5.</span> <span class="nav-text">5. 分代算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-分区算法"><span class="nav-number">2.6.</span> <span class="nav-text">6. 分区算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收器"><span class="nav-number">3.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CMS回收器-关注系统停顿时间"><span class="nav-number">3.1.</span> <span class="nav-text">1. CMS回收器[关注系统停顿时间]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-G1回收器-Garbage-First"><span class="nav-number">3.2.</span> <span class="nav-text">2. G1回收器(Garbage First)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class装载系统"><span class="nav-number">4.</span> <span class="nav-text">Class装载系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-类装载步骤"><span class="nav-number">4.1.</span> <span class="nav-text">1. 类装载步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节码执行"><span class="nav-number">4.2.</span> <span class="nav-text">字节码执行</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java虚拟机的基本结构"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机的基本结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的垃圾回收算法"><span class="nav-number">2.</span> <span class="nav-text">常用的垃圾回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-引用计数法"><span class="nav-number">2.1.</span> <span class="nav-text">1. 引用计数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-标记清除法"><span class="nav-number">2.2.</span> <span class="nav-text">2. 标记清除法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代"><span class="nav-number">2.3.</span> <span class="nav-text">3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-标记压缩清除法-适用于老年代"><span class="nav-number">2.4.</span> <span class="nav-text">4. 标记压缩清除法(适用于老年代)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-分代算法"><span class="nav-number">2.5.</span> <span class="nav-text">5. 分代算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-分区算法"><span class="nav-number">2.6.</span> <span class="nav-text">6. 分区算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#垃圾回收器"><span class="nav-number">3.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CMS回收器-关注系统停顿时间"><span class="nav-number">3.1.</span> <span class="nav-text">1. CMS回收器[关注系统停顿时间]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-G1回收器-Garbage-First"><span class="nav-number">3.2.</span> <span class="nav-text">2. G1回收器(Garbage First)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class装载系统"><span class="nav-number">4.</span> <span class="nav-text">Class装载系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-类装载步骤"><span class="nav-number">4.1.</span> <span class="nav-text">1. 类装载步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-双亲委托模式-系统默认使用"><span class="nav-number">4.2.</span> <span class="nav-text">2. 双亲委托模式(系统默认使用)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字节码执行"><span class="nav-number">4.3.</span> <span class="nav-text">字节码执行</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1023,7 +1037,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
