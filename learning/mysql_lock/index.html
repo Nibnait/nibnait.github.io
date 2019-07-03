@@ -60,7 +60,7 @@
 <link rel="stylesheet" href="/css/main.css?v=7.1.2">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon_small.png?v=7.1.2">
 
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=7.1.2">
@@ -69,7 +69,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=7.1.2">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+  <link rel="mask-icon" href="/images/favicon.svg?v=7.1.2" color="#222">
 
 
 
@@ -107,18 +107,18 @@
 
 
 
-  <meta name="description" content="CloudFlare 提供免费的SSL证书和cdn加速服务。目前还在研究中。">
-<meta name="keywords" content="网络,hexo">
+  <meta name="description" content="参考：https://www.cnblogs.com/zhoujinyi/p/3435982.htmlhttps://tech.meituan.com/2014/08/20/innodb-lock.html MVCCNext-Key Lock">
+<meta name="keywords" content="MySQL,锁">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo启用https加密连接">
-<meta property="og:url" content="https://tianbin.org/trying/a2a28780-https/index.html">
+<meta property="og:title" content="MySQL - 锁">
+<meta property="og:url" content="https://tianbin.org/learning/mysql_lock/index.html">
 <meta property="og:site_name" content="田彬的博客园">
-<meta property="og:description" content="CloudFlare 提供免费的SSL证书和cdn加速服务。目前还在研究中。">
+<meta property="og:description" content="参考：https://www.cnblogs.com/zhoujinyi/p/3435982.htmlhttps://tech.meituan.com/2014/08/20/innodb-lock.html MVCCNext-Key Lock">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T05:18:14.917Z">
+<meta property="og:updated_time" content="2019-07-01T11:27:44.840Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo启用https加密连接">
-<meta name="twitter:description" content="CloudFlare 提供免费的SSL证书和cdn加速服务。目前还在研究中。">
+<meta name="twitter:title" content="MySQL - 锁">
+<meta name="twitter:description" content="参考：https://www.cnblogs.com/zhoujinyi/p/3435982.htmlhttps://tech.meituan.com/2014/08/20/innodb-lock.html MVCCNext-Key Lock">
 
 
 
@@ -128,7 +128,7 @@
 
   
   
-  <link rel="canonical" href="https://tianbin.org/trying/a2a28780-https/">
+  <link rel="canonical" href="https://tianbin.org/learning/mysql_lock/">
 
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>Hexo启用https加密连接 | 田彬的博客园</title>
+  <title>MySQL - 锁 | 田彬的博客园</title>
   
 
 
@@ -385,7 +385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://tianbin.org/trying/a2a28780-https/">
+    <link itemprop="mainEntityOfPage" href="https://tianbin.org/learning/mysql_lock/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="NibNait&nbsp&nbsp">
@@ -402,7 +402,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hexo启用https加密连接
+          <h1 class="post-title" itemprop="name headline">MySQL - 锁
 
               
             
@@ -428,24 +428,12 @@
                 
               
 
-              <time title="Created: 2019-06-29 14:06:00" itemprop="dateCreated datePublished" datetime="2019-06-29T14:06:00+08:00">2019-06-29</time>
+              <time title="Created: 2019-07-01 13:38:06 / Modified: 19:27:44" itemprop="dateCreated datePublished" datetime="2019-07-01T13:38:06+08:00">2019-07-01</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-07-01 13:18:14" itemprop="dateModified" datetime="2019-07-01T13:18:14+08:00">2019-07-01</time>
               
             
           </span>
@@ -462,13 +450,13 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/搞点事情/" itemprop="url" rel="index"><span itemprop="name">搞点事情</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
 
                 
                 
               
             </span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：21</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：22</span>
             <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈1分钟</span>
 
           
@@ -484,8 +472,8 @@
                 </span>
             
                 <span class="post-meta-item-text">Comments: </span>
-                <a href="/trying/a2a28780-https/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/trying/a2a28780-https/" itemprop="commentCount"></span>
+                <a href="/learning/mysql_lock/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/learning/mysql_lock/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -520,11 +508,9 @@
       
 
       
-        <p><a href="(https://www.cloudflare.com/)">CloudFlare</a> 提供免费的SSL证书和cdn加速服务。目前还在研究中。</p>
+        <p>参考：<a href="https://www.cnblogs.com/zhoujinyi/p/3435982.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhoujinyi/p/3435982.html</a><br><a href="https://tech.meituan.com/2014/08/20/innodb-lock.html" target="_blank" rel="noopener">https://tech.meituan.com/2014/08/20/innodb-lock.html</a></p>
+<p>MVCC<br>Next-Key Lock</p>
 <a id="more"></a>
-
-
-
 
 
       
@@ -545,12 +531,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/trying/a2a28780-https/">Hexo启用https加密连接</a></p>
+  <p><span>本文标题:</span><a href="/learning/mysql_lock/">MySQL - 锁</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
-  <p><span>发布时间:</span>2019年06月29日 - 14:06</p>
-  <p><span>最后更新:</span>2019年07月01日 - 13:07</p>
-  <p><span>原始链接:</span><a href="/trying/a2a28780-https/" title="Hexo启用https加密连接">https://tianbin.org/trying/a2a28780-https/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/trying/a2a28780-https/" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年07月01日 - 13:07</p>
+  <p><span>最后更新:</span>2019年07月01日 - 19:07</p>
+  <p><span>原始链接:</span><a href="/learning/mysql_lock/" title="MySQL - 锁">https://tianbin.org/learning/mysql_lock/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/learning/mysql_lock/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -588,14 +574,14 @@
         
         <div class="post-tags">
           
-            <a href="/tags/网络/" rel="tag">
+            <a href="/tags/MySQL/" rel="tag">
               <i class="fa fa-tag"></i>
-              网络
+              MySQL
             </a>
           
-            <a href="/tags/hexo/" rel="tag">
+            <a href="/tags/锁/" rel="tag">
               <i class="fa fa-tag"></i>
-              hexo
+              锁
             </a>
           
         </div>
@@ -609,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/misc/hello-world/" rel="next" title="Hello World Mac版">
-                <i class="fa fa-chevron-left"></i> Hello World Mac版
+              <a href="/learning/mysql_basis/" rel="next" title="MySQL - 基本概念">
+                <i class="fa fa-chevron-left"></i> MySQL - 基本概念
               </a>
             
           </div>
@@ -619,8 +605,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/trying/83f2d349-cdn/" rel="prev" title="Hexo启用cdn加速">
-                Hexo启用cdn加速 <i class="fa fa-chevron-right"></i>
+              <a href="/reading/redis_journey/" rel="prev" title="《Redis 深度历险：核心原理与应用实践》">
+                《Redis 深度历险：核心原理与应用实践》 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -685,7 +671,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">18</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -745,7 +731,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -899,7 +893,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共11.1k字
+        博客全站共12.3k字
       </span>
     </div>
 
@@ -1405,6 +1399,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
 
