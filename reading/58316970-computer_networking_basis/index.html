@@ -112,7 +112,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络 - 基础">
 <meta property="og:url" content="https://tianbin.org/reading/58316970-computer_networking_basis/index.html">
-<meta property="og:site_name" content="田彬的博客园">
+<meta property="og:site_name" content="TBlogs">
 <meta property="og:description" content="书单列表：  《图解TCP/IP(第5版)》 《计算机网络：自顶向下方法(原书第6版)》">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://tb.nsfocus.co/image/58316970-1.png">
@@ -145,7 +145,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="田彬的博客园" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="TBlogs" type="application/atom+xml">
 
 
 
@@ -161,7 +161,7 @@
   };
 </script>
 
-  <title>计算机网络 - 基础 | 田彬的博客园</title>
+  <title>计算机网络 - 基础 | TBlogs</title>
   
 
 
@@ -220,7 +220,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">田彬的博客园</span>
+        <span class="site-title">TBlogs</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -417,7 +417,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="田彬的博客园">
+      <meta itemprop="name" content="TBlogs">
     </span>
 
     
@@ -537,11 +537,9 @@
 <li><a href="https://book.douban.com/subject/26176870/" target="_blank" rel="noopener">《计算机网络：自顶向下方法(原书第6版)》</a></li>
 </ul>
 <a id="more"></a>
-
 <p>目录：</p>
 <ol>
-<li><p>数据链路层  </p>
-<ul>
+<li>数据链路层  <ul>
 <li>共享介质型网络</li>
 <li>非共享介质型网络</li>
 <li>以太网<ul>
@@ -582,11 +580,11 @@
 </li>
 <li><p>应用层</p>
 <ul>
-<li>远程登录 – TELNET、SSH</li>
-<li>文件传输 – FTP</li>
-<li>电子邮件 – MIME、SMTP、POP、IMAP</li>
-<li>WWW – HTTP</li>
-<li>网络管理 – SNMP、MIB、RMON</li>
+<li>远程登录 — TELNET、SSH</li>
+<li>文件传输 — FTP</li>
+<li>电子邮件 — MIME、SMTP、POP、IMAP</li>
+<li>WWW — HTTP</li>
+<li>网络管理 — SNMP、MIB、RMON</li>
 </ul>
 </li>
 </ol>
@@ -628,7 +626,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="以太网——有线局域网技术"><a href="#以太网——有线局域网技术" class="headerlink" title="以太网——有线局域网技术"></a>以太网——有线局域网技术</h2><p>历史：共享介质型网络–&gt;非共享介质型网络</p>
+<h2 id="以太网——有线局域网技术"><a href="#以太网——有线局域网技术" class="headerlink" title="以太网——有线局域网技术"></a>以太网——有线局域网技术</h2><p>历史：共享介质型网络—&gt;非共享介质型网络</p>
 <ul>
 <li>以太网帧格式：</li>
 </ul>
@@ -648,61 +646,66 @@
 </blockquote>
 <p><img src="https://tb.nsfocus.co/image/58316970-4.png" alt="Ethernet V2"></p>
 <p>主要功能：</p>
-<pre><code>-  LCP(链路控制协议)：负责建立、(加密拨号登陆)配置和测试数据链路连接
--  NCP(网络控制协议)：负责设置IP地址(IPCP)、连接上一层</code></pre><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><h2 id="IP协议：尽力而为-面向无连接的"><a href="#IP协议：尽力而为-面向无连接的" class="headerlink" title="IP协议：尽力而为(面向无连接的)"></a>IP协议：尽力而为(面向无连接的)</h2><p><img src="https://tb.nsfocus.co/image/58316970-5.png" alt="IPv4地址的定义"></p>
+<pre><code> -  LCP(链路控制协议)：负责建立、(加密拨号登陆)配置和测试数据链路连接
+ -  NCP(网络控制协议)：负责设置IP地址(IPCP)、连接上一层
+</code></pre><h1 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h1><h2 id="IP协议：尽力而为-面向无连接的"><a href="#IP协议：尽力而为-面向无连接的" class="headerlink" title="IP协议：尽力而为(面向无连接的)"></a>IP协议：尽力而为(面向无连接的)</h2><p><img src="https://tb.nsfocus.co/image/58316970-5.png" alt="IPv4地址的定义"></p>
 <p>一些特殊的IP地址：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">网络号</th>
-<th align="center">主机号</th>
+<th style="text-align:center">网络号</th>
+<th style="text-align:center">主机号</th>
 <th>10进制表示</th>
-<th align="center">源地址</th>
-<th align="center">目的地址</th>
+<th style="text-align:center">源地址</th>
+<th style="text-align:center">目的地址</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">0</td>
-<td align="center">0</td>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
 <td>0.0.0.0</td>
-<td align="center">✔️</td>
-<td align="center">❌</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">❌</td>
 <td>本网络上的本主机</td>
 </tr>
 <tr>
-<td align="center">0</td>
-<td align="center">host-id</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">host-id</td>
 <td></td>
-<td align="center">✔️</td>
-<td align="center">❌</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">❌</td>
 <td>本网络上的某台host-id任播</td>
 </tr>
 <tr>
-<td align="center">全1</td>
-<td align="center">全1</td>
+<td style="text-align:center">全1</td>
+<td style="text-align:center">全1</td>
 <td>255.255.255.255</td>
-<td align="center">❌</td>
-<td align="center">✔️</td>
+<td style="text-align:center">❌</td>
+<td style="text-align:center">✔️</td>
 <td>本网络上的广播,不能被路由器转发</td>
 </tr>
 <tr>
-<td align="center">net-id</td>
-<td align="center">全1</td>
+<td style="text-align:center">net-id</td>
+<td style="text-align:center">全1</td>
 <td></td>
-<td align="center">❌</td>
-<td align="center">✔️</td>
+<td style="text-align:center">❌</td>
+<td style="text-align:center">✔️</td>
 <td>指定net-id上的所有主机广播</td>
 </tr>
 <tr>
-<td align="center">127</td>
-<td align="center">任何数<br>(但不能都是0或1)</td>
+<td style="text-align:center">127</td>
+<td style="text-align:center">任何数<br>(但不能都是0或1)</td>
 <td>127.×××.×××.×××<br>（默认：127.0.0.1=localhost）</td>
-<td align="center">✔️</td>
-<td align="center">✔️</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">✔️</td>
 <td>本地回环测试地址</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="NAT▼技术：极大的缓解了IPv4地址不够用的囧境"><a href="#NAT▼技术：极大的缓解了IPv4地址不够用的囧境" class="headerlink" title="NAT▼技术：极大的缓解了IPv4地址不够用的囧境"></a>NAT▼技术：极大的缓解了IPv4地址不够用的囧境</h2><blockquote>
 <p>在本地网络中使用私有地址，在连接互联网时转而使用全局IP地址的技术。</p>
 </blockquote>
@@ -750,9 +753,9 @@
 </blockquote>
 <p><img src="https://tb.nsfocus.co/image/58316970-11.png" alt></p>
 <p><img src="https://tb.nsfocus.co/image/58316970-12.png" alt></p>
-<p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–ICMP报文消息类型详解</a></p>
+<p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》—ICMP报文消息类型详解</a></p>
 <h2 id="ICMPv6"><a href="#ICMPv6" class="headerlink" title="ICMPv6"></a>ICMPv6</h2><p><img src="https://tb.nsfocus.co/image/58316970-13.png" alt></p>
-<p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–ICMPv6的邻居探索</a></p>
+<p>附：<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》—ICMPv6的邻居探索</a></p>
 <h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><ul>
 <li><p>在使用DHCP之前，需先将DHCP所要分配的IP地址池、相应的子网掩码，默认路由控制信息，DNS服务器地址设置到服务器上。</p>
 <p> <img src="https://tb.nsfocus.co/image/58316970-14.png" alt="DHCP的工作原理"></p>
@@ -789,12 +792,9 @@
 <ul>
 <li><p>OSPF▼</p>
 <ul>
-<li><p>选择总的代价较小的路径。</p>
-</li>
-<li><p>允许多条费用相同的路径(而RIP仅一条路径)</p>
-</li>
-<li><p>对每条链路，对不同的TOS(服务类型)，设置多种费用测度</p>
-</li>
+<li>选择总的代价较小的路径。</li>
+<li>允许多条费用相同的路径(而RIP仅一条路径)</li>
+<li>对每条链路，对不同的TOS(服务类型)，设置多种费用测度</li>
 <li><p>在大规模网络中，用层次的OSPF</p>
 <p>附：<a href="https://tb.nsfocus.co/image/58316970-18.png" target="_blank" rel="noopener">OSPF的工作机制.png</a></p>
 </li>
@@ -842,18 +842,12 @@
 <h3 id="TCP连接的建立与终止："><a href="#TCP连接的建立与终止：" class="headerlink" title="TCP连接的建立与终止："></a>TCP连接的建立与终止：</h3><p>(传说中的三次握手与四次挥手)  </p>
 <p><img src="https://tb.nsfocus.co/image/58316970-21.png" alt></p>
 <ol>
-<li><p>在数据通信之前，主机A通过TCP首部发送一个SYN包作为建立连接的请求（ACK=0,SYN=1，声明一个起始序号seq=x）等待确认应答</p>
-</li>
-<li><p>主机B收到A要建立连接的请求，返回一个允许连接的SYNACK报文段（ACK=1,SYN=1，主机B的起始序号seq=y，确认应答号ack=x+1）</p>
-</li>
-<li><p>为防止“已失效的连接请求报文段▼”突然又传回B，主机A再进行一次确认（ACK=1,SYN=0，主机A的起始序列号seq=x+1，确认应答号ack=y+1）</p>
-</li>
-<li><p>数据传输结束之后，主机A可以发送一个TCP首部（FIN=1，主机A的起始序列号seq=u），请求断开连接。</p>
-</li>
-<li><p>主机B收到“A不再发送数据的消息”后，返回一个确认报文（ACK=1,seq=v，ack=u+1）<br>A收到B的确认后，进入等待状态，等待B请求释放连接。</p>
-</li>
-<li><p>B数据发送完成之后，向A请求断开连接（FIN=1,ACK=1,seq=w，ack=u+1）  </p>
-</li>
+<li>在数据通信之前，主机A通过TCP首部发送一个SYN包作为建立连接的请求（ACK=0,SYN=1，声明一个起始序号seq=x）等待确认应答</li>
+<li>主机B收到A要建立连接的请求，返回一个允许连接的SYNACK报文段（ACK=1,SYN=1，主机B的起始序号seq=y，确认应答号ack=x+1）</li>
+<li>为防止“已失效的连接请求报文段▼”突然又传回B，主机A再进行一次确认（ACK=1,SYN=0，主机A的起始序列号seq=x+1，确认应答号ack=y+1）</li>
+<li>数据传输结束之后，主机A可以发送一个TCP首部（FIN=1，主机A的起始序列号seq=u），请求断开连接。</li>
+<li>主机B收到“A不再发送数据的消息”后，返回一个确认报文（ACK=1,seq=v，ack=u+1）<br>A收到B的确认后，进入等待状态，等待B请求释放连接。</li>
+<li>B数据发送完成之后，向A请求断开连接（FIN=1,ACK=1,seq=w，ack=u+1）  </li>
 <li><p>A收到B的断开请求后，回复一个确认信息，并进入TIME_WAIT状态▼，等待2MSL时间。</p>
 <ul>
 <li>虽然三次握手方式管理TCP连接可以更好地避免无连接，但这种协议为DOS攻击▼（更确切的说是SYN洪泛攻击▼）提供了可乘之机。</li>
@@ -886,7 +880,7 @@
 <li>ISP:Internet Service Provider </li>
 <li>NAT：Network Address Translator</li>
 <li>Path MTU Discovery：发现路径中存在的所有数据链路中最小的MTU▼</li>
-<li>MTU：Maximum Transmission Unit。参见<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》–路径MTU发现</a></li>
+<li>MTU：Maximum Transmission Unit。参见<a href="http://tianbin.leanote.com/post/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E8%BF%9B%E9%98%B6" target="_blank" rel="noopener">《计算机网络-进阶》—路径MTU发现</a></li>
 <li>ARP(Address Resolution Protocol)：地址解析协议</li>
 <li>RARP：Reverse Address Resolution Protocol</li>
 <li>ICMP：Internet Control Managemet Protocol</li>
@@ -1063,7 +1057,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1302,7 +1296,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共12.3k字
+        博客全站共13k字
       </span>
     </div>
 

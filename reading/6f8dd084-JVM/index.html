@@ -112,7 +112,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java虚拟机 - 概念">
 <meta property="og:url" content="https://tianbin.org/reading/6f8dd084-JVM/index.html">
-<meta property="og:site_name" content="田彬的博客园">
+<meta property="og:site_name" content="TBlogs">
 <meta property="og:description" content="书单列表：    《深入理解Java虚拟机（第2版）》 《实战Java虚拟机》  目录：  Java虚拟机的基本结构   常用的垃圾回收算法">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://tb.nsfocus.co/image/6f8dd084-1.png">
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="田彬的博客园" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="TBlogs" type="application/atom+xml">
 
 
 
@@ -145,7 +145,7 @@
   };
 </script>
 
-  <title>Java虚拟机 - 概念 | 田彬的博客园</title>
+  <title>Java虚拟机 - 概念 | TBlogs</title>
   
 
 
@@ -204,7 +204,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">田彬的博客园</span>
+        <span class="site-title">TBlogs</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -401,7 +401,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="田彬的博客园">
+      <meta itemprop="name" content="TBlogs">
     </span>
 
     
@@ -564,7 +564,7 @@
 </ul>
 <h1 id="Java虚拟机的基本结构"><a href="#Java虚拟机的基本结构" class="headerlink" title="Java虚拟机的基本结构"></a>Java虚拟机的基本结构</h1><p><img src="https://tb.nsfocus.co/image/6f8dd084-1.png" alt="Java虚拟机的基本结构"></p>
 <ul>
-<li>Java栈：由<strong>栈帧</strong>组成，一个函数对应一个栈帧(函数被调用–&gt;入栈)，[栈顶—当前正在运行的函数]，[弹栈–&gt;①函数正常return;②Exception]<img src="https://tb.nsfocus.co/image/6f8dd084-2.png" alt="栈帧的结构"></li>
+<li>Java栈：由<strong>栈帧</strong>组成，一个函数对应一个栈帧(函数被调用—&gt;入栈)，[栈顶—-当前正在运行的函数]，[弹栈—&gt;①函数正常return;②Exception]<img src="https://tb.nsfocus.co/image/6f8dd084-2.png" alt="栈帧的结构"></li>
 <li>方法区：<ul>
 <li>JDK1.6、1.7 ==&gt; 又叫永久区(Perm)</li>
 <li>JDK1.8 ==&gt; 叫元数据区(Metaspace)，(默认 可以吃掉所有系统可用内存)</li>
@@ -572,15 +572,16 @@
 </li>
 </ul>
 <h1 id="常用的垃圾回收算法"><a href="#常用的垃圾回收算法" class="headerlink" title="常用的垃圾回收算法"></a>常用的垃圾回收算法</h1><p>“垃圾”：内存中，不会再被使用的对象。</p>
-<h2 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="1. 引用计数法"></a>1. 引用计数法</h2><pre><code>==&gt;缺点：①无法处理循环引用；②&apos;+&apos;、&apos;-&apos;计数器浪费性能</code></pre><h2 id="2-标记清除法"><a href="#2-标记清除法" class="headerlink" title="2. 标记清除法"></a>2. 标记清除法</h2><ul>
-<li><p>标记：标记从 <em>根节点</em> 开始的所有可达对象  </p>
-</li>
+<h2 id="1-引用计数法"><a href="#1-引用计数法" class="headerlink" title="1. 引用计数法"></a>1. 引用计数法</h2><pre><code>==&gt;缺点：①无法处理循环引用；②&#39;+&#39;、&#39;-&#39;计数器浪费性能
+</code></pre><h2 id="2-标记清除法"><a href="#2-标记清除法" class="headerlink" title="2. 标记清除法"></a>2. 标记清除法</h2><ul>
+<li>标记：标记从 <em>根节点</em> 开始的所有可达对象  </li>
 <li><p>清除：清除所有未被标记的对象</p>
 <p> ==&gt;缺点：回收后的空间不是连续的，在给大对象分配堆空间时 效率低。</p>
 </li>
 </ul>
 <h2 id="3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代"><a href="#3-复制算法-适用于-存活对象少，垃圾对象比较多的新生代" class="headerlink" title="3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)"></a>3. 复制算法(适用于 存活对象少，垃圾对象比较多的新生代)</h2><pre><code>例：将内存(Java堆)平均分为两块A、B，每次清理只需要将A中存活的对象复制到B中，然后清空A。  
-从而解决了 回收后空间不连续的问题</code></pre><h2 id="4-标记压缩清除法-适用于老年代"><a href="#4-标记压缩清除法-适用于老年代" class="headerlink" title="4. 标记压缩清除法(适用于老年代)"></a>4. 标记压缩清除法(适用于老年代)</h2><ul>
+从而解决了 回收后空间不连续的问题
+</code></pre><h2 id="4-标记压缩清除法-适用于老年代"><a href="#4-标记压缩清除法-适用于老年代" class="headerlink" title="4. 标记压缩清除法(适用于老年代)"></a>4. 标记压缩清除法(适用于老年代)</h2><ul>
 <li>标记 从 <em>根节点</em> 开始的所有可达对象</li>
 <li>压缩到内存的一端</li>
 <li>清除边界外的所有垃圾</li>
@@ -592,48 +593,55 @@
  - 栈上分配：基于逃逸分析技术，将线程私有的*小对象*打散分配到Java栈上。（函数调用结束后，会自行销毁，不需要垃圾回收器介入从而提高了性能）
  - 逃逸分析：对象的作用域未逃出函数体(-server模式下 默认开启)
  - TLAB（Thread-local allocation buffer）：线程本地分配缓存(是一个线程专用的内存分配)。（实质：线程专属区间 ⊂ Eden区间）
- - 在老年代引入**卡表**(比特位集合，每一位表示老年代的4k空间)，（1：有被新生代引用的对象，0：无,,,,,,）以应对新生代的高频率GC，每次只需扫描卡表中为1的空间即可。</code></pre><h2 id="6-分区算法"><a href="#6-分区算法" class="headerlink" title="6. 分区算法"></a>6. 分区算法</h2><pre><code>将整个堆划分成连续的不同的小区间，每个小区间独立使用，独立回收。  
-从而能够更好地控制一次GC产生的停顿时间</code></pre><h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><table>
+ - 在老年代引入**卡表**(比特位集合，每一位表示老年代的4k空间)，（1：有被新生代引用的对象，0：无,,,,,,）以应对新生代的高频率GC，每次只需扫描卡表中为1的空间即可。
+</code></pre><h2 id="6-分区算法"><a href="#6-分区算法" class="headerlink" title="6. 分区算法"></a>6. 分区算法</h2><pre><code>将整个堆划分成连续的不同的小区间，每个小区间独立使用，独立回收。  
+从而能够更好地控制一次GC产生的停顿时间
+</code></pre><h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><div class="table-container">
+<table>
 <thead>
 <tr>
-<th align="center">回收器</th>
-<th align="center">串行/并行</th>
-<th align="center">算法</th>
-<th align="center">特点</th>
+<th style="text-align:center">回收器</th>
+<th style="text-align:center">串行/并行</th>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">特点</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">新生代串行回收器</td>
-<td align="center">单线程</td>
-<td align="center">复制算法</td>
-<td align="center">实现简单 逻辑处理高效</td>
+<tbody>
+<tr>
+<td style="text-align:center">新生代串行回收器</td>
+<td style="text-align:center">单线程</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">实现简单 逻辑处理高效</td>
 </tr>
 <tr>
-<td align="center">老年代串行回收器</td>
-<td align="center">单线程</td>
-<td align="center">标记压缩清除</td>
-<td align="center">(堆空间较大时)停顿时间长</td>
+<td style="text-align:center">老年代串行回收器</td>
+<td style="text-align:center">单线程</td>
+<td style="text-align:center">标记压缩清除</td>
+<td style="text-align:center">(堆空间较大时)停顿时间长</td>
 </tr>
 <tr>
-<td align="center">新生代ParNew回收器</td>
-<td align="center">多线程</td>
-<td align="center">复制算法</td>
-<td align="center">性能要看CPU的并发能力</td>
+<td style="text-align:center">新生代ParNew回收器</td>
+<td style="text-align:center">多线程</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">性能要看CPU的并发能力</td>
 </tr>
 <tr>
-<td align="center">新生代ParallelGC回收器</td>
-<td align="center">多线程</td>
-<td align="center">复制算法</td>
-<td align="center">[MaxGCPauseMillis]<br>[GCTimeRatio]<br> <strong>关注吞吐量</strong></td>
+<td style="text-align:center">新生代ParallelGC回收器</td>
+<td style="text-align:center">多线程</td>
+<td style="text-align:center">复制算法</td>
+<td style="text-align:center">[MaxGCPauseMillis]<br>[GCTimeRatio]<br> <strong>关注吞吐量</strong></td>
 </tr>
 <tr>
-<td align="center">老年代ParallelGC回收器</td>
-<td align="center">多线程</td>
-<td align="center">标记压缩清除</td>
-<td align="center"><strong>关注吞吐量</strong></td>
+<td style="text-align:center">老年代ParallelGC回收器</td>
+<td style="text-align:center">多线程</td>
+<td style="text-align:center">标记压缩清除</td>
+<td style="text-align:center"><strong>关注吞吐量</strong></td>
 </tr>
-</tbody></table>
-<h2 id="1-CMS回收器-关注系统停顿时间"><a href="#1-CMS回收器-关注系统停顿时间" class="headerlink" title="1. CMS回收器[关注系统停顿时间]"></a>1. CMS回收器[<strong>关注系统停顿时间</strong>]</h2><pre><code>（Concurrent Mark Sweep）并发标记清除</code></pre><ul>
+</tbody>
+</table>
+</div>
+<h2 id="1-CMS回收器-关注系统停顿时间"><a href="#1-CMS回收器-关注系统停顿时间" class="headerlink" title="1. CMS回收器[关注系统停顿时间]"></a>1. CMS回收器[<strong>关注系统停顿时间</strong>]</h2><pre><code>（Concurrent Mark Sweep）并发标记清除
+</code></pre><ul>
 <li>初始标记：【STW】 标记根对象</li>
 <li>并发标记：标记所有可达对象</li>
 <li>预清理：正式清理前的准备和检查(并发)，尝试控制一次停顿时间</li>
@@ -657,8 +665,13 @@
 </ul>
 </li>
 </ul>
-<h1 id="Class装载系统"><a href="#Class装载系统" class="headerlink" title="Class装载系统"></a>Class装载系统</h1><h2 id="1-类装载步骤"><a href="#1-类装载步骤" class="headerlink" title="1. 类装载步骤"></a>1. 类装载步骤</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-6.png" alt="类装载步骤"><br>     - 加载：解析类方法区内的数据结构 并创建实例<br>     - 验证：class文件格式、语义检查、字节码验证、符号引用验证…<br>     - 准备：为类在Java堆中分配空间，设置初始值<br>     - 解析：将 类、接口、字段、方法的符号引用转为直接引用<br>     - 初始化：编译器自动生成并执行类的初始化方法<code>&lt;clinit&gt;</code>（方法<code>&lt;clinit&gt;</code>由类静态成员的赋值语句和static语句块合并产生）</p>
-<h2 id="2-双亲委托模式-系统默认使用"><a href="#2-双亲委托模式-系统默认使用" class="headerlink" title="2. 双亲委托模式(系统默认使用)"></a>2. 双亲委托模式(系统默认使用)</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-7.png" alt="双亲委托模式"></p>
+<h1 id="Class装载系统"><a href="#Class装载系统" class="headerlink" title="Class装载系统"></a>Class装载系统</h1><h2 id="1-类装载步骤"><a href="#1-类装载步骤" class="headerlink" title="1. 类装载步骤"></a>1. 类装载步骤</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-6.png" alt="类装载步骤"></p>
+<pre><code> - 加载：解析类方法区内的数据结构 并创建实例
+ - 验证：class文件格式、语义检查、字节码验证、符号引用验证...
+ - 准备：为类在Java堆中分配空间，设置初始值
+ - 解析：将 类、接口、字段、方法的符号引用转为直接引用
+ - 初始化：编译器自动生成并执行类的初始化方法```&lt;clinit&gt;```（方法```&lt;clinit&gt;```由类静态成员的赋值语句和static语句块合并产生）
+</code></pre><h2 id="2-双亲委托模式-系统默认使用"><a href="#2-双亲委托模式-系统默认使用" class="headerlink" title="2. 双亲委托模式(系统默认使用)"></a>2. 双亲委托模式(系统默认使用)</h2><p><img src="https://tb.nsfocus.co/image/6f8dd084-7.png" alt="双亲委托模式"></p>
 <p>在类加载的时候，</p>
 <pre><code>if（当前类已经被加载）{  
     return 当前可用类;  
@@ -670,7 +683,8 @@
         自己加载；  
         return 类；  
     }  
-}  </code></pre><h2 id="字节码执行"><a href="#字节码执行" class="headerlink" title="字节码执行"></a>字节码执行</h2><hr>
+}  
+</code></pre><h2 id="字节码执行"><a href="#字节码执行" class="headerlink" title="字节码执行"></a>字节码执行</h2><hr>
 <p>本文为原创文章，包含脚本行为，会经常更新知识点以及修正一些错误，因此转载请保留原出处，方便溯源，避免陈旧错误知识的误导，同时有更好的阅读体验。<br>本文地址：<a href="http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/" target="_blank" rel="noopener">http://nibnait.com/6f8dd084-about-Java-Virtual-Machine/</a></p>
 
       
@@ -835,7 +849,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">17</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1074,7 +1088,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共12.3k字
+        博客全站共13k字
       </span>
     </div>
 
