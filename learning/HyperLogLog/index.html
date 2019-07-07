@@ -108,16 +108,16 @@
 
 
   <meta name="description" content="知其然必知其所以然，最近在看redis的义总问了我一个问题：一个网站的uv是怎么实现的？（当访问量非常大的时候，uv&amp;gt;1000,000,000的时候，还能用redis吗？）我最近正好搭了这个博客，pv和uv都是直接用的不蒜子这个插件，前两天也正好在想他这个uv是怎么实现的？ 于是义总带我走进了HyperLogLog的世界：（以下简称HLL算法）">
-<meta name="keywords" content="算法,redis">
+<meta name="keywords" content="算法,Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HyperLogLog Counting算法">
+<meta property="og:title" content="HyperLogLog Counting 算法">
 <meta property="og:url" content="https://tianbin.org/learning/HyperLogLog/index.html">
 <meta property="og:site_name" content="TBlogs">
 <meta property="og:description" content="知其然必知其所以然，最近在看redis的义总问了我一个问题：一个网站的uv是怎么实现的？（当访问量非常大的时候，uv&amp;gt;1000,000,000的时候，还能用redis吗？）我最近正好搭了这个博客，pv和uv都是直接用的不蒜子这个插件，前两天也正好在想他这个uv是怎么实现的？ 于是义总带我走进了HyperLogLog的世界：（以下简称HLL算法）">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-05T16:05:23.057Z">
+<meta property="og:updated_time" content="2019-07-07T08:21:12.447Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HyperLogLog Counting算法">
+<meta name="twitter:title" content="HyperLogLog Counting 算法">
 <meta name="twitter:description" content="知其然必知其所以然，最近在看redis的义总问了我一个问题：一个网站的uv是怎么实现的？（当访问量非常大的时候，uv&amp;gt;1000,000,000的时候，还能用redis吗？）我最近正好搭了这个博客，pv和uv都是直接用的不蒜子这个插件，前两天也正好在想他这个uv是怎么实现的？ 于是义总带我走进了HyperLogLog的世界：（以下简称HLL算法）">
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>HyperLogLog Counting算法 | TBlogs</title>
+  <title>HyperLogLog Counting 算法 | TBlogs</title>
   
 
 
@@ -402,7 +402,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HyperLogLog Counting算法
+          <h1 class="post-title" itemprop="name headline">HyperLogLog Counting 算法
 
               
             
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-07-06 00:05:23" itemprop="dateModified" datetime="2019-07-06T00:05:23+08:00">2019-07-06</time>
+                <time title="Modified: 2019-07-07 16:21:12" itemprop="dateModified" datetime="2019-07-07T16:21:12+08:00">2019-07-07</time>
               
             
           </span>
@@ -529,7 +529,7 @@
 <li><a href="https://book.douban.com/subject/30386804/" target="_blank" rel="noopener">《Redis 深度历险：核心原理与应用实践》</a></li>
 <li>HLL算法演示：<a href="http://content.research.neustar.biz/blog/hll.html" target="_blank" rel="noopener">http://content.research.neustar.biz/blog/hll.html</a></li>
 </ul>
-<h1 id="HLL算法的使用场景"><a href="#HLL算法的使用场景" class="headerlink" title="HLL算法的使用场景"></a>HLL算法的使用场景</h1><p>HyperLogLog Counting是一种基数计数方法，它的优点：速度极快（常数时间），占用空间极小。缺点：只适用于统计页面UV(unique visitor)、微博的点赞数这种对精确度要求不是很高，且不需要返回集合内所有元素的场景。</p>
+<h1 id="HLL算法的使用场景"><a href="#HLL算法的使用场景" class="headerlink" title="HLL算法的使用场景"></a>HLL算法的使用场景</h1><p>HyperLogLog Counting是一种基数计数方法，它的优点：速度极快（常数时间），占用空间极小。缺点：只适用于<strong>统计页面UV(unique visitor)、微博的点赞数</strong>这种对精确度要求不是很高，且不需要返回集合内所有元素的场景。</p>
 <ul>
 <li>已知1亿bit数据，占用空间100000000/8/1024/1024≈12MB。</li>
 <li>假设我们统计的是用户ip地址，每个ip地址占用空间32bit。</li>
@@ -617,11 +617,11 @@ N = 2^{K_{max}}</script><p>N：整个数据集合里面数据的数量（基数�
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/learning/HyperLogLog/">HyperLogLog Counting算法</a></p>
+  <p><span>本文标题:</span><a href="/learning/HyperLogLog/">HyperLogLog Counting 算法</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
   <p><span>发布时间:</span>2019年07月03日 - 02:07</p>
-  <p><span>最后更新:</span>2019年07月06日 - 00:07</p>
-  <p><span>原始链接:</span><a href="/learning/HyperLogLog/" title="HyperLogLog Counting算法">https://tianbin.org/learning/HyperLogLog/</a>
+  <p><span>最后更新:</span>2019年07月07日 - 16:07</p>
+  <p><span>原始链接:</span><a href="/learning/HyperLogLog/" title="HyperLogLog Counting 算法">https://tianbin.org/learning/HyperLogLog/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/learning/HyperLogLog/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
@@ -665,9 +665,9 @@ N = 2^{K_{max}}</script><p>N：整个数据集合里面数据的数量（基数�
               算法
             </a>
           
-            <a href="/tags/redis/" rel="tag">
+            <a href="/tags/Redis/" rel="tag">
               <i class="fa fa-tag"></i>
-              redis
+              Redis
             </a>
           
         </div>
@@ -690,6 +690,10 @@ N = 2^{K_{max}}</script><p>N：整个数据集合里面数据的数量（基数�
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/reading/redis_datastruct/" rel="prev" title="Redis 都有哪些数据结构？">
+                Redis 都有哪些数据结构？ <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -762,7 +766,7 @@ N = 2^{K_{max}}</script><p>N：整个数据集合里面数据的数量（基数�
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1001,7 +1005,7 @@ N = 2^{K_{max}}</script><p>N：整个数据集合里面数据的数量（基数�
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共13k字
+        博客全站共14.9k字
       </span>
     </div>
 
