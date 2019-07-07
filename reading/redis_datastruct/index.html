@@ -107,18 +107,18 @@
 
 
 
-  <meta name="description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 HyperLogLog、GeoHash、PubSub Redis Module：BloomFilter、RedisSearch、Redis-ML">
+  <meta name="description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis 都有哪些数据结构？">
 <meta property="og:url" content="https://tianbin.org/reading/redis_datastruct/index.html">
 <meta property="og:site_name" content="TBlogs">
-<meta property="og:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 HyperLogLog、GeoHash、PubSub Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta property="og:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-07T08:21:12.451Z">
+<meta property="og:updated_time" content="2019-07-07T13:34:30.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 都有哪些数据结构？">
-<meta name="twitter:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 HyperLogLog、GeoHash、PubSub Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta name="twitter:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
 
 
 
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-07-07 16:21:12" itemprop="dateModified" datetime="2019-07-07T16:21:12+08:00">2019-07-07</time>
+                <time title="Modified: 2019-07-07 21:34:30" itemprop="dateModified" datetime="2019-07-07T21:34:30+08:00">2019-07-07</time>
               
             
           </span>
@@ -468,8 +468,8 @@
                 
               
             </span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：681</span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈2分钟</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：1.2k</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈4分钟</span>
 
           
 
@@ -521,15 +521,41 @@
 
       
         <p>字符串String，字段Hash，列表List，集合Set，有序集合ZSet。</p>
-<p><a href="../../learning/HyperLogLog">HyperLogLog</a>、<a href="../../learning/GeoHash">GeoHash</a>、PubSub</p>
+<p>位图、<a href="../../learning/HyperLogLog">HyperLogLog</a>、<a href="../../learning/GeoHash">GeoHash</a>、PubSub、Stream</p>
 <p>Redis Module：BloomFilter、RedisSearch、Redis-ML</p>
 <a id="more"></a>
+<h1 id="位图"><a href="#位图" class="headerlink" title="位图"></a>位图</h1><p>用于统计用户进1年的签到情况。它的本质还是String，只是Redis天然支持位操作。（直接将byte数组看成「位数组」即可）</p>
+<blockquote>
+<p>setbit key offset value</p>
+<p>getbit key offset</p>
+<p>bitcount key [start] [end]    #统计两个offset之间1的个数</p>
+<p>bittop op destkey [key…]    #对两个位图进行and、or、not、xor操作，将结果保存在destkey中</p>
+<p>bitfield key get/set/incrby</p>
+</blockquote>
 <h1 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h1><p>用于统计页面访问UV、直播在线人数、微博点赞数、微博词条搜索次数，等这些对统计精度要求不是100%，且不需要返回统计集合内所有的元素的场景。<br>原理：<script type="math/tex">N = 2^{k_{max}}</script>，利用每个桶内的<script type="math/tex">k_{max}</script>的调和平均值估计集合的整体基数。</p>
+<blockquote>
+<p>pfadd key element</p>
+<p>pfcount key</p>
+<p>pfmerge [key…]</p>
+</blockquote>
 <p>详情见<a href="../../learning/HyperLogLog">HyperLogLog Counting算法</a></p>
-<h1 id="GeoHash"><a href="#GeoHash" class="headerlink" title="GeoHash"></a>GeoHash</h1><p>Redis 在 3.2 版本以后增加了地理位置 GEO 模块，意味着我们可以使用 Redis 来实现摩拜单车「附近的 Mobike」、饿了么「附近的餐馆」这样的功能了。 </p>
-<p>业界比较通用的地理位置距离排序算法是 <a href="../../learning/GeoHash">GeoHash 算法</a>，Redis 也使用 GeoHash 算法。它将二维的经纬度数据映射成一维的整数，这样所有的元素都将在挂载到一条线上，距离靠近的二维坐标映射到一维后的点之间距离也会很接近。</p>
-<h1 id="PubSub"><a href="#PubSub" class="headerlink" title="PubSub"></a>PubSub</h1><h1 id="BloomFilter（布隆过滤器）"><a href="#BloomFilter（布隆过滤器）" class="headerlink" title="BloomFilter（布隆过滤器）"></a>BloomFilter（布隆过滤器）</h1><p>它说有，不一定有。它说没有，就一定没有。</p>
+<h1 id="GeoHash"><a href="#GeoHash" class="headerlink" title="GeoHash"></a>GeoHash</h1><p>Redis 在 3.2 版本以后增加了地理位置 GEO 模块，意味着我们可以使用 Redis 来实现摩拜单车「附近的 Mobike」、饿了么「附近的餐馆」这样的功能了。<br>业界比较通用的地理位置距离排序算法是 <a href="../../learning/GeoHash">GeoHash 算法</a>，Redis 也使用 GeoHash 算法。它将二维的经纬度数据映射成一维的整数，这样所有的元素都将在挂载到一条线上，距离靠近的二维坐标映射到一维后的点之间距离也会很接近。<br>在使用 Redis 进行 Geo 查询时，我们要时刻想到它的内部结构实际上只是一个 zset(skiplist)。通过 zset 的 score 排序就可以得到坐标附近的其它元素，通过将 score 还原成坐标值就可以得到元素的原始坐标。</p>
+<blockquote>
+<p>geoadd key (longitude) (latitude) (address)</p>
+<p>geodist key (addressA) (addressB) (km)</p>
+<p>geopos key address    #获取元素的经纬度信息</p>
+<p>geohash key address    #获取元素的hash值</p>
+<p>georadiusbymember key address 20 km [withcoord] [withdist] [withhash] count 3 asc # 查询附近20km内最近的3个元素，正序并显示经纬度、距离、hash信息</p>
+</blockquote>
+<h1 id="PubSub（消息多播）"><a href="#PubSub（消息多播）" class="headerlink" title="PubSub（消息多播）"></a>PubSub（消息多播）</h1><p>可以多个客户端订阅同一个消息主题，实现消息多播。但是此模式的缺点就是一旦Redis停机重启，PubSub 的消息是不会持久化的，毕竟 Redis 宕机就相当于一个消费者都没有，所有的消息直接被丢弃。</p>
+<p>近期 Redis5.0 新增的 Stream 数据结构，这个功能给 Redis 带来了持久化消息队列，从此 PubSub 可以消失了</p>
+<h1 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h1><p>Stream 的消费模型借鉴了 Kafka 的消费分组的概念，它弥补了 Redis Pub/Sub 不能持 久化消息的缺陷。但是它又不同于 kafka，Kafka 的消息可以分 partition，而 Stream 不行。 如果非要分 parition 的话，得在客户端做，提供不同的 Stream 名称，对消息进行 hash 取 模来选择往哪个 Stream 里塞。</p>
+<h1 id="BloomFilter（布隆过滤器）"><a href="#BloomFilter（布隆过滤器）" class="headerlink" title="BloomFilter（布隆过滤器）"></a>BloomFilter（布隆过滤器）</h1><p>它说有，不一定有。它说没有，就一定没有。</p>
 <p>因为布隆过滤器的实现原理是利用一个长度为l的位数组，没bf.add一个元素进来，会经过k个hash函数，得到k个不同的位置，然后将这k个位置的数字置位1。当调用bf.exists时，直接去这个key得到的k个hash位置判断是否都为1，有一个位置为0，这判为不存在。但是即使都为0，这个key也不一定存在，因为这k个hash位也有可能是由其他若干个key置位1的。</p>
+<blockquote>
+<p>bf.add key value    # bf.madd key [value…]</p>
+<p>bf.exists key value    # bf.mexists key [value…]</p>
+</blockquote>
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p><strong>垃圾邮件的过滤</strong>、今日头条<strong>推荐文章去重</strong>、<strong>爬虫</strong>系统<strong>url去重</strong>（当爬取网页url的数量达到几千万几亿的级别时）等等这种数据量很大，判断key是否存在（去重、过滤），且允许一定几率误判的业务场景。</p>
 <h2 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h2><p>Redis 官方提供的布隆过滤器到了 Redis 4.0 提供了插件功能之后才正式登场。在执行bf.add(key)之前会使用bf.reserve执行显示创建BoolmFIlter，两个个关键参数：</p>
 <ul>
@@ -542,7 +568,7 @@
 <li>f = <script type="math/tex">0.6185^\frac{l}{n}</script></li>
 </ul>
 <p>公式的证明：<a href="https://www.cnblogs.com/allensun/archive/2011/02/16/1956532.html" target="_blank" rel="noopener">数学学渣慎点</a><br>线上计算空间占用：<a href="https://krisives.github.io/bloom-calculator/" target="_blank" rel="noopener">https://krisives.github.io/bloom-calculator/</a></p>
-<h1 id="RedisSearch（搜索引擎）"><a href="#RedisSearch（搜索引擎）" class="headerlink" title="RedisSearch（搜索引擎）"></a>RedisSearch（搜索引擎）</h1>
+<h1 id="RedisSearch（搜索引擎）"><a href="#RedisSearch（搜索引擎）" class="headerlink" title="RedisSearch（搜索引擎）"></a>RedisSearch（搜索引擎）</h1><h1 id="Redis-ML（机器学习模型服务器）"><a href="#Redis-ML（机器学习模型服务器）" class="headerlink" title="Redis-ML（机器学习模型服务器）"></a>Redis-ML（机器学习模型服务器）</h1>
       
     </div>
 
@@ -564,7 +590,7 @@
   <p><span>本文标题:</span><a href="/reading/redis_datastruct/">Redis 都有哪些数据结构？</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
   <p><span>发布时间:</span>2019年07月06日 - 19:07</p>
-  <p><span>最后更新:</span>2019年07月07日 - 16:07</p>
+  <p><span>最后更新:</span>2019年07月07日 - 21:07</p>
   <p><span>原始链接:</span><a href="/reading/redis_datastruct/" title="Redis 都有哪些数据结构？">https://tianbin.org/reading/redis_datastruct/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/reading/redis_datastruct/" aria-label="复制成功！"></i></span>
   </p>
@@ -895,7 +921,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">1.</span> <span class="nav-text">HyperLogLog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GeoHash"><span class="nav-number">2.</span> <span class="nav-text">GeoHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PubSub"><span class="nav-number">3.</span> <span class="nav-text">PubSub</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BloomFilter（布隆过滤器）"><span class="nav-number">4.</span> <span class="nav-text">BloomFilter（布隆过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">4.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优"><span class="nav-number">4.2.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisSearch（搜索引擎）"><span class="nav-number">5.</span> <span class="nav-text">RedisSearch（搜索引擎）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#位图"><span class="nav-number">1.</span> <span class="nav-text">位图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">2.</span> <span class="nav-text">HyperLogLog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GeoHash"><span class="nav-number">3.</span> <span class="nav-text">GeoHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PubSub（消息多播）"><span class="nav-number">4.</span> <span class="nav-text">PubSub（消息多播）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stream"><span class="nav-number">5.</span> <span class="nav-text">Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BloomFilter（布隆过滤器）"><span class="nav-number">6.</span> <span class="nav-text">BloomFilter（布隆过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">6.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优"><span class="nav-number">6.2.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisSearch（搜索引擎）"><span class="nav-number">7.</span> <span class="nav-text">RedisSearch（搜索引擎）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-ML（机器学习模型服务器）"><span class="nav-number">8.</span> <span class="nav-text">Redis-ML（机器学习模型服务器）</span></a></li></ol></div>
             
 
           </div>
@@ -944,7 +970,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共14.9k字
+        博客全站共15.5k字
       </span>
     </div>
 

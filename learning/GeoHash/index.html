@@ -121,7 +121,7 @@
 <meta property="og:image" content="https://tb.nsfocus.co/image/geohash_1.png">
 <meta property="og:image" content="https://tb.nsfocus.co/image/geohash_2.png">
 <meta property="og:image" content="https://tb.nsfocus.co/image/geohash_3.png">
-<meta property="og:updated_time" content="2019-07-07T08:38:13.875Z">
+<meta property="og:updated_time" content="2019-07-07T08:52:14.435Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GeoHash 算法">
 <meta name="twitter:description" content="计算「附近的人」，当数据量并发量很小的时候，我们可以直接在数据库中拿到所有点的经纬度信息，然后利用勾股定理依次计算两点间距离，排序。但是当你的数据库里有几百万个点的时候，为了提高系统性能，我们可以先以一个点为中心画一个圆，然后计算这个圆中的所有点的距离。但是MySQL的性能毕竟有限，如果并发量也上来呢？">
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="Created: 2019-07-07 12:38:36 / Modified: 16:38:13" itemprop="dateCreated datePublished" datetime="2019-07-07T12:38:36+08:00">2019-07-07</time>
+              <time title="Created: 2019-07-07 12:38:36 / Modified: 16:52:14" itemprop="dateCreated datePublished" datetime="2019-07-07T12:38:36+08:00">2019-07-07</time>
             
 
             
@@ -516,7 +516,7 @@
 
       
         <p>计算「附近的人」，当数据量并发量很小的时候，我们可以直接在数据库中拿到所有点的经纬度信息，然后利用勾股定理依次计算两点间距离，排序。但是当你的数据库里有<strong>几百万个点</strong>的时候，为了提高系统性能，我们可以先以一个点为中心画一个圆，然后计算这个圆中的所有点的距离。但是MySQL的性能毕竟有限，如果并发量也上来呢？<a id="more"></a>恐怕现在还没有那个系统有这么强悍的计算量，因此GeoHash应运而生。</p>
-<p>简单来说，GeoHash可以理解为另一种地址编码方式，它将二维空间的经纬度数据编码成一个字符串，字符串的二进制hash值越接近，也说明两个点的实际距离约接近。</p>
+<p>简单来说，GeoHash可以理解为另一种地址编码方式，它将二维空间的经纬度数据编码成一个字符串，字符串的二进制码值越接近，也说明两个点的实际距离约接近（存在一定的误差）。</p>
 <p><strong>注意</strong>：GeoHash值表示的是一个矩形区域，hash值越长，矩形的范围越小。例如wx4g0ec1，编码wx4g0e表示的范围就比wx4g0ec1更大。所以GeoHash可以用来快速圈定给定坐标的附近坐标。</p>
 <p>此外（题外话）使用GeoHash来表示位置信息，也有助于隐私保护。在线根据GeoHash转换经纬度：<a href="http://geohash.org/wx4g0ec1" target="_blank" rel="noopener">http://geohash.org/{GeoHash}</a></p>
 <h1 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h1><h2 id="将经纬度转换为二进制"><a href="#将经纬度转换为二进制" class="headerlink" title="将经纬度转换为二进制"></a>将经纬度转换为二进制</h2><p>比如（39.923201, 116.390705）这个点，纬度的范围是（-90，90），其中间值为0。对于纬度39.923201，在区间（0，90）中，因此得到一个1；（0，90）区间的中间值为45度，纬度39.923201小于45，因此得到一个0，依次计算下去，即可得到纬度的二进制表示，如下表：</p>
@@ -529,7 +529,7 @@
 <p><img src="https://tb.nsfocus.co/image/geohash_base32.png" alt="geohash_base32"></p>
 <p>上述合并后的二进制编码后的结果为：</p>
 <figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wx4g0ec1</span><br></pre></td></tr></table></figure>
-<p>编码越长，表示的范围越小，位置也越精确。<br>下表摘自<a href="https://www.wikiwand.com/en/Geohash#/Number_of_geohash_characters_and_precision_in_km" target="_blank" rel="noopener">维基百科</a>：</p>
+<p>由此可见编码越长，表示的范围越小，位置也越精确。<br>下表摘自<a href="https://www.wikiwand.com/en/Geohash#/Number_of_geohash_characters_and_precision_in_km" target="_blank" rel="noopener">维基百科</a>：</p>
 <p><img src="https://tb.nsfocus.co/image/geohash_precision.png" alt="geohash_precision"></p>
 <p>可以看出，当geohash base32编码长度为8时，精度在19米左右，而当编码长度为9时，精度在2米左右，编码长度需要根据数据情况进行选择。</p>
 <h1 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h1><blockquote>
@@ -949,7 +949,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共14.9k字
+        博客全站共15.5k字
       </span>
     </div>
 
