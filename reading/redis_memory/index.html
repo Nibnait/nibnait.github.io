@@ -107,18 +107,18 @@
 
 
 
-  <meta name="description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+  <meta name="description" content="过期策略当Redis中缓存的key过期了，Redis如何处理？">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 都有哪些数据结构？">
-<meta property="og:url" content="https://tianbin.org/reading/redis_datastruct/index.html">
+<meta property="og:title" content="Redis 过期key策略和内存淘汰策略">
+<meta property="og:url" content="https://tianbin.org/reading/redis_memory/index.html">
 <meta property="og:site_name" content="TBlogs">
-<meta property="og:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta property="og:description" content="过期策略当Redis中缓存的key过期了，Redis如何处理？">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-09T11:02:13.994Z">
+<meta property="og:updated_time" content="2019-07-13T09:43:09.111Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis 都有哪些数据结构？">
-<meta name="twitter:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta name="twitter:title" content="Redis 过期key策略和内存淘汰策略">
+<meta name="twitter:description" content="过期策略当Redis中缓存的key过期了，Redis如何处理？">
 
 
 
@@ -128,7 +128,7 @@
 
   
   
-  <link rel="canonical" href="https://tianbin.org/reading/redis_datastruct/">
+  <link rel="canonical" href="https://tianbin.org/reading/redis_memory/">
 
 
 
@@ -138,7 +138,7 @@
   };
 </script>
 
-  <title>Redis 都有哪些数据结构？ | TBlogs</title>
+  <title>Redis 过期key策略和内存淘汰策略 | TBlogs</title>
   
 
 
@@ -385,7 +385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://tianbin.org/reading/redis_datastruct/">
+    <link itemprop="mainEntityOfPage" href="https://tianbin.org/reading/redis_memory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="NibNait&nbsp&nbsp">
@@ -402,7 +402,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis 都有哪些数据结构？
+          <h1 class="post-title" itemprop="name headline">Redis 过期key策略和内存淘汰策略
 
               
             
@@ -428,24 +428,12 @@
                 
               
 
-              <time title="创建时间：2019-07-06 19:57:45" itemprop="dateCreated datePublished" datetime="2019-07-06T19:57:45+08:00">2019-07-06</time>
+              <time title="创建时间：2019-07-13 09:28:53 / 修改时间：17:43:09" itemprop="dateCreated datePublished" datetime="2019-07-13T09:28:53+08:00">2019-07-13</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-09 19:02:13" itemprop="dateModified" datetime="2019-07-09T19:02:13+08:00">2019-07-09</time>
               
             
           </span>
@@ -468,8 +456,8 @@
                 
               
             </span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：1.2k</span>
-            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈4分钟</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-print"></i> 字数统计：2.7k</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i> 阅读时长≈10分钟</span>
 
           
 
@@ -484,8 +472,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/reading/redis_datastruct/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/reading/redis_datastruct/" itemprop="commentCount"></span>
+                <a href="/reading/redis_memory/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/reading/redis_memory/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -520,56 +508,70 @@
       
 
       
-        <p>字符串String，字段Hash，列表List，集合Set，有序集合ZSet。</p>
-<p>位图、<a href="../../learning/HyperLogLog">HyperLogLog</a>、<a href="../../learning/GeoHash">GeoHash</a>、PubSub、Stream</p>
-<p>Redis Module：BloomFilter、RedisSearch、Redis-ML</p>
-<a id="more"></a>
-<h1 id="位图"><a href="#位图" class="headerlink" title="位图"></a>位图</h1><p>用于统计用户进1年的签到情况。它的本质还是String，只是Redis天然支持位操作。（直接将byte数组看成「位数组」即可）</p>
-<blockquote>
-<p>setbit key offset value</p>
-<p>getbit key offset</p>
-<p>bitcount key [start] [end]    #统计两个offset之间1的个数</p>
-<p>bittop op destkey [key…]    #对两个位图进行and、or、not、xor操作，将结果保存在destkey中</p>
-<p>bitfield key get/set/incrby</p>
-</blockquote>
-<h1 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h1><p>用于统计页面访问UV、直播在线人数、微博点赞数、微博词条搜索次数，等这些对统计精度要求不是100%，且不需要返回统计集合内所有的元素的场景。<br>原理：<script type="math/tex">N = 2^{k_{max}}</script>，利用每个桶内的<script type="math/tex">k_{max}</script>的调和平均值估计集合的整体基数。</p>
-<blockquote>
-<p>pfadd key element</p>
-<p>pfcount key</p>
-<p>pfmerge [key…]</p>
-</blockquote>
-<p>详情见<a href="../../learning/HyperLogLog">HyperLogLog Counting算法</a></p>
-<h1 id="GeoHash"><a href="#GeoHash" class="headerlink" title="GeoHash"></a>GeoHash</h1><p>Redis 在 3.2 版本以后增加了地理位置 GEO 模块，意味着我们可以使用 Redis 来实现摩拜单车「附近的 Mobike」、饿了么「附近的餐馆」这样的功能了。<br>业界比较通用的地理位置距离排序算法是 <a href="../../learning/GeoHash">GeoHash 算法</a>，Redis 也使用 GeoHash 算法。它将二维的经纬度数据映射成一维的整数，这样所有的元素都将在挂载到一条线上，距离靠近的二维坐标映射到一维后的点之间距离也会很接近。<br>在使用 Redis 进行 Geo 查询时，它的内部结构实际上只是一个 zset(skiplist)。通过 zset 的 score 排序就可以得到坐标附近的其它元素，通过将 score 还原成坐标值就可以得到元素的原始坐标。</p>
-<blockquote>
-<p>geoadd key (longitude) (latitude) (address)</p>
-<p>geodist key (addressA) (addressB) (km)</p>
-<p>geopos key address    #获取元素的经纬度信息</p>
-<p>geohash key address    #获取元素的hash值</p>
-<p>georadiusbymember key address 20 km [withcoord] [withdist] [withhash] count 3 asc # 查询附近20km内最近的3个元素，正序并显示经纬度、距离、hash信息</p>
-</blockquote>
-<h1 id="PubSub（消息多播）"><a href="#PubSub（消息多播）" class="headerlink" title="PubSub（消息多播）"></a>PubSub（消息多播）</h1><p>可以多个客户端订阅同一个消息主题，实现消息多播。但是此模式的缺点就是一旦Redis停机重启，PubSub 的消息是不会持久化的，毕竟 Redis 宕机就相当于一个消费者都没有，所有的消息直接被丢弃。</p>
-<p>近期 Redis5.0 新增的 Stream 数据结构，这个功能给 Redis 带来了持久化消息队列，从此 PubSub 可以消失了</p>
-<h1 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h1><p>Stream 的消费模型借鉴了 Kafka 的消费分组的概念，它弥补了 Redis Pub/Sub 不能持 久化消息的缺陷。但是它又不同于 kafka，Kafka 的消息可以分 partition，而 Stream 不行。 如果非要分 parition 的话，得在客户端做，提供不同的 Stream 名称，对消息进行 hash 取 模来选择往哪个 Stream 里塞。</p>
-<h1 id="BloomFilter（布隆过滤器）"><a href="#BloomFilter（布隆过滤器）" class="headerlink" title="BloomFilter（布隆过滤器）"></a>BloomFilter（布隆过滤器）</h1><p>它说有，不一定有。它说没有，就一定没有。</p>
-<p>因为布隆过滤器的实现原理是利用一个长度为l的位数组，没bf.add一个元素进来，会经过k个hash函数，得到k个不同的位置，然后将这k个位置的数字置位1。当调用bf.exists时，直接去这个key得到的k个hash位置判断是否都为1，有一个位置为0，这判为不存在。但是即使都为0，这个key也不一定存在，因为这k个hash位也有可能是由其他若干个key置位1的。</p>
-<blockquote>
-<p>bf.add key value    # bf.madd key [value…]</p>
-<p>bf.exists key value    # bf.mexists key [value…]</p>
-</blockquote>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p><strong>垃圾邮件的过滤</strong>、今日头条<strong>推荐文章去重</strong>、<strong>爬虫</strong>系统<strong>url去重</strong>（当爬取网页url的数量达到几千万几亿的级别时）等等这种数据量很大，判断key是否存在（去重、过滤），且允许一定几率误判的业务场景。</p>
-<h2 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h2><p>Redis 官方提供的布隆过滤器到了 Redis 4.0 提供了插件功能之后才正式登场。在执行bf.add(key)之前会使用bf.reserve执行显示创建BoolmFIlter，两个个关键参数：</p>
+        <h1 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h1><p>当Redis中缓存的key过期了，Redis如何处理？<br><a id="more"></a></p>
+<h2 id="惰性删除"><a href="#惰性删除" class="headerlink" title="惰性删除"></a>惰性删除</h2><p>在客户端访问 key 的时候，如果这个 key 设置了过期时间，redis 则对 key 的过期时间进行检查，如果过期了就立即删除。<br>memcached只是用了惰性删除，而Redis同时使用了惰性删除与定期删除</p>
+<h2 id="定期扫描删除"><a href="#定期扫描删除" class="headerlink" title="定期扫描删除"></a>定期扫描删除</h2><p>redis 会将每个设置了过期时间的 key 放入到一个独立的字典中，然后会<strong>定时遍历</strong>这个字典来删除到期的 key。<br>这个定时任务由 src/expire.c 的 activeExpireCycle(ACTIVE_EXPIRE_CYCLE_SLOW) 函数来完成，它的大致步骤是：</p>
+<ol>
+<li>每次从过期字典中随机选取20个key。</li>
+<li>删除这20个key中过期的key。</li>
+<li>如果这20个key中过期key的比例超过了 25%，则重复步骤1。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">src/server.h 中定义的每次获取 key 的数量和比例。</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP 20 <span class="comment">/* Loopkups per loop. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC 25 <span class="comment">/* CPU max % for keys collection */</span></span></span><br></pre></td></tr></table></figure>
+<p>为了防止这个过期扫描出现循环过度，此算法加了一个timelimit变量，函数每次默认最多执行25ms  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认情况下，timelimit=25000(纳秒)</span></span><br><span class="line">timelimit = <span class="number">1000000</span>*ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC/server.hz/<span class="number">100</span>;	</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((iteration &amp; <span class="number">0xf</span>) == <span class="number">0</span>) &#123; <span class="comment">/* check once every 16 iterations. */</span></span><br><span class="line">  <span class="comment">//删除过期key，每迭代16次，检查一次timelimit</span></span><br><span class="line">  elapsed = ustime()-start;	<span class="comment">//ustime()精确到纳秒</span></span><br><span class="line">  <span class="keyword">if</span> (elapsed &gt; timelimit) &#123;</span><br><span class="line">    timelimit_exit = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>即使加了timelimit，默认没100ms执行一次activeExpireCycle。如果同一时间有大量key过期，在默认情况下 Redis 也会有至少 1 / 4 的时间被阻塞来执行这个activeExpireCycle()方法。为防止出现这种情况，可以在设置过期时间时 后面再个随机值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在目标过期时间上增加一天的随机时间</span></span><br><span class="line">redis.expire_at(key, random.randint(<span class="number">24</span>*<span class="number">3600</span>) + expire_ts)</span><br></pre></td></tr></table></figure>
+<h2 id="从库的过期策略"><a href="#从库的过期策略" class="headerlink" title="从库的过期策略"></a>从库的过期策略</h2><p>从库不会进行过期扫描，从库对过期的处理是被动的。主库在 key 到期时，会在 AOF 文件里增加一条 del 指令，同步到所有的从库，从库通过执行这条 del 指令来删除过期的 key。<br>因为指令同步是异步进行的，所以主库过期的 key 的 del 指令没有及时同步到从库的话，会出现主从数据的不一致，主库没有的数据在从库里还存在，比如在集群环境中分布式锁的算法漏洞就是因为这个同步延迟产生的。</p>
+<h2 id="单线程的-Redis，如何知道要运行定时任务？"><a href="#单线程的-Redis，如何知道要运行定时任务？" class="headerlink" title="单线程的 Redis，如何知道要运行定时任务？"></a>单线程的 Redis，如何知道要运行定时任务？</h2><p>这个定期扫描删除任务在由 server.c/serverCron() 方法调用，Redis 将 serverCron 方法称作“timer interrupt”（循环时间事件），它每秒的执行次数可以通过redis.conf <code>hz</code>选项（默认是10）来配置。<br>serverCron() 除了定期扫描删除过期key，主要还执行：</p>
 <ul>
-<li>f（error_rate(0.01)）数字越小，占用空间越大。</li>
-<li>n（initial_size(100)）当key的实际数量超出这个数值时，误判率会上升。</li>
+<li>更新服务器的各类统计信息，比如时间（server.lruclock）、内存占用、数据库占用情况等。</li>
+<li>关闭和清理连接失效的客户端。</li>
+<li>尝试进行 AOF 或 RDB 持久化操作。</li>
+<li>如果服务器是主节点的话，对附属节点进行定期同步。</li>
+<li>如果处于集群模式的话，对集群进行定期同步和连接测试。</li>
 </ul>
-<p>这两个会直接影响布隆过滤器的数组长度(l)、和hash函数的最佳数量(k)<br>简单的计算公式如下：</p>
+<h1 id="内存淘汰策略"><a href="#内存淘汰策略" class="headerlink" title="内存淘汰策略"></a>内存淘汰策略</h1><p>当Redis已用内存超过maxmemory限定时，怎么处理需要新写入且需要申请额外空间的数据？根据redis.conf <code>maxmemory-policy</code> 选项来做对应的清理：</p>
 <ul>
-<li>k ≈ 0.7 * <script type="math/tex">\frac{l}{n}</script></li>
-<li>f = <script type="math/tex">0.6185^\frac{l}{n}</script></li>
+<li>volatile-lru: 从设置了过期时间的key中，删除最久未使用的key</li>
+<li>allkeys-lru: 从所有key中，删除最近最少使用的key</li>
+<li>volatile-lfu: 从设置了过期时间的key中，删除使用频率最少的key</li>
+<li>allkeys-lfu: 从所有key中，删除使用频率最少的key</li>
+<li>volatile-random: 从设置了过期时间的key中，随机删除</li>
+<li>allkeys-random: 从所有key中，随机删除</li>
+<li>volatile-ttl: 从设置了过期时间的key中，删除马上要过期的key</li>
+<li>noeviction: （Redis的默认淘汰策略）不删除，在写操作时直接报错</li>
 </ul>
-<p>公式的证明：<a href="https://www.cnblogs.com/allensun/archive/2011/02/16/1956532.html" target="_blank" rel="noopener">数学学渣慎点</a><br>线上计算空间占用：<a href="https://krisives.github.io/bloom-calculator/" target="_blank" rel="noopener">https://krisives.github.io/bloom-calculator/</a></p>
-<p>误判为什么会上升？</p>
-<h1 id="RedisSearch（搜索引擎）"><a href="#RedisSearch（搜索引擎）" class="headerlink" title="RedisSearch（搜索引擎）"></a>RedisSearch（搜索引擎）</h1><h1 id="Redis-ML（机器学习模型服务器）"><a href="#Redis-ML（机器学习模型服务器）" class="headerlink" title="Redis-ML（机器学习模型服务器）"></a>Redis-ML（机器学习模型服务器）</h1>
+<p>当mem_used达到maxmemory时，所有的写请求都会调用 src/evict.c 的 freeMemoryIfNeeded(void) 方法，执行对应的策略尝试释放一些内存。</p>
+<h2 id="近似的-LRU-算法"><a href="#近似的-LRU-算法" class="headerlink" title="近似的 LRU 算法"></a>近似的 LRU 算法</h2><p>Redis 中的LRU并不是真正的LRU，为了避免LRU算法中hash表的内存消耗，Redis 给每个key都增加了一个额外的小字段（lru）：一个24bit长度的，记录着最后一次被访问的时间戳”。</p>
+<p>在执行 Redis LRU 算法时，从待删除的key空间中随机采样<code>maxmemory-samples</code>（默认是5）个key，淘汰最久未访问过的那个key（redis作者测试的结果是当maxmemory-samples = 10时，已经非常接近全量LRU的精准度了）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LRU_BITS 24</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LRU_CLOCK_MAX ((1<span class="meta-string">&lt;&lt;LRU_BITS)-1) /* Max value of obj-&gt;lru */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LRU_CLOCK_RESOLUTION 1000 <span class="comment">/* LRU clock resolution in ms */</span></span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>LRU 时间戳的默认精度是 1000ms，24bit 可以表示的最长时间大约是194天。</p>
+<ul>
+<li>如果一个 key 超过194天没有被访问，在计算空闲时间的时候，就会少算194天，造成一定的误差。</li>
+<li>为了避免 fork 子进程后额外的内存消耗，当进行 bgsave 或 aof rewrite 时，lru访问时间是不更新的。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 如果对象本身存的lru访问时间 比系统的当前lru clock还要大</span></span><br><span class="line"><span class="comment"> * 那么在计算当前对象的空闲时间的时候，就不能简单的lruclock - o-&gt;lru相减了，需要额外计算*/</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="title">estimateObjectIdleTime</span><span class="params">(robj *o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> lruclock = LRU_CLOCK();</span><br><span class="line">    <span class="keyword">if</span> (lruclock &gt;= o-&gt;lru) &#123;</span><br><span class="line">        <span class="keyword">return</span> (lruclock - o-&gt;lru) * LRU_CLOCK_RESOLUTION;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (lruclock + (LRU_CLOCK_MAX - o-&gt;lru)) *</span><br><span class="line">                    LRU_CLOCK_RESOLUTION;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 如果当前 lru clock 的分辨率低于系统刷新频率，则使用系统的时间戳(server.lruclock)</span></span><br><span class="line"><span class="comment"> * 		否则调用系统的mstime()函数重新计算*/</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">LRU_CLOCK</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> lruclock;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1000</span>/server.hz &lt;= LRU_CLOCK_RESOLUTION) &#123;</span><br><span class="line">        atomicGet(server.lruclock,lruclock);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        lruclock = getLRUClock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lruclock;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 当计算出的当前clock超出LRU_CLOCK_MAX时，就会再次从0开始数</span></span><br><span class="line"><span class="comment"> * server.lruclock也是通过此方法来获取的当前时间*/</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">getLRUClock</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (mstime()/LRU_CLOCK_RESOLUTION) &amp; LRU_CLOCK_MAX;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Redis 3.0 之后，又增加了一个<code>eviction pool</code>的结构，eviction pool是一个数组，保存了之前随机选取的key及它们的idle时间，数组里面的key按idle时间升序排序，当内存满了需要淘汰数据时，会调用<code>dictGetSomeKeys</code>选取指定的数目的key，然后更新到eviction pool里面，如果新选取的key的idle时间比eviction pool里面idle时间最小的key还要小，那么就不会把它插入到eviction pool里面。这样就保证了对于某些历史选取的key的idle时间相对来说比较久，但是本次淘汰并没有被选中，因为出现了idle时间更久的key，那么在使用eviction pool的情况下，这种idle时间比较久的key淘汰概率增大了，因为它在eviction pool里面被保存下来，参与下轮淘汰，这个思路和<code>访问局部性原理</code>是契合的。</p>
+<p>因此在只维护一个eviction pool带来的少量开销情况下，对算法效率的提升是比较明显的，效率的提升带来的是访问命中率的提升。</p>
+<h2 id="Redis-的-LFU"><a href="#Redis-的-LFU" class="headerlink" title="Redis 的 LFU"></a>Redis 的 LFU</h2><p>LFU是在Redis4.0后出现的，LRU的最近最少使用实际上并不精确，考虑下面的情况，如果在|处删除，那么A距离的时间最久，但实际上A的使用频率要比B频繁，所以合理的淘汰策略应该是淘汰B。LFU就是为应对这种情况而生的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A~~A~~A~~A~~A~~A~~A~~A~~A~~A~~~|</span><br><span class="line">B~~~~~B~~~~~B~~~~~B~~~~~~~~~~~B|</span><br></pre></td></tr></table></figure>
+<p>在 Redis 中每个对象都有24 bits空间来记录LRU/LFU信息：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">redisObject</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> type:<span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> encoding:<span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> lru:LRU_BITS; <span class="comment">/* LRU time (relative to global lru_clock) or</span></span><br><span class="line"><span class="comment">                            * LFU data (高16位用来记录访问时间（单位为分钟），</span></span><br><span class="line"><span class="comment">                            *            低8位用来记录访问频率，简称counter). */</span></span><br><span class="line">    <span class="keyword">int</span> refcount;</span><br><span class="line">    <span class="keyword">void</span> *ptr;</span><br><span class="line">&#125; robj;</span><br></pre></td></tr></table></figure>
+<h3 id="counter计数器对数因子和衰减时间"><a href="#counter计数器对数因子和衰减时间" class="headerlink" title="counter计数器对数因子和衰减时间"></a>counter计数器对数因子和衰减时间</h3><p>由于 LFU 的基数器只有8bit，所能记录的最大数字为255。因此counter并不是线性增长的，而是用基于概率的对数计数器来实现。counter的增长速度有<code>lfu-log-factor</code>参数控制。但最终counter总会收敛于255，为了解决这个问题，redis还提供了<code>lfu-decay-time</code>衰减因子（单位为分钟），如果一个key长时间未被访问，counter就要减少，减少的幅度由衰减因子来控制。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">updateLFU</span><span class="params">(robj *val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> counter = LFUDecrAndReturn(val);</span><br><span class="line">    counter = LFULogIncr(counter);</span><br><span class="line">    val-&gt;lru = (LFUGetTimeInMinutes()&lt;&lt;<span class="number">8</span>) | counter;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 高16位，当server.unixtime超出2^16时，再次从0开始计数 */</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">LFUGetTimeInMinutes</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (server.unixtime/<span class="number">60</span>) &amp; <span class="number">65535</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* redis的key的空闲时间(分钟) */</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">LFUTimeElapsed</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> ldt)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> now = LFUGetTimeInMinutes();</span><br><span class="line">    <span class="keyword">if</span> (now &gt;= ldt) <span class="keyword">return</span> now-ldt;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">65535</span>-ldt+now;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 在key被访问时，在counter++之前，要根据lfu_decay_time对counter做适当的修减：</span></span><br><span class="line"><span class="comment">  num_periods = 空闲时间/lfu_decay_time &gt; 0</span></span><br><span class="line"><span class="comment">  counter = (num_periods &gt; counter) ? 0 : counter - num_periods;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">LFUDecrAndReturn</span><span class="params">(robj *o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> ldt = o-&gt;lru &gt;&gt; <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> counter = o-&gt;lru &amp; <span class="number">255</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> num_periods = server.lfu_decay_time ? LFUTimeElapsed(ldt) / server.lfu_decay_time : <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (num_periods)</span><br><span class="line">        counter = (num_periods &gt; counter) ? <span class="number">0</span> : counter - num_periods;</span><br><span class="line">    <span class="keyword">return</span> counter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 基于概率的对数计数器：</span></span><br><span class="line"><span class="comment">  1. 提取0到1之间的随机数R。</span></span><br><span class="line"><span class="comment">  2. 计算counter++的概率 P = 1/(old_value*lfu_log_factor+1).</span></span><br><span class="line"><span class="comment">  3. 如果R &lt; P，则counter++</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LFU_INIT_VAL 5 <span class="comment">//counter的初始值为5，以便给新对象一个机会去积累点击率</span></span></span><br><span class="line"><span class="keyword">uint8_t</span> LFULogIncr(<span class="keyword">uint8_t</span> counter) &#123;</span><br><span class="line">    <span class="keyword">if</span> (counter == <span class="number">255</span>) <span class="keyword">return</span> <span class="number">255</span>;</span><br><span class="line">    <span class="keyword">double</span> r = (<span class="keyword">double</span>)rand()/RAND_MAX;</span><br><span class="line">    <span class="keyword">double</span> baseval = counter - LFU_INIT_VAL;</span><br><span class="line">    <span class="keyword">if</span> (baseval &lt; <span class="number">0</span>) baseval = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">double</span> p = <span class="number">1.0</span>/(baseval*server.lfu_log_factor+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (r &lt; p) counter++;</span><br><span class="line">    <span class="keyword">return</span> counter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计数器对数因子<code>lfu-log-factor</code>默认是10，有redis.conf中的这张表可知，默认情况下，当访问次数达到100万时，counter才会增长到255。</li>
+<li>计数器衰减时间<code>lfu-decay-time</code>是一个被衰减的key counter所必须经过的时间（单位为分钟），默认是1。如果lfu-decay-time = 0，则代表每次在更新counter时，它都要被衰减。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   redis-benchmark -n 1000000 incr foo</span></span><br><span class="line"><span class="comment">#   redis-cli object freq foo</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br><span class="line"><span class="comment"># | factor | 100 hits   | 1000 hits  | 100K hits  | 1M hits    | 10M hits   |</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br><span class="line"><span class="comment"># | 0      | 104        | 255        | 255        | 255        | 255        |</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br><span class="line"><span class="comment"># | 1      | 18         | 49         | 255        | 255        | 255        |</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br><span class="line"><span class="comment"># | 10     | 10         | 18         | 142        | 255        | 255        |</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br><span class="line"><span class="comment"># | 100    | 8          | 11         | 49         | 143        | 255        |</span></span><br><span class="line"><span class="comment"># +--------+------------+------------+------------+------------+------------+</span></span><br></pre></td></tr></table></figure>
+<h2 id="TTL"><a href="#TTL" class="headerlink" title="TTL"></a>TTL</h2><p>跟近似的LRU一样，并不是去所有key中寿命最短的那个，而是每次随机取<code>maxmemory-samples</code>个key，删除这里面最即将过期的key。同样在Redis 3.0 之后由于引入了<code>eviction pool</code>数组，使内存淘汰key的策略更公平。</p>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://yq.aliyun.com/articles/63034" target="_blank" rel="noopener">Redis作为LRU Cache的实现</a></li>
+<li><a href="https://yq.aliyun.com/articles/64435" target="_blank" rel="noopener">Redis近似LRU算法优化</a></li>
+<li><a href="https://yq.aliyun.com/articles/643758" target="_blank" rel="noopener">Redis · 引擎特性 · 基于 LFU 的热点 key 发现机制</a></li>
+</ul>
+
       
     </div>
 
@@ -588,12 +590,12 @@
   <!-- JS库 sweetalert 可修改路径 -->
   <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <p><span>本文标题:</span><a href="/reading/redis_datastruct/">Redis 都有哪些数据结构？</a></p>
+  <p><span>本文标题:</span><a href="/reading/redis_memory/">Redis 过期key策略和内存淘汰策略</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
-  <p><span>发布时间:</span>2019年07月06日 - 19:07</p>
-  <p><span>最后更新:</span>2019年07月09日 - 19:07</p>
-  <p><span>原始链接:</span><a href="/reading/redis_datastruct/" title="Redis 都有哪些数据结构？">https://tianbin.org/reading/redis_datastruct/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/reading/redis_datastruct/" aria-label="复制成功！"></i></span>
+  <p><span>发布时间:</span>2019年07月13日 - 09:07</p>
+  <p><span>最后更新:</span>2019年07月13日 - 17:07</p>
+  <p><span>原始链接:</span><a href="/reading/redis_memory/" title="Redis 过期key策略和内存淘汰策略">https://tianbin.org/reading/redis_memory/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/reading/redis_memory/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
 </div>
@@ -647,8 +649,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/learning/HyperLogLog/" rel="next" title="HyperLogLog Counting 算法">
-                <i class="fa fa-chevron-left"></i> HyperLogLog Counting 算法
+              <a href="/learning/GeoHash/" rel="next" title="GeoHash 算法">
+                <i class="fa fa-chevron-left"></i> GeoHash 算法
               </a>
             
           </div>
@@ -656,10 +658,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/learning/GeoHash/" rel="prev" title="GeoHash 算法">
-                GeoHash 算法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -922,7 +920,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#位图"><span class="nav-number">1.</span> <span class="nav-text">位图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">2.</span> <span class="nav-text">HyperLogLog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GeoHash"><span class="nav-number">3.</span> <span class="nav-text">GeoHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PubSub（消息多播）"><span class="nav-number">4.</span> <span class="nav-text">PubSub（消息多播）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stream"><span class="nav-number">5.</span> <span class="nav-text">Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BloomFilter（布隆过滤器）"><span class="nav-number">6.</span> <span class="nav-text">BloomFilter（布隆过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">6.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优"><span class="nav-number">6.2.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisSearch（搜索引擎）"><span class="nav-number">7.</span> <span class="nav-text">RedisSearch（搜索引擎）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-ML（机器学习模型服务器）"><span class="nav-number">8.</span> <span class="nav-text">Redis-ML（机器学习模型服务器）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#过期策略"><span class="nav-number">1.</span> <span class="nav-text">过期策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#惰性删除"><span class="nav-number">1.1.</span> <span class="nav-text">惰性删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定期扫描删除"><span class="nav-number">1.2.</span> <span class="nav-text">定期扫描删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从库的过期策略"><span class="nav-number">1.3.</span> <span class="nav-text">从库的过期策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单线程的-Redis，如何知道要运行定时任务？"><span class="nav-number">1.4.</span> <span class="nav-text">单线程的 Redis，如何知道要运行定时任务？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存淘汰策略"><span class="nav-number">2.</span> <span class="nav-text">内存淘汰策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#近似的-LRU-算法"><span class="nav-number">2.1.</span> <span class="nav-text">近似的 LRU 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-的-LFU"><span class="nav-number">2.2.</span> <span class="nav-text">Redis 的 LFU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#counter计数器对数因子和衰减时间"><span class="nav-number">2.2.1.</span> <span class="nav-text">counter计数器对数因子和衰减时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TTL"><span class="nav-number">2.3.</span> <span class="nav-text">TTL</span></a></li></ol></li></ol></div>
             
 
           </div>
