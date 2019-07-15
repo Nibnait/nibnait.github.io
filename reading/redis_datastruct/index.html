@@ -107,18 +107,18 @@
 
 
 
-  <meta name="description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+  <meta name="description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：RedisBloom、RedisSearch、Redis-Cell">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis 都有哪些数据结构？">
 <meta property="og:url" content="https://tianbin.org/reading/redis_datastruct/index.html">
 <meta property="og:site_name" content="TBlogs">
-<meta property="og:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta property="og:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：RedisBloom、RedisSearch、Redis-Cell">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-09T11:02:13.994Z">
+<meta property="og:updated_time" content="2019-07-15T18:10:28.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 都有哪些数据结构？">
-<meta name="twitter:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：BloomFilter、RedisSearch、Redis-ML">
+<meta name="twitter:description" content="字符串String，字段Hash，列表List，集合Set，有序集合ZSet。 位图、HyperLogLog、GeoHash、PubSub、Stream Redis Module：RedisBloom、RedisSearch、Redis-Cell">
 
 
 
@@ -445,7 +445,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-07-09 19:02:13" itemprop="dateModified" datetime="2019-07-09T19:02:13+08:00">2019-07-09</time>
+                <time title="修改时间：2019-07-16 02:10:28" itemprop="dateModified" datetime="2019-07-16T02:10:28+08:00">2019-07-16</time>
               
             
           </span>
@@ -522,7 +522,7 @@
       
         <p>字符串String，字段Hash，列表List，集合Set，有序集合ZSet。</p>
 <p>位图、<a href="../../learning/HyperLogLog">HyperLogLog</a>、<a href="../../learning/GeoHash">GeoHash</a>、PubSub、Stream</p>
-<p>Redis Module：BloomFilter、RedisSearch、Redis-ML</p>
+<p>Redis Module：RedisBloom、RedisSearch、Redis-Cell</p>
 <a id="more"></a>
 <h1 id="位图"><a href="#位图" class="headerlink" title="位图"></a>位图</h1><p>用于统计用户进1年的签到情况。它的本质还是String，只是Redis天然支持位操作。（直接将byte数组看成「位数组」即可）</p>
 <blockquote>
@@ -548,9 +548,9 @@
 <p>georadiusbymember key address 20 km [withcoord] [withdist] [withhash] count 3 asc # 查询附近20km内最近的3个元素，正序并显示经纬度、距离、hash信息</p>
 </blockquote>
 <h1 id="PubSub（消息多播）"><a href="#PubSub（消息多播）" class="headerlink" title="PubSub（消息多播）"></a>PubSub（消息多播）</h1><p>可以多个客户端订阅同一个消息主题，实现消息多播。但是此模式的缺点就是一旦Redis停机重启，PubSub 的消息是不会持久化的，毕竟 Redis 宕机就相当于一个消费者都没有，所有的消息直接被丢弃。</p>
-<p>近期 Redis5.0 新增的 Stream 数据结构，这个功能给 Redis 带来了持久化消息队列，从此 PubSub 可以消失了</p>
-<h1 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h1><p>Stream 的消费模型借鉴了 Kafka 的消费分组的概念，它弥补了 Redis Pub/Sub 不能持 久化消息的缺陷。但是它又不同于 kafka，Kafka 的消息可以分 partition，而 Stream 不行。 如果非要分 parition 的话，得在客户端做，提供不同的 Stream 名称，对消息进行 hash 取 模来选择往哪个 Stream 里塞。</p>
-<h1 id="BloomFilter（布隆过滤器）"><a href="#BloomFilter（布隆过滤器）" class="headerlink" title="BloomFilter（布隆过滤器）"></a>BloomFilter（布隆过滤器）</h1><p>它说有，不一定有。它说没有，就一定没有。</p>
+<p>Redis5.0 新增的 Stream 数据结构，这个功能给 Redis 带来了持久化消息队列，从此 PubSub 可以消失了</p>
+<h1 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h1><p>Stream 的消费模型借鉴了 Kafka 的消费分组的概念，它弥补了 Redis Pub/Sub 不能持久化消息的缺陷。但是它又不同于 kafka，Kafka 的消息可以分 partition，而 Stream 不行。 如果非要分 parition 的话，得在客户端做，提供不同的 Stream 名称，对消息进行 hash 取模来选择往哪个 Stream 里塞。</p>
+<h1 id="RedisBloom（布隆过滤器）"><a href="#RedisBloom（布隆过滤器）" class="headerlink" title="RedisBloom（布隆过滤器）"></a>RedisBloom（布隆过滤器）</h1><p>它说有，不一定有。它说没有，就一定没有。</p>
 <p>因为布隆过滤器的实现原理是利用一个长度为l的位数组，没bf.add一个元素进来，会经过k个hash函数，得到k个不同的位置，然后将这k个位置的数字置位1。当调用bf.exists时，直接去这个key得到的k个hash位置判断是否都为1，有一个位置为0，这判为不存在。但是即使都为0，这个key也不一定存在，因为这k个hash位也有可能是由其他若干个key置位1的。</p>
 <blockquote>
 <p>bf.add key value    # bf.madd key [value…]</p>
@@ -569,7 +569,7 @@
 </ul>
 <p>公式的证明：<a href="https://www.cnblogs.com/allensun/archive/2011/02/16/1956532.html" target="_blank" rel="noopener">数学学渣慎点</a><br>线上计算空间占用：<a href="https://krisives.github.io/bloom-calculator/" target="_blank" rel="noopener">https://krisives.github.io/bloom-calculator/</a></p>
 <p>误判为什么会上升？</p>
-<h1 id="RedisSearch（搜索引擎）"><a href="#RedisSearch（搜索引擎）" class="headerlink" title="RedisSearch（搜索引擎）"></a>RedisSearch（搜索引擎）</h1><h1 id="Redis-ML（机器学习模型服务器）"><a href="#Redis-ML（机器学习模型服务器）" class="headerlink" title="Redis-ML（机器学习模型服务器）"></a>Redis-ML（机器学习模型服务器）</h1>
+<h1 id="RedisSearch（全文搜索引擎）"><a href="#RedisSearch（全文搜索引擎）" class="headerlink" title="RedisSearch（全文搜索引擎）"></a>RedisSearch（全文搜索引擎）</h1><h1 id="Redis-Cell"><a href="#Redis-Cell" class="headerlink" title="Redis-Cell"></a>Redis-Cell</h1>
       
     </div>
 
@@ -591,7 +591,7 @@
   <p><span>本文标题:</span><a href="/reading/redis_datastruct/">Redis 都有哪些数据结构？</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
   <p><span>发布时间:</span>2019年07月06日 - 19:07</p>
-  <p><span>最后更新:</span>2019年07月09日 - 19:07</p>
+  <p><span>最后更新:</span>2019年07月16日 - 02:07</p>
   <p><span>原始链接:</span><a href="/reading/redis_datastruct/" title="Redis 都有哪些数据结构？">https://tianbin.org/reading/redis_datastruct/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/reading/redis_datastruct/" aria-label="复制成功！"></i></span>
   </p>
@@ -732,7 +732,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">21</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -922,7 +922,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#位图"><span class="nav-number">1.</span> <span class="nav-text">位图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">2.</span> <span class="nav-text">HyperLogLog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GeoHash"><span class="nav-number">3.</span> <span class="nav-text">GeoHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PubSub（消息多播）"><span class="nav-number">4.</span> <span class="nav-text">PubSub（消息多播）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stream"><span class="nav-number">5.</span> <span class="nav-text">Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BloomFilter（布隆过滤器）"><span class="nav-number">6.</span> <span class="nav-text">BloomFilter（布隆过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">6.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优"><span class="nav-number">6.2.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisSearch（搜索引擎）"><span class="nav-number">7.</span> <span class="nav-text">RedisSearch（搜索引擎）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-ML（机器学习模型服务器）"><span class="nav-number">8.</span> <span class="nav-text">Redis-ML（机器学习模型服务器）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#位图"><span class="nav-number">1.</span> <span class="nav-text">位图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">2.</span> <span class="nav-text">HyperLogLog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GeoHash"><span class="nav-number">3.</span> <span class="nav-text">GeoHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PubSub（消息多播）"><span class="nav-number">4.</span> <span class="nav-text">PubSub（消息多播）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stream"><span class="nav-number">5.</span> <span class="nav-text">Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisBloom（布隆过滤器）"><span class="nav-number">6.</span> <span class="nav-text">RedisBloom（布隆过滤器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用场景"><span class="nav-number">6.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调优"><span class="nav-number">6.2.</span> <span class="nav-text">调优</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisSearch（全文搜索引擎）"><span class="nav-number">7.</span> <span class="nav-text">RedisSearch（全文搜索引擎）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redis-Cell"><span class="nav-number">8.</span> <span class="nav-text">Redis-Cell</span></a></li></ol></div>
             
 
           </div>
@@ -971,7 +971,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共18.5k字
+        博客全站共20.1k字
       </span>
     </div>
 
