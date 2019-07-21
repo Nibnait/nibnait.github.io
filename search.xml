@@ -1,40 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[莫里斯遍历]]></title>
-    <url>%2Flearning%2Fmorris%2F</url>
-    <content type="text"><![CDATA[遍历二叉树的神级方法：时间复杂度O(h)，空间复杂度O(2)（只用两个辅助变量）]]></content>
-      <categories>
-        <category>学习笔记</category>
-      </categories>
-      <tags>
-        <tag>数据结构与算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[Vim常用命令]]></title>
-    <url>%2Ftool%2Fvim_skills%2F</url>
-    <content type="text"><![CDATA[Vimer：https://vimjc.com]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>Vim</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[IntelliJ IDEA 实用插件推荐]]></title>
-    <url>%2Ftool%2Fidea_plugin%2F</url>
-    <content type="text"><![CDATA[参考资料：https://mp.weixin.qq.com/s/LtEcayFGcc993gHfS6klAQ Lombok在编译期自动生成get、set 等方法 GenerateAllSetter一键调用一个对象的所有的set方法 Alibaba Java Coding Guidelines阿里巴巴出品的java代码规范插件，可以扫描整个项目找到不规范的地方 并且大部分可以自动修复 。虽说检测功能没有findbugs强大，但是可以自动修复，阿里巴巴Java编码指南插件支持。 VisualVM Launcher运行java程序的时候启动visualvm，方便查看jvm的情况 比如堆内存大小的分配某个对象占用了多大的内存，jvm调优必备工具 客户端：https://visualvm.github.io/download.html安装完客服端，需在Preferences -&gt; Other Settings -&gt; VisualVM Launcher 绑定VisualVM excutable，（客户端start文件） Maven Helper一键查看maven依赖，查看冲突的依赖，一键进行exclude依赖]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>Mac</tag>
-        <tag>IDEA</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Redis 过期key删除策略和内存淘汰策略]]></title>
     <url>%2Freading%2Fredis_memory%2F</url>
     <content type="text"><![CDATA[过期删除策略当Redis中缓存的key过期了，Redis如何处理？ 惰性删除在客户端访问 key 的时候，如果这个 key 设置了过期时间，redis 则对 key 的过期时间进行检查，如果过期了就立即删除。memcached只是用了惰性删除，而Redis同时使用了惰性删除与定期删除 定期扫描删除redis 会将每个设置了过期时间的 key 放入到一个独立的字典中，然后会定时遍历这个字典来删除到期的 key。这个定时任务由 src/expire.c 的 activeExpireCycle(ACTIVE_EXPIRE_CYCLE_SLOW) 函数来完成，它的大致步骤是： 每次从过期字典中随机选取20个key。 删除这20个key中过期的key。 如果这20个key中过期key的比例超过了 25%，则重复步骤1。 123src/server.h 中定义的每次获取 key 的数量和比例。#define ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP 20 /* Loopkups per loop. */#define ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC 25 /* CPU max % for keys collection */ 为了防止这个过期扫描出现循环过度，此算法加了一个timelimit变量，函数每次默认最多执行25ms 1234567891011//默认情况下，timelimit=25000(纳秒)timelimit = 1000000*ACTIVE_EXPIRE_CYCLE_SLOW_TIME_PERC/server.hz/100; if ((iteration &amp; 0xf) == 0) &#123; /* check once every 16 iterations. */ //删除过期key，每迭代16次，检查一次timelimit elapsed = ustime()-start; //ustime()精确到纳秒 if (elapsed &gt; timelimit) &#123; timelimit_exit = 1; break; &#125;&#125; 即使加了timelimit，默认每100ms执行一次activeExpireCycle。如果同一时间有大量key过期，在默认情况下 Redis 也会有至少 1 / 4 的时间被阻塞来执行这个activeExpireCycle()方法。为防止出现这种情况，可以在设置过期时间时 后面再个随机值： 12// 在目标过期时间上增加一天的随机时间redis.expire_at(key, random.randint(24*3600) + expire_ts) 从库的过期策略从库不会进行过期扫描，从库对过期的处理是被动的。主库在 key 到期时，会在 AOF 文件里增加一条 del 指令，同步到所有的从库，从库通过执行这条 del 指令来删除过期的 key。因为指令同步是异步进行的，所以主库过期的 key 的 del 指令没有及时同步到从库的话，会出现主从数据的不一致，主库没有的数据在从库里还存在，比如在集群环境中分布式锁的算法漏洞就是因为这个同步延迟产生的。 单线程的 Redis，如何知道要运行定时任务？这个定期扫描删除任务在由 server.c/serverCron() 方法调用，Redis 将 serverCron 方法称作“timer interrupt”（循环时间事件），它每秒的执行次数可以通过redis.conf hz选项（默认是10）来配置。serverCron() 除了定期扫描删除过期key，主要还执行： 更新服务器的各类统计信息，比如时间（server.lruclock）、内存占用、数据库占用情况等。 关闭和清理连接失效的客户端。 尝试进行 AOF 或 RDB 持久化操作。 如果服务器是主节点的话，对附属节点进行定期同步。 如果处于集群模式的话，对集群进行定期同步和连接测试。 内存淘汰策略当Redis已用内存超过maxmemory限定时，怎么处理需要新写入且需要申请额外空间的数据？根据redis.conf maxmemory-policy 选项来做对应的清理： volatile-lru: 从设置了过期时间的key中，删除最久未使用的key allkeys-lru: 从所有key中，删除最近最少使用的key volatile-lfu: 从设置了过期时间的key中，删除使用频率最少的key allkeys-lfu: 从所有key中，删除使用频率最少的key volatile-random: 从设置了过期时间的key中，随机删除 allkeys-random: 从所有key中，随机删除 volatile-ttl: 从设置了过期时间的key中，删除马上要过期的key noeviction: （Redis的默认淘汰策略）不删除，在写操作时直接报错 当mem_used达到maxmemory时，所有的写请求都会调用 src/evict.c 的 freeMemoryIfNeeded(void) 方法，执行对应的策略尝试释放一些内存。 近似的 LRU 算法Redis 中的LRU并不是真正的LRU（Least Recently Used），为了避免LRU算法中hash表的内存消耗，Redis 给每个key都增加了一个额外的小字段（lru）：一个24bit长度的，记录着最后一次被访问的时间戳”。 在执行 Redis LRU 算法时，从待删除的key空间中随机采样maxmemory-samples（默认是5）个key，淘汰最久未访问过的那个key（redis作者测试的结果是当maxmemory-samples = 10时，已经非常接近全量LRU的精准度了）。 123#define LRU_BITS 24#define LRU_CLOCK_MAX ((1&lt;&lt;LRU_BITS)-1) /* Max value of obj-&gt;lru */#define LRU_CLOCK_RESOLUTION 1000 /* LRU clock resolution in ms */ 注意：LRU 时间戳的默认精度是 1000ms，24bit 可以表示的最长时间大约是194天。 如果一个 key 超过194天没有被访问，在计算空闲时间的时候，就会少算194天，造成一定的误差。 为了避免 fork 子进程后额外的内存消耗，当进行 bgsave 或 aof rewrite 时，lru访问时间是不更新的。 123456789101112131415161718192021222324252627/* 如果对象本身存的lru访问时间 比系统的当前lru clock还要大 * 那么在计算当前对象的空闲时间的时候，就不能简单的lruclock - o-&gt;lru相减了，需要额外计算*/unsigned long long estimateObjectIdleTime(robj *o) &#123; unsigned long long lruclock = LRU_CLOCK(); if (lruclock &gt;= o-&gt;lru) &#123; return (lruclock - o-&gt;lru) * LRU_CLOCK_RESOLUTION; &#125; else &#123; return (lruclock + (LRU_CLOCK_MAX - o-&gt;lru)) * LRU_CLOCK_RESOLUTION; &#125;&#125;/* 如果当前 lru clock 的分辨率低于系统刷新频率，则使用系统的时间戳(server.lruclock) * 否则调用系统的mstime()函数重新计算*/unsigned int LRU_CLOCK(void) &#123; unsigned int lruclock; if (1000/server.hz &lt;= LRU_CLOCK_RESOLUTION) &#123; atomicGet(server.lruclock,lruclock); &#125; else &#123; lruclock = getLRUClock(); &#125; return lruclock;&#125;/* 当计算出的当前clock超出LRU_CLOCK_MAX时，就会再次从0开始数 * server.lruclock也是通过此方法来获取的当前时间*/unsigned int getLRUClock(void) &#123; return (mstime()/LRU_CLOCK_RESOLUTION) &amp; LRU_CLOCK_MAX;&#125; 在 Redis 3.0 之后，又增加了一个eviction pool的结构，eviction pool是一个数组，保存了之前随机选取的key及它们的idle时间，数组里面的key按idle时间升序排序，当内存满了需要淘汰数据时，会调用dictGetSomeKeys选取指定的数目的key，然后更新到eviction pool里面，如果新选取的key的idle时间比eviction pool里面idle时间最小的key还要小，那么就不会把它插入到eviction pool里面。这样就保证了对于某些历史选取的key的idle时间相对来说比较久，但是本次淘汰并没有被选中，因为出现了idle时间更久的key，那么在使用eviction pool的情况下，这种idle时间比较久的key淘汰概率增大了，因为它在eviction pool里面被保存下来，参与下轮淘汰，这个思路和访问局部性原理是契合的。 因此在只维护一个eviction pool带来的少量开销情况下，对算法效率的提升是比较明显的，效率的提升带来的是访问命中率的提升。 Redis 的 LFULFU（Least Frequently Used）是在Redis4.0后出现的，LRU的最近最少使用实际上并不精确，考虑下面的情况，如果在|处删除，那么A距离的时间最久，但实际上A的使用频率要比B频繁，所以合理的淘汰策略应该是淘汰B。LFU就是为应对这种情况而生的。 12A~~A~~A~~A~~A~~A~~A~~A~~A~~A~~~|B~~~~~B~~~~~B~~~~~B~~~~~~~~~~~B| 在 Redis 中每个对象都有24 bits空间来记录LRU/LFU信息： 123456789typedef struct redisObject &#123; unsigned type:4; unsigned encoding:4; unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or * LFU data (高16位用来记录访问时间（单位为分钟）， * 低8位用来记录访问频率，简称counter). */ int refcount; void *ptr;&#125; robj; counter计数器对数因子和衰减时间由于 LFU 的基数器只有8bit，所能记录的最大数字为255。因此counter并不是线性增长的，而是用基于概率的对数计数器来实现。counter的增长速度有lfu-log-factor参数控制。但最终counter总会收敛于255，为了解决这个问题，redis还提供了lfu-decay-time衰减因子（单位为分钟），如果一个key长时间未被访问，counter就要减少，减少的幅度由衰减因子来控制。 12345678910111213141516171819202122232425262728293031323334353637383940414243void updateLFU(robj *val) &#123; unsigned long counter = LFUDecrAndReturn(val); counter = LFULogIncr(counter); val-&gt;lru = (LFUGetTimeInMinutes()&lt;&lt;8) | counter;&#125;/* 高16位，当server.unixtime超出2^16时，再次从0开始计数 */unsigned long LFUGetTimeInMinutes(void) &#123; return (server.unixtime/60) &amp; 65535;&#125;/* redis的key的空闲时间(分钟) */unsigned long LFUTimeElapsed(unsigned long ldt) &#123; unsigned long now = LFUGetTimeInMinutes(); if (now &gt;= ldt) return now-ldt; return 65535-ldt+now;&#125;/* 在key被访问时，在counter++之前，要根据lfu_decay_time对counter做适当的修减： num_periods = 空闲时间/lfu_decay_time &gt; 0 counter = (num_periods &gt; counter) ? 0 : counter - num_periods; */unsigned long LFUDecrAndReturn(robj *o) &#123; unsigned long ldt = o-&gt;lru &gt;&gt; 8; unsigned long counter = o-&gt;lru &amp; 255; unsigned long num_periods = server.lfu_decay_time ? LFUTimeElapsed(ldt) / server.lfu_decay_time : 0; if (num_periods) counter = (num_periods &gt; counter) ? 0 : counter - num_periods; return counter;&#125;/* 基于概率的对数计数器： 1. 提取0到1之间的随机数R。 2. 计算counter++的概率 P = 1/(old_value*lfu_log_factor+1). 3. 如果R &lt; P，则counter++ */#define LFU_INIT_VAL 5 //counter的初始值为5，以便给新对象一个机会去积累点击率uint8_t LFULogIncr(uint8_t counter) &#123; if (counter == 255) return 255; double r = (double)rand()/RAND_MAX; double baseval = counter - LFU_INIT_VAL; if (baseval &lt; 0) baseval = 0; double p = 1.0/(baseval*server.lfu_log_factor+1); if (r &lt; p) counter++; return counter;&#125; 计数器对数因子lfu-log-factor默认是10，有redis.conf中的这张表可知，默认情况下，当访问次数达到100万时，counter才会增长到255。 计数器衰减时间lfu-decay-time是一个被衰减的key计数器所必须经过的时间（单位为分钟），默认是1。如果lfu-decay-time = 0，则代表每次在更新counter时，它都要被衰减。 12345678910111213# redis-benchmark -n 1000000 incr foo# redis-cli object freq foo# +--------+------------+------------+------------+------------+------------+# | factor | 100 hits | 1000 hits | 100K hits | 1M hits | 10M hits |# +--------+------------+------------+------------+------------+------------+# | 0 | 104 | 255 | 255 | 255 | 255 |# +--------+------------+------------+------------+------------+------------+# | 1 | 18 | 49 | 255 | 255 | 255 |# +--------+------------+------------+------------+------------+------------+# | 10 | 10 | 18 | 142 | 255 | 255 |# +--------+------------+------------+------------+------------+------------+# | 100 | 8 | 11 | 49 | 143 | 255 |# +--------+------------+------------+------------+------------+------------+ TTL跟近似的LRU一样，并不是去所有key中寿命最短的那个，而是每次随机取maxmemory-samples个key，删除这里面最即将过期的key。同样在Redis 3.0 之后由于引入了eviction pool数组，使内存淘汰key的策略更公平。 参考资料： Redis作为LRU Cache的实现 Redis近似LRU算法优化 Redis · 引擎特性 · 基于 LFU 的热点 key 发现机制]]></content>
@@ -69,6 +35,29 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Vim常用命令]]></title>
+    <url>%2Ftool%2Fvim_skills%2F</url>
+    <content type="text"><![CDATA[Vimer：https://vimjc.com]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[IntelliJ IDEA 实用插件推荐]]></title>
+    <url>%2Ftool%2Fidea_plugin%2F</url>
+    <content type="text"><![CDATA[参考资料：https://mp.weixin.qq.com/s/LtEcayFGcc993gHfS6klAQ Lombok在编译期自动生成get、set 等方法 GenerateAllSetter一键调用一个对象的所有的set方法 Alibaba Java Coding Guidelines阿里巴巴出品的java代码规范插件，可以扫描整个项目找到不规范的地方 并且大部分可以自动修复 。虽说检测功能没有findbugs强大，但是可以自动修复，阿里巴巴Java编码指南插件支持。 VisualVM Launcher运行java程序的时候启动visualvm，方便查看jvm的情况 比如堆内存大小的分配某个对象占用了多大的内存，jvm调优必备工具 客户端：https://visualvm.github.io/download.html安装完客服端，需在Preferences -&gt; Other Settings -&gt; VisualVM Launcher 绑定VisualVM excutable，（客户端start文件） Maven Helper一键查看maven依赖，查看冲突的依赖，一键进行exclude依赖]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[HyperLogLog Counting 算法]]></title>
     <url>%2Flearning%2FHyperLogLog%2F</url>
     <content type="text"><![CDATA[知其然必知其所以然，最近在看redis的义总问了我一个问题：一个网站的uv是怎么实现的？（当访问量非常大的时候，uv&gt;1000,000,000的时候，还能用redis吗？）我最近正好搭了这个博客，pv和uv都是直接用的不蒜子这个插件，前两天也正好在想他这个uv是怎么实现的？ 于是义总带我走进了HyperLogLog的世界：（以下简称HLL算法） 参考资料： 神奇的HyperLogLog算法 《Redis 深度历险：核心原理与应用实践》 HLL算法演示：http://content.research.neustar.biz/blog/hll.html HLL算法的使用场景HyperLogLog Counting是一种基数计数方法，它的优点：速度极快（常数时间），占用空间极小。缺点：只适用于统计页面UV(unique visitor)、微博的点赞数这种对精确度要求不是很高，且不需要返回集合内所有元素的场景。 已知1亿bit数据，占用空间100000000/8/1024/1024≈12MB。 假设我们统计的是用户ip地址，每个ip地址占用空间32bit。 几种基数计数方法，统计1个页面，数据量达到1亿条ip时，所占用的空间及时间复杂度对比： B树 Bitmap redis的HyperLogLog算法 占用空间大小 32x12 ≈ 384MB 12MB 12KB 时间复杂度 O(logN) O(N) O(1) HyperLogLog另一个特性想统计今天和昨天两天合起来的uv，HyperLogLog也可以直接取两个天的ip取并集，返回近两天的uv。而其他算法只能重新统计。 HLL算法原理在基数计数方面，HyperLogLog之所以这么牛X，这么神秘，完全是因为它站在了概率统计这个巨人的肩膀上，根据伯努利实验总结出公式如下： N = 2^{K_{max}}N：整个数据集合里面数据的数量（基数）K：数据集每进来一个元素，对这个元素进行一次二进制hash，k表示hash值第一个1的位置。Kmax：所有这些K中，最大的那个值。（它一定小于等于N） （伯努利实验）证明：抛硬币，正面朝上记为1，反面朝上记为0，连续抛X次，第一次出现正面时的投掷次数记为k。这个抛硬币的过程称为伯努利过程。对于n次伯努利过程，我们可以得到n个首次出现正面的投掷次数k_1, k_2……k_n，其中最大值记为k_{max}，那么可以得到下面两个结论： n次伯努利过程的首次出现正面的投掷次数都不大于k_{max} n次伯努利过程，至少有一次的首次出现正面的投掷次数等于k_{max} 对于结论1，用数学公式可以表示为：P_n(X ≤ k_{max}) = (1 - 1/2^{k_{max}})^n，当n ≫ 2^{k_{max}}时，P_n(X ≤ k_{max}) ≈ 0。但是P_n(X ≤ k_{max}) = 1，所以n不可能远大于2^{k_{max}}。对于结论2，用数学公式可以表示为：P_n(X ≥ k_{max}) = 1 - (1 - 1/2^{k_{max}-1})^n，当n ≪ 2^{k_{max}}时，P_n(X ≥ k_{max}) ≈ 0。但是P_n(X ≥ k_{max}) = 1，所以n也不可能远小于2^{k_{max}}。 因此我们可以得出结论，n ≈ 2^{k_{max}}。 HLL算法讲解分桶平均很显然，每次根据抛硬币来推测：我这种情况抛多少次能抛出来。这种“预估方法”误差有点大。因此 HLL算法并不适用于当数据量非常小的时候，统计集合的基数。 只有当数据量上来的时候，做这种统计估计才有意义。同时HLL算法为了节省空间，引入了分桶平均的概念。基本原理是：将统计数据划分为m个桶（将元素的二进制hash % m），分别统计各个桶的k_{max}值，求调和平均数（所有数的倒数的平均数，可以消除掉极大值和极小值对平均数结果带来的误差），进而得出整个集合的基数预估值 N。 Java代码实现：HyperLogLogCounting 偏差修正上述经过分桶平均后的估计量看似已经很不错了，不过通过数学分析可以知道这并不是基数N的无偏估计。这部分的具体数学分析在“Loglog Counting of Large Cardinalities”中。 因此需要修正成无偏估计。方法： 增大桶的数量（增大数组长度）桶越多，每个统计数组越长，误差越小，但存储成本也就越大。 分阶段修正。 Redis中HyperLogLog的实现Redis应用HyperLogLog的三个命令：PFADD、PFCOUNT、PFMERGE Redis 的 HyperLogLog 实现中使用了 16384 个桶，也就是 2^14。每次进来一个元素，对这个元素进行一次二进制hash的长度为64bit，因此每个桶需要用6bit的空间来装这个桶里面的Kmax值。所以总共占用内存就是 2^14 * 6 / 8 = 12k 字节。因为最大可以K值为63，所以redis理论上可以统计的集合的基数的最大值为 2^63。 同时Redis 对 HyperLogLog 的存储进行了优化，在计数比较小时，它的存储空间采用稀疏矩阵存储，空间占用很小，仅仅在计数慢慢变大，稀疏矩阵占用空间渐渐超过了阈值时才会一次性转变成稠密矩阵，才会占用 12k 的空间。 附两个数学公式的白话解释 结论1【n次伯努利过程的首次出现正面的投掷次数都不大于k_{max}】数学公式 P_n(X ≤ k_{max}) = (1 - 1/2^{k_{max}})^n 的白话解释： 已知1次抛硬币正面朝上的概率为1/2，反面朝上的概率为(1 - 1/2) 1次伯努利过程，第k_{max}次还没出现正面（前k_{max}次都是反面）的概率为：(1 - 1/2)^{k_{max}} = (1 / 2)^{k_{max}} = 1 / 2^{k_{max}} 1次伯努利过程，投掷不大于k_{max}次就出现正面的概率为：1 - 1 / 2^{k_{max}} n次伯努利过程，投掷不大于k_{max}次就出现正面的概率为：(1 - 1 / 2^{k_{max}})^n 结论2【n次伯努利过程，至少有一次的首次出现正面的投掷次数等于k_{max}】公式P_n(X ≥ k_{max}) = 1 - (1 - 1/2^{k_{max}})^n 的白话解释： 已知1次伯努利过程，投掷不大于k_{max}次就出现正面的概率为：1 - 1 / 2^{k_{max}} n次伯努利过程，P (至少有一次投掷次数为k_{max})= 1 - P(每次投掷次数都小于k_{max})= 1 - P(每次投掷次数都 ≤ k_{max} - 1)= 1 - P(每次投掷次数都不大于k_{max} - 1)= 1 - (1 - 1/2^{k_{max} - 1})^n]]></content>
@@ -89,6 +78,17 @@
       </categories>
       <tags>
         <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[莫里斯遍历]]></title>
+    <url>%2Flearning%2Fmorris%2F</url>
+    <content type="text"><![CDATA[遍历二叉树的神级方法：时间复杂度O(h)，空间复杂度O(2)（只用两个辅助变量）]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>数据结构与算法</tag>
       </tags>
   </entry>
   <entry>
