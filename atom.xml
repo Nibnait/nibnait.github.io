@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://tianbin.org/"/>
-  <updated>2019-07-15T18:10:28.948Z</updated>
+  <updated>2019-08-13T02:05:55.049Z</updated>
   <id>https://tianbin.org/</id>
   
   <author>
@@ -15,6 +15,103 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java 都有哪些集合类？</title>
+    <link href="https://tianbin.org/learning/Java_collections/"/>
+    <id>https://tianbin.org/learning/Java_collections/</id>
+    <published>2019-08-12T18:31:17.000Z</published>
+    <updated>2019-08-13T02:05:55.049Z</updated>
+    
+    <content type="html"><![CDATA[<p>Map、List、Set</p><a id="more"></a><h1 id="接口继承关系"><a href="#接口继承关系" class="headerlink" title="接口继承关系"></a>接口继承关系</h1><p><img src="https://tb.nsfocus.co/image/Interface_inheritance_relationship.png" alt="接口继承关系"></p><h1 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h1><p><img src="https://tb.nsfocus.co/image/Map_class_diagram.png" alt="各种Map的依赖关系"></p><h2 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h2><p>是根据key的hashCode来存储数据，因此get和put的时间复杂度为O(1)，但遍历的顺序是不确定的。<br>key和value都允许为null，<br>HashMap的非线程安全的，多个线程可以同时操作一个HashMap，因此会出现数据不一致的场景。<br>可以使用Collections.synchronizedMap方法使HashMap具有线程安全的能力，或者直接使用ConcurrentHashMap。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map m = Collections.synchronizedMap(new HashMap());</span><br><span class="line">     ...</span><br><span class="line"> Set s = m.keySet();  // Needn&apos;t be in synchronized block</span><br><span class="line">     ...</span><br><span class="line"> synchronized(m) &#123;  // Synchronizing on m, not s!</span><br><span class="line">     Iterator i = s.iterator(); // Must be in synchronized block</span><br><span class="line">     while (i.hasNext())</span><br><span class="line">         foo(i.next());</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure><p>影响HashMap性能的两个重要参数：</p><ul><li>capacity（初始容量为16）当前数组的容量。当容量达到负载因子的阈值时，会扩容为当前容量的2倍。</li><li>loadFactor（默认0.75）<br>数组的Entry包含四个属性：key, value, hashCode, next。</li></ul><p>1.7及以前采用的是数组+链表的设计。<br>1.8以后，当Entry的链表元素超过8个时，会将链表转换为红黑树。</p><h2 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h2><p>整个 ConcurrentHashMap 由一个 Segment 数组组成，Segment 通过继承 ReentrantLock 来进行加锁，所以每次需要加锁的操作锁住的是一个 segment，这样只要保证每个 Segment 是线程安全的，也就实现了全局的线程安全。<br>每个segement内部实现与HashMap类似，ConcurrentHashMap的concurrencyLevel（默认16），即理论上最多可以支持16个线程同时操作这个ConcurrentHashMap。<br>concurrencyLevel可以在初始化时设置为其他值<code>ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap(ConcurrentHashMap.DEFAULT_INITIAL_CAPACITY, ConcurrentHashMap.DEFAULT_LOAD_FACTOR, 20);</code>，但是一旦初始化之后就不可以更改了</p><p>put 操作： </p><pre><code>    segmentShift = 32 - sshift;     //32 - 4 = 28（2 ^ sshift = concurrencyLevel）    segmentMask = concurrencyLevel - 1;        //16 - 1 = 15    //先找到segment段的hash    segmentHash = (hash &gt;&gt;&gt; segmentShift) &amp; segmentMask    //HashMap.put(key, hash, value)</code></pre><h2 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h2><p>Hashtable是一个遗留类，它内部实现与HashMap类似。<br>区别是：1. Hashtable的key和value都不允许为null。2. Hashtable的每一个方法都由synchronized修饰，即Hashtable是线程安全的（同一时刻只允许一个线程操作Hashtable）<br>因此Hashtable的并发性没有ConcurrentHashMap。<br>所以在代码中很少使用，并发场景使用ConcurrentHashMap，不需要线程安全的场景一般使用HashMap。</p><h2 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h2><p>LinkedHashMap 是 HashMap 的一个子类，它将key的hash数组改成了一个双向链表从而实现了可以记录每一个元素的插入顺序。使用Iterator遍历时，会安装插入顺序返回每个元素。<br>也可以在在初始化时带参数<code>LinkedHashMap linkedHashMap = new LinkedHashMap(16,  0.75f, true);</code> 使迭代时按访问顺序迭代（LRU）。</p><h2 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h2><p>TreeMap 实现了 SortedMap接口，默认根据键值的升序排序。也可以在初始化时通过指定Comparator，来指定排序顺序：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TreeMap&lt;Integer, Integer&gt; treeMap = new TreeMap(new Comparator&lt;Integer&gt;() &#123;</span><br><span class="line">    public int compare(Integer o1, Integer o2) &#123;</span><br><span class="line">        return o1-o2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p><p>适合非多线程情况加的有序Map场景。并发度较低的时，可以使用Collections.synchronizedSortedMap进行包装，也能提供较好的效率。</p><h2 id="ConcurrentSkipListMap"><a href="#ConcurrentSkipListMap" class="headerlink" title="ConcurrentSkipListMap"></a>ConcurrentSkipListMap</h2><p>JDK1.6之后引入的ConcurrentSkipListMap。它是将元素的Key基于SkipList的方式进行排序。因此get/put/remove/constainsKey等操作的时间复杂度为O(logN)。<br>不允许key value为空。<br>没有size变量，因此在调用size()方法时，会遍历整个SkipList，时间复杂度O(N)。  </p><p>因此 ConcurrentSkipListMap 适合处理高并发也需要对Map键值进行排序的场景。</p><h1 id="List"><a href="#List" class="headerlink" title="List"></a>List</h1><p><img src="https://tb.nsfocus.co/image/List_class_diagram.png" alt="各种List的依赖关系"></p><h2 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h2><p>ArrayList是一个可变长数组，初始化capacity = 10。<br>扩容策略：<br>JDK1.6：<code>newCapacity = (oldCapacity * 3)/2 + 1</code>          // old <em> 1.5 + 1<br>JDK1.7+：<code>newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1)</code> // old </em> 1.5<br>每一次扩容 都要将旧数组拷贝到新数组中。(System.arraycopy)</p><p>当想要在中间位置插入/删除元素时，都会需要将index后面的数据往前移动一位（ArrayList的每个元素之间不允许有间隔）。代价较高，因此ArrayList仅适合按下标随机查找和遍历，不适合插入和删除。</p><h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><p>Vector与ArrayList一样，也是一个可变长数组。Vector是线程安全的，类似于Hashtable，同一时刻只允许有一个线程操作它（内部方法被synchronized修饰了）。</p><h2 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h2><p>LinkedList是一个链表，提供了一些可以直接操作表头和表尾元素的方法，因此可以用来当做栈、队列、双向队列来使用。<br>push() == addFirst()</p><h2 id="CopyOnWriteArrayList"><a href="#CopyOnWriteArrayList" class="headerlink" title="CopyOnWriteArrayList"></a>CopyOnWriteArrayList</h2><p>CopyOnWrite，在写的时候会把数据复制一份出来，供其他线程来读。适用于写操作比较少，且能够容忍短暂的读写不一致的高并发场景。</p><h1 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h1><p><img src="https://tb.nsfocus.co/image/Set_class_diagram.png" alt="各种Set依赖关系"></p><h2 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h2><p>HashSet的内部是一个HashMap，add操作时，直接调用的<code>map.put(e, PRESENT)</code>方法。即如果元素不存在 则直接将其添加进map中，如果元素已存在则return false;</p><h2 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h2><p>TreeSet的内部是一个TreeMap，它继承了SortedMap，因此在迭代TreeSet时，出来的元素默认是按升序排好序的。<br>Integer和String对象可以进行默认的TreeSet排序，如果是自定义的对象，<strong>则必须实现Comparable接口，并覆盖CompareTo()函数</strong>，才可以正常使用。</p><h2 id="ConcurrentSkipListSet"><a href="#ConcurrentSkipListSet" class="headerlink" title="ConcurrentSkipListSet"></a>ConcurrentSkipListSet</h2><p>ConcurrentSkipListSet内部基于ConcurrentSkipListSet，因此它适合高并发环境下的有序集合。</p><h2 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h2><p>LinkedHashSet继承自HashSet，但是他是基于LinkedHashMap实现的。因为HashSet为LinkedHashMap专门写了一个 初始化LinkedHashMap的方法。<br>但LinkedHashSet的迭代时，只能按照插入顺序迭代。</p><h2 id="CopyOnWriteArraySet"><a href="#CopyOnWriteArraySet" class="headerlink" title="CopyOnWriteArraySet"></a>CopyOnWriteArraySet</h2><p>CopyOnWriteArraySet内部基于CopyOnWriteArrayList实现的。只是CopyOnWriteArraySet内部的元素是不重复的。<br>它同样是线程安全的，适用于写操作比较少，且能够容忍短暂的读写不一致的高并发场景。</p><hr><p>JDK源码学习：<br>JDK 1.6：<a href="https://github.com/nibnait/JDK_6" target="_blank" rel="noopener">https://github.com/nibnait/JDK_6</a><br>JDK 1.7：<a href="https://github.com/nibnait/JDK_7" target="_blank" rel="noopener">https://github.com/nibnait/JDK_7</a><br>JDK 1.8：<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk" target="_blank" rel="noopener">https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Map、List、Set&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="学习笔记" scheme="https://tianbin.org/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="JDK" scheme="https://tianbin.org/tags/JDK/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>聊聊IO</title>
+    <link href="https://tianbin.org/learning/io/"/>
+    <id>https://tianbin.org/learning/io/</id>
+    <published>2019-08-12T16:20:10.000Z</published>
+    <updated>2019-08-12T16:29:45.492Z</updated>
+    
+    <content type="html"><![CDATA[<p>AIO、BIO、NIO</p><a id="more"></a>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;AIO、BIO、NIO&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="学习笔记" scheme="https://tianbin.org/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    
+      <category term="IO" scheme="https://tianbin.org/tags/IO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker 常用命令</title>
+    <link href="https://tianbin.org/tool/docker/"/>
+    <id>https://tianbin.org/tool/docker/</id>
+    <published>2019-08-06T14:18:13.000Z</published>
+    <updated>2019-08-07T13:36:12.891Z</updated>
+    
+    <content type="html"><![CDATA[<p>菜鸟教程：<a href="https://www.runoob.com/docker/docker-tutorial.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-tutorial.html</a></p><a id="more"></a><p>批量删除未运行的容器：<code>docker rm $(docker ps -qf status=exited)</code></p><p>给docker容器改名：<code>docker rename tom jerry</code></p><p><a href="https://www.runoob.com/docker/docker-install-tomcat.html" target="_blank" rel="noopener">https://www.runoob.com/docker/docker-install-tomcat.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;菜鸟教程：&lt;a href=&quot;https://www.runoob.com/docker/docker-tutorial.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://www.runoob.com/docker/docker-tutorial.html&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="工具" scheme="https://tianbin.org/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="Docker" scheme="https://tianbin.org/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微服务项目实战（一）环境搭建</title>
+    <link href="https://tianbin.org/project/project_start/"/>
+    <id>https://tianbin.org/project/project_start/</id>
+    <published>2019-08-04T11:19:38.000Z</published>
+    <updated>2019-08-07T14:29:27.406Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考资料：</p><p><a href="https://juejin.im/post/5a97fbb46fb9a028b5475043" target="_blank" rel="noopener">手把手0基础项目实战（一）——教你搭建一套可自动化构建的微服务框架(SpringBoot+Dubbo+Docker+Jenkins)</a></p><p><a href="https://juejin.im/post/5aa4ded26fb9a028e46e43ca" target="_blank" rel="noopener">手把手0基础项目实战（二）——微服务架构下的数据库分库分表实战</a></p><p><a href="https://juejin.im/post/5aa4d363518825557207ff92" target="_blank" rel="noopener">手把手0基础项目实战（三）——教你开发一套电商平台的安全框架</a></p><a id="more"></a><p><a href="https://blog.csdn.net/u010425776/article/category/7498622" target="_blank" rel="noopener">高喜商城 微服务项目实战</a> 项目地址: <a href="https://github.com/bz51/SpringBoot-Dubbo-Docker-Jenkins" target="_blank" rel="noopener">https://github.com/bz51/SpringBoot-Dubbo-Docker-Jenkins</a></p><p><a href="http://www.yunweipai.com/archives/16164.html" target="_blank" rel="noopener">饿了么：日订单量超900万的架构设计及演进之路</a></p><p><a href="http://www.yunweipai.com/archives/9018.html" target="_blank" rel="noopener">饿了么分布式服务治理及优化经验</a></p><hr><p>看了柴老师的微服务项目实战，发现一个大型的电商系统架构的发展基本上都是大同小异。遂萌生了一个自己在本机搭个外卖平台。正好把dubbo、docker、jenkins、分库分表、kafka、redis、es。。。这些组件都用上，来实现系统的服务拆分、服务自动构建、集群配置管理和熔断机制、海量数据的分词查询等等。并在使用过程中深入了解一下各中间件的原理。（坑挖的有点大，我一点一点的填）</p><p>本文目标：在本地使用SpringBoot和Dubbo搭建外卖平台，并部署到Docker中，并借助Jenkins实现自动化构建。</p><p>（本专题的重点是系统的架构、中间件的使用及原理剖析。并非业务细节）</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//创建Tomcat容器</span><br><span class="line">docker run --name eus -p 8082:8080 -v /Users/nibnait/web/eus-log:/opt/tomcat/eus-log chaimm/tomcat:1.1</span><br><span class="line">docker run --name eos -p 8083:8080 -v /Users/nibnait/web/eos-log:/opt/tomcat/eos-log chaimm/tomcat:1.1</span><br><span class="line">docker run --name ers -p 8084:8080 -v /Users/nibnait/web/ers-log:/opt/tomcat/ers-log chaimm/tomcat:1.1</span><br><span class="line"></span><br><span class="line">//创建zookeeper容器</span><br><span class="line">docker run --name zookeeper-debug -p 2182:2181 -p 10000:8080 chaimm/zookeeper-dubbo:1.0</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;参考资料：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://juejin.im/post/5a97fbb46fb9a028b5475043&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;手把手0基础项目实战（一）——教你搭建一套可自动化构建的微服务框架(SpringBoot+Dubbo+Docker+Jenkins)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://juejin.im/post/5aa4ded26fb9a028e46e43ca&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;手把手0基础项目实战（二）——微服务架构下的数据库分库分表实战&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://juejin.im/post/5aa4d363518825557207ff92&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;手把手0基础项目实战（三）——教你开发一套电商平台的安全框架&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="微服务项目实战" scheme="https://tianbin.org/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/"/>
+    
+    
+      <category term="SpringBoot" scheme="https://tianbin.org/tags/SpringBoot/"/>
+    
+      <category term="Dubbo" scheme="https://tianbin.org/tags/Dubbo/"/>
+    
+      <category term="Docker" scheme="https://tianbin.org/tags/Docker/"/>
+    
+      <category term="Jenkins" scheme="https://tianbin.org/tags/Jenkins/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis 过期key删除策略和内存淘汰策略</title>
@@ -411,103 +508,6 @@
     
     
       <category term="网络" scheme="https://tianbin.org/tags/%E7%BD%91%E7%BB%9C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的MBP</title>
-    <link href="https://tianbin.org/tool/my_mbp/"/>
-    <id>https://tianbin.org/tool/my_mbp/</id>
-    <published>2019-06-29T16:59:46.000Z</published>
-    <updated>2019-07-15T18:10:28.950Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="必备工具"><a href="#必备工具" class="headerlink" title="必备工具"></a>必备工具</h1><h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a><a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Chrome</a></h2><h2 id="iTerm2-Homebrew-zsh"><a href="#iTerm2-Homebrew-zsh" class="headerlink" title="iTerm2 + Homebrew + zsh"></a><a href="https://www.jianshu.com/p/e7af448d01b0" target="_blank" rel="noopener">iTerm2</a> + <a href="https://www.jianshu.com/p/2b4f00a8e4da" target="_blank" rel="noopener">Homebrew</a> + zsh</h2><a id="more"></a><h2 id="Alfred"><a href="#Alfred" class="headerlink" title="Alfred"></a>Alfred</h2><ul><li>有道 workflow</li><li>剪切板<br>[支持正版，自行购买下载]</li></ul><h2 id="万年历"><a href="#万年历" class="headerlink" title="万年历"></a>万年历</h2><p>App Store免费下载</p><h2 id="CleanMyMac"><a href="#CleanMyMac" class="headerlink" title="CleanMyMac"></a>CleanMyMac</h2><p>彻底卸载App[支持正版，自行购买下载]</p><h1 id="效率工具"><a href="#效率工具" class="headerlink" title="效率工具"></a>效率工具</h1><h2 id="Manico"><a href="#Manico" class="headerlink" title="Manico"></a>Manico</h2><p>App切换<br>App Store免费下载，建议将IntelliJ IDEA加入静默模式</p><h2 id="SktechBook"><a href="#SktechBook" class="headerlink" title="SktechBook"></a>SktechBook</h2><p>画图工具，比Windows里的画图强大100倍。<br>App Store免费下载。</p><h2 id="Spectacle"><a href="#Spectacle" class="headerlink" title="Spectacle"></a><a href="https://www.spectacleapp.com/" target="_blank" rel="noopener">Spectacle</a></h2><p>小眼镜 分屏工具</p><h2 id="Sublime-Text-3"><a href="#Sublime-Text-3" class="headerlink" title="Sublime Text 3"></a><a href="https://www.sublimetext.com/" target="_blank" rel="noopener">Sublime Text 3</a></h2><p>ctrl + `</p><p>获取package control最新安装代码：<a href="https://packagecontrol.io/installation" target="_blank" rel="noopener">https://packagecontrol.io/installation</a></p><p>cmd+shift+p<br>package control: install package<br>cmd+shift+p<br>pretty json</p><h3 id="Preferences-—-gt-Key-Bindings："><a href="#Preferences-—-gt-Key-Bindings：" class="headerlink" title="Preferences —&gt; Key Bindings："></a>Preferences —&gt; Key Bindings：</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">&#123; <span class="attr">"keys"</span>: [<span class="string">"super+i"</span>], <span class="attr">"command"</span>: <span class="string">"copy_path"</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure><h2 id="typora"><a href="#typora" class="headerlink" title="typora"></a><a href="https://typora.io/" target="_blank" rel="noopener">typora</a></h2><p>轻量级Markdown编辑神器！</p><h1 id="专业工具"><a href="#专业工具" class="headerlink" title="专业工具"></a>专业工具</h1><h2 id="Parallels-Desktop"><a href="#Parallels-Desktop" class="headerlink" title="Parallels Desktop"></a>Parallels Desktop</h2><p>虚拟机</p><h2 id="Java开发环境"><a href="#Java开发环境" class="headerlink" title="Java开发环境"></a><a href="https://cloud.tencent.com/developer/article/1113909" target="_blank" rel="noopener">Java开发环境</a></h2><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><ul><li>JDK 1.8：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></li><li>JDK 1.7：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html</a></li><li>JDK 1.6：<a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html</a></li><li>JDK 1.5：<a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase5-419410.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase5-419410.html</a></li></ul><h2 id="Maven"><a href="#Maven" class="headerlink" title="Maven"></a><a href="https://www.jianshu.com/p/96021a36e000" target="_blank" rel="noopener">Maven</a></h2><h2 id="IDEA"><a href="#IDEA" class="headerlink" title="IDEA"></a>IDEA</h2><p><a href="https://www.jetbrains.com/idea/download/#section=mac" target="_blank" rel="noopener">download</a><br><a href="http://idea.lanyus.com/" target="_blank" rel="noopener">lanyus</a></p><p>算法测试Code Templates:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#if ($&#123;PACKAGE_NAME&#125; &amp;&amp; $&#123;PACKAGE_NAME&#125; != "")package $&#123;PACKAGE_NAME&#125;;#end</span><br><span class="line">#parse("File Header.java")</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> junit.framework.TestCase;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> $</span>&#123;NAME&#125; extends TestCase &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h2 id="Xmind"><a href="#Xmind" class="headerlink" title="Xmind"></a>Xmind</h2><h2 id="Visual-Paradigm"><a href="#Visual-Paradigm" class="headerlink" title="Visual Paradigm"></a>Visual Paradigm</h2><h2 id="文本比较工具"><a href="#文本比较工具" class="headerlink" title="文本比较工具"></a>文本比较工具</h2><ul><li><a href="https://sourcegear.com/diffmerge/downloads.php" target="_blank" rel="noopener">DiffMerge</a> 轻量级，容易更改系统文件打开方式</li><li><a href="https://www.scootersoftware.com/download.php" target="_blank" rel="noopener">Beyond Compare</a> 重、总崩、需破解</li></ul><h2 id="Charles"><a href="#Charles" class="headerlink" title="Charles"></a><a href="https://www.charlesproxy.com/download/" target="_blank" rel="noopener">Charles</a></h2><h3 id="安装证书"><a href="#安装证书" class="headerlink" title="安装证书"></a>安装证书</h3><h4 id="PC端"><a href="#PC端" class="headerlink" title="PC端"></a>PC端</h4><p> “Help” -&gt; “SSL Proxying” -&gt; “Install Charles Root Certificate”</p><h4 id="移动端"><a href="#移动端" class="headerlink" title="移动端"></a>移动端</h4><p>“Help” -&gt; “SSL Proxying” -&gt; “Install Charles Root Certificate on a Mobile Device or Remote Browser”</p><ol><li><p>访问chls.pro/ssl自动<strong>下载</strong>证书。（此时要确认已经将WiFi的代理模式改为“手动”模式，服务器和端口号填写正确）</p><p>如果还是没有自动下载，也可以点击这个链接 `<a href="https://www.charlesproxy.com/assets/legacy-ssl/charles.crt直接下载（参考文档：[Legacy" target="_blank" rel="noopener">https://www.charlesproxy.com/assets/legacy-ssl/charles.crt直接下载（参考文档：[Legacy</a> SSL Proxying](<a href="https://www.charlesproxy.com/documentation/additional/legacy-ssl-proxying/" target="_blank" rel="noopener">https://www.charlesproxy.com/documentation/additional/legacy-ssl-proxying/</a>) ）</p></li><li><p>设置-&gt;通用-&gt;描述文件与设备管理中<strong>安装</strong>。</p></li><li><p>设置-&gt;通用-&gt;关于本机-&gt;证书信任设置，<strong>开启信任</strong>Charles Proxy SSL Proxying</p></li></ol><p>安卓手机也可能不能从服务器下载证书，可以在pc端的 Charles 从 “Help” -&gt; “SSL Proxying” -&gt; “Save Charles Root Certificate”导出后，在手机 设置&gt;安全&gt;安装证书 本地安装。</p><h3 id="Https设置白名单"><a href="#Https设置白名单" class="headerlink" title="Https设置白名单"></a>Https设置白名单</h3><p>“Proxy”-&gt;”SSL Proxying Settings”，添加 <code>*:*</code></p><p>安装chrome的插件<a href="https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif" target="_blank" rel="noopener">Proxy SwitchyOmega</a>，切换到127.0.0.1:8888的代理，即可使用Charles抓本地浏览器的包了。</p><p>另一种方法：<a href="https://www.charlesproxy.com/documentation/using-charles/ssl-certificates/" target="_blank" rel="noopener">https://www.charlesproxy.com/documentation/using-charles/ssl-certificates/</a></p><p><strong>注：由于现在的app都有SSL证书检测机制，用 charles 进行 https 的抓包本质上就是作为一个中间人代理用自己生成的 SSL 证书来完成 https 请求的过程，这样就导致客户端接收到的 SSL 证书其实是一个假的，所以客户端不认这个证书，导致unknown，</strong>解决方案：使用一些手段（ROOT / 越狱），是你的要抓的app信任你的Charles证书，或者安装app的debug包。</p><h1 id="APP-Store精选"><a href="#APP-Store精选" class="headerlink" title="APP Store精选"></a>APP Store精选</h1><p>偶然发现的一些免费小玩意：</p><ul><li>Maipo for 微博</li><li>魔力拼图Lite</li><li>五子棋 Gomoku</li><li>扫雷 Minesweeper Deluxe</li></ul><h1 id="装X工具"><a href="#装X工具" class="headerlink" title="装X工具"></a>装X工具</h1><h2 id="Aerial"><a href="#Aerial" class="headerlink" title="Aerial"></a>Aerial</h2><p>桌面屏保</p><h2 id="iStat-Menus"><a href="#iStat-Menus" class="headerlink" title="iStat Menus"></a>iStat Menus</h2><p>[支持正版，自行购买下载]</p><h2 id="uBar"><a href="#uBar" class="headerlink" title="uBar"></a>uBar</h2><p>win风格的任务栏<br>[支持正版，自行购买下载]</p><h2 id="Commander-One"><a href="#Commander-One" class="headerlink" title="Commander One"></a>Commander One</h2><p>文件管理<br>[支持正版，自行购买下载]</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;必备工具&quot;&gt;&lt;a href=&quot;#必备工具&quot; class=&quot;headerlink&quot; title=&quot;必备工具&quot;&gt;&lt;/a&gt;必备工具&lt;/h1&gt;&lt;h2 id=&quot;Chrome&quot;&gt;&lt;a href=&quot;#Chrome&quot; class=&quot;headerlink&quot; title=&quot;Chrome&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.google.com/chrome/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Chrome&lt;/a&gt;&lt;/h2&gt;&lt;h2 id=&quot;iTerm2-Homebrew-zsh&quot;&gt;&lt;a href=&quot;#iTerm2-Homebrew-zsh&quot; class=&quot;headerlink&quot; title=&quot;iTerm2 + Homebrew + zsh&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://www.jianshu.com/p/e7af448d01b0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;iTerm2&lt;/a&gt; + &lt;a href=&quot;https://www.jianshu.com/p/2b4f00a8e4da&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Homebrew&lt;/a&gt; + zsh&lt;/h2&gt;
-    
-    </summary>
-    
-      <category term="工具" scheme="https://tianbin.org/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="Mac" scheme="https://tianbin.org/tags/Mac/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 常用命令</title>
-    <link href="https://tianbin.org/tool/linux_command/"/>
-    <id>https://tianbin.org/tool/linux_command/</id>
-    <published>2019-06-29T16:54:54.000Z</published>
-    <updated>2019-07-15T18:10:28.949Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="查看大文件"><a href="#查看大文件" class="headerlink" title="查看大文件"></a>查看大文件</h1><p>进入根目录，查看那个目录的利用率(used)达到了100%</p><blockquote><p>df -lh #查看磁盘空间占用情况<br>（<a href="https://www.cnblogs.com/peida/archive/2012/12/07/2806483.html" target="_blank" rel="noopener">每天一个linux命令（33）：df 命令</a>）</p></blockquote><a id="more"></a><p>进入log目录，</p><blockquote><p>du -h #显示当前目录下的文件的磁盘空间使用情况<br>相当于 ls -aslh<br>（<a href="https://www.cnblogs.com/peida/archive/2012/12/10/2810755.html" target="_blank" rel="noopener">每天一个linux命令（34）：du 命令</a>）</p></blockquote><h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><a href="https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html" target="_blank" rel="noopener">https://www.cnblogs.com/peida/archive/2012/12/17/2821195.html</a></p><blockquote></blockquote><h1 id="less"><a href="#less" class="headerlink" title="less"></a>less</h1><p><a href="https://www.cnblogs.com/peida/archive/2012/11/05/2754477.html" target="_blank" rel="noopener">每天一个linux命令（13）：less 命令</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;查看大文件&quot;&gt;&lt;a href=&quot;#查看大文件&quot; class=&quot;headerlink&quot; title=&quot;查看大文件&quot;&gt;&lt;/a&gt;查看大文件&lt;/h1&gt;&lt;p&gt;进入根目录，查看那个目录的利用率(used)达到了100%&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;df -lh #查看磁盘空间占用情况&lt;br&gt;（&lt;a href=&quot;https://www.cnblogs.com/peida/archive/2012/12/07/2806483.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;每天一个linux命令（33）：df 命令&lt;/a&gt;）&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="工具" scheme="https://tianbin.org/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="Linux" scheme="https://tianbin.org/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git 小技巧</title>
-    <link href="https://tianbin.org/tool/git_skills/"/>
-    <id>https://tianbin.org/tool/git_skills/</id>
-    <published>2019-06-29T16:51:02.000Z</published>
-    <updated>2019-07-21T09:07:21.720Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="启用大小写敏感"><a href="#启用大小写敏感" class="headerlink" title="启用大小写敏感"></a>启用大小写敏感</h1><blockquote><p>git config —global core.ignorecase false （- - global）</p></blockquote><h1 id="批量删除分支"><a href="#批量删除分支" class="headerlink" title="批量删除分支"></a>批量删除分支</h1><pre><code>git branch | grep &#39;hotfix&#39; | xargs git branch -D</code></pre><a id="more"></a><h1 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h1><p>合并多个commit 为1个commit，然后确保本地的git log为最新的时，即可直接<code>git push origin &lt;branch&gt; -f</code></p><h2 id="查看git提交日志："><a href="#查看git提交日志：" class="headerlink" title="查看git提交日志："></a>查看git提交日志：</h2><blockquote><p>git log —graph —pretty=oneline —abbrev-commit</p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* a5da1fb (HEAD -&gt; master, origin/master) 第4次commit</span><br><span class="line">* 0c20956 第3次commit</span><br><span class="line">* 230096e 第2次commit</span><br><span class="line">* 7bfab4e 第1次commit</span><br></pre></td></tr></table></figure><h2 id="git-rebase（合并重写commit信息）"><a href="#git-rebase（合并重写commit信息）" class="headerlink" title="git rebase（合并重写commit信息）"></a>git rebase（合并重写commit信息）</h2><p>想要合并1-3条，有两个方法：</p><ol><li>从HEAD版本开始往过去数3个版本</li></ol><blockquote><p>git rebase -i HEAD~3</p></blockquote><ol><li>指名要合并的版本之前的版本号</li></ol><blockquote><p>git rebase -i 7bfab4e</p></blockquote><p>请注意7bfab4e这个版本是不参与合并的，可以把它当做一个坐标</p><h2 id="选取要合并的提交"><a href="#选取要合并的提交" class="headerlink" title="选取要合并的提交"></a>选取要合并的提交</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pick 230096e 第2次commit</span><br><span class="line">pick 0c20956 第3次commit</span><br><span class="line">pick a5da1fb 第4次commit</span><br><span class="line"></span><br><span class="line">将下面两个pick 手动改成 s或squash</span><br><span class="line">pick 230096e 第2次commit</span><br><span class="line">s 0c20956 第3次commit</span><br><span class="line">s a5da1fb 第4次commit</span><br></pre></td></tr></table></figure><p>保存并退出<code>:wq</code>，然后会弹出一条<code>&quot;This is a combination of 3 commits&quot;</code>的提示，继续保存并退出<code>:wq</code></p><blockquote><p>git add .（如果有冲突，合并冲突后，执行此命令）</p><p>git rebase —continue（continue前面是两个 - - ）</p><p>【放弃本次rebase是：git rebase —abort（abort前面是两个 - -）】</p></blockquote><h2 id="修改合并后的commit信息"><a href="#修改合并后的commit信息" class="headerlink" title="修改合并后的commit信息"></a>修改合并后的commit信息</h2><blockquote><p>git commit —amend</p></blockquote><h2 id="push-f-到远程"><a href="#push-f-到远程" class="headerlink" title="push -f 到远程"></a>push -f 到远程</h2><p>确保本地的git log是最新的</p><blockquote><p>git push origin <code>&lt;branch&gt;</code> -f</p></blockquote><h1 id="git-reset（代码回滚）"><a href="#git-reset（代码回滚）" class="headerlink" title="git reset（代码回滚）"></a>git reset（代码回滚）</h1><p>git rebase之后，在其他地方git pull代码会和本地的git log有冲突</p><blockquote><p>git pull</p><p>git reset —hard origin/master（ 注意是 - - hard）（相当于忽略冲突，将项目的版本直接回退到远程仓库的最新版本）</p></blockquote><h2 id="一些示例"><a href="#一些示例" class="headerlink" title="一些示例"></a>一些示例</h2><blockquote><p>git reset —hard = git reset —hard HEAD //相当于放弃当前暂存区的所有修改，恢复到最新的一次cimmit的状态</p><p>git reset 7bfab4e    //保留当前暂存区的所有修改，并回退到对应的版本位置。（冲突文件以当前暂存区为准）</p><p>git reset —hard HEAD~3     //改变工作区和暂存区全部重置到 倒数第3个commit版本。该参数等同于重置，可能会引起数据损失。</p></blockquote><h1 id="git-revert（撤销某次操作）"><a href="#git-revert（撤销某次操作）" class="headerlink" title="git revert（撤销某次操作）"></a>git revert（撤销某次操作）</h1><p>git revert 撤销某次操作，此次操作之前和之后的commit和history都会保留，并且把这次撤销<br>作为一次最新的提交</p><blockquote><p>git revert HEAD       //撤销前一次 commit<br>git revert HEAD^      //撤销前前一次 commit<br>git revert fa042ce5   //撤销指定的版本，撤销也会作为一次提交进行保存。</p></blockquote><p>git revert是提交一个新的版本，将需要revert的版本的内容再反向修改回去，版本会递增，不影响之前提交的内容</p><h1 id="git-stash（代码寄存）"><a href="#git-stash（代码寄存）" class="headerlink" title="git stash（代码寄存）"></a>git stash（代码寄存）</h1><blockquote><p>git stash [save ‘message’]    //将当前所处的工作区/分支的改动保存起来<br>git stash list        //保存过的改动记录<br>git stash pop [stash@{0}]         //恢复指定缓存（默认最新保存的改动），并删除缓存记录<br>git stash apply [stash@{0}]       //恢复指定缓存（默认最新保存的改动），并保留缓存记录<br>git stash drop [stash@{0}]    //删除指定缓存（默认最新保存的改动）  </p></blockquote><h1 id="统计代码行数"><a href="#统计代码行数" class="headerlink" title="统计代码行数"></a>统计代码行数</h1><pre><code>git log --author=&quot;username&quot; --pretty=tformat: --numstat | awk &#39;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&#39;git log --author=&quot;nibnait&quot; --pretty=tformat: --numstat | awk &#39;{ add += $1; subs += $2; loc += $1 - $2 } END { printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc }&#39;</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;启用大小写敏感&quot;&gt;&lt;a href=&quot;#启用大小写敏感&quot; class=&quot;headerlink&quot; title=&quot;启用大小写敏感&quot;&gt;&lt;/a&gt;启用大小写敏感&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;git config —global core.ignorecase false （- - global）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;批量删除分支&quot;&gt;&lt;a href=&quot;#批量删除分支&quot; class=&quot;headerlink&quot; title=&quot;批量删除分支&quot;&gt;&lt;/a&gt;批量删除分支&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;git branch | grep &amp;#39;hotfix&amp;#39; | xargs git branch -D
-&lt;/code&gt;&lt;/pre&gt;
-    
-    </summary>
-    
-      <category term="工具" scheme="https://tianbin.org/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="Git" scheme="https://tianbin.org/tags/Git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac 小技巧</title>
-    <link href="https://tianbin.org/tool/mac_skills/"/>
-    <id>https://tianbin.org/tool/mac_skills/</id>
-    <published>2019-06-29T16:21:33.000Z</published>
-    <updated>2019-07-15T18:44:31.961Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="解压-rar、-7z文件"><a href="#解压-rar、-7z文件" class="headerlink" title="解压.rar、.7z文件"></a>解压.rar、.7z文件</h1><blockquote><p>unrar x 1.rar<br>7z e 1.7z</p></blockquote><a id="more"></a><h2 id="before"><a href="#before" class="headerlink" title="before:"></a>before:</h2><blockquote><p>brew install unrar</p><p>brew search 7z<br>brew install p7zip </p></blockquote><h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><p><code>Updating Homebrew...</code></p><ul><li>法1：</li></ul><p>替换brew.git:<br>cd “$(brew —repo)”<br>git remote set-url origin <a href="https://mirrors.ustc.edu.cn/brew.git" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/brew.git</a></p><p>替换homebrew-core.git:<br>cd “$(brew —repo)/Library/Taps/homebrew/homebrew-core”<br>git remote set-url origin <a href="https://mirrors.ustc.edu.cn/homebrew-core.git" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-core.git</a> </p><ul><li>法2: </li></ul><p>重置brew.git:<br>cd “$(brew —repo)”<br>git remote set-url origin <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a></p><p>重置homebrew-core.git:<br>cd “$(brew —repo)/Library/Taps/homebrew/homebrew-core”<br>git remote set-url origin <a href="https://github.com/Homebrew/homebrew-core.git" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-core.git</a></p><h1 id="一些快捷键"><a href="#一些快捷键" class="headerlink" title="一些快捷键"></a>一些快捷键</h1><p>显示隐藏文件：<code>command + shift + .</code></p><p>彻底删除：<code>command + delete</code></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;解压-rar、-7z文件&quot;&gt;&lt;a href=&quot;#解压-rar、-7z文件&quot; class=&quot;headerlink&quot; title=&quot;解压.rar、.7z文件&quot;&gt;&lt;/a&gt;解压.rar、.7z文件&lt;/h1&gt;&lt;blockquote&gt;
-&lt;p&gt;unrar x 1.rar&lt;br&gt;7z e 1.7z&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="工具" scheme="https://tianbin.org/categories/%E5%B7%A5%E5%85%B7/"/>
-    
-    
-      <category term="Mac" scheme="https://tianbin.org/tags/Mac/"/>
     
   </entry>
   
