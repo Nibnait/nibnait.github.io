@@ -107,13 +107,18 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="TBlogs">
-<meta property="og:url" content="https://tianbin.org/tags/Jenkins/index.html">
+  <meta name="description" content="使用场景解耦、异步、削峰">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列">
+<meta property="og:url" content="https://tianbin.org/learning/mq/index.html">
 <meta property="og:site_name" content="TBlogs">
+<meta property="og:description" content="使用场景解耦、异步、削峰">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-25T14:17:07.212Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TBlogs">
+<meta name="twitter:title" content="消息队列">
+<meta name="twitter:description" content="使用场景解耦、异步、削峰">
 
 
 
@@ -123,7 +128,7 @@
 
   
   
-  <link rel="canonical" href="https://tianbin.org/tags/Jenkins/">
+  <link rel="canonical" href="https://tianbin.org/learning/mq/">
 
 
 
@@ -133,7 +138,7 @@
   };
 </script>
 
-  <title>标签: Jenkins | TBlogs</title>
+  <title>消息队列 | TBlogs</title>
   
 
 
@@ -181,7 +186,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -267,7 +272,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -311,28 +316,6 @@
 
   
     
-
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
 
   
 
@@ -386,57 +369,388 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>Jenkins<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tianbin.org/learning/mq/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NibNait&nbsp&nbsp">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TBlogs">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/project/project_start/" itemprop="url">
-            
-              <span itemprop="name">微服务项目实战（一）环境搭建</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">消息队列
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T19:19:38+08:00" content="2019-08-04">
-          08-04
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-21 21:29:33" itemprop="dateCreated datePublished" datetime="2019-06-21T21:29:33+08:00">2019-06-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-08-25 22:17:07" itemprop="dateModified" datetime="2019-08-25T22:17:07+08:00">2019-08-25</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+              
+            </span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-pencil"></i>&nbsp 594 字</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i>&nbsp 2 分钟</span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/learning/mq/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/learning/mq/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><p>解耦、异步、削峰</p>
+<a id="more"></a>
+<p>相比串行处理，适用于点对多的广播场景<br>（开店成功 -&gt; 通知商户、通知市场经理、创建审核工作流）<br>（下单 -&gt; 扣商品库存、发红包、发短信通知）<br>（订单流程状态更新 -&gt; 核对金额、状态信息）<br>（无效订单 -&gt; 补偿退款、券等资源状态回退）<br>（秒杀、设置队列大小，顺序处理，队列满了，让前端进行排队，避免服务器被瞬间大流量冲垮）</p>
+<h1 id="如何保证消息队列的高可用"><a href="#如何保证消息队列的高可用" class="headerlink" title="如何保证消息队列的高可用"></a>如何保证消息队列的高可用</h1><h2 id="消费模式："><a href="#消费模式：" class="headerlink" title="消费模式："></a>消费模式：</h2><ul>
+<li><p>点对点</p>
+<p>每个消息只有一个消费者，保证了消息的顺序消费。</p>
+</li>
+<li><p>发布/订阅</p>
+<ul>
+<li><p>pull模式</p>
+<p>客户端主动拉消息。按需消费，但有可能造成消息堆积。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>push模式</p>
+<p>服务的主动推消息。实时性高，但需要管理消息的消费状态，做数据备份。</p>
+</li>
+</ul>
+<p>常见问题：</p>
+<ol>
+<li>如何保证消息不被重复消费，保证消费的时候是幂等的</li>
+</ol>
+<p>一个消费者 顺序消费。幂等：依赖redis Set（存放消费过的taskId）、建立数据库唯一键约束</p>
+<ol>
+<li><p>保证消息传输的可靠性，消息丢失了的补偿措施？</p>
+</li>
+<li><p>消息堆积解决方案 </p>
+</li>
+</ol>
+<ul>
+<li>伸缩性</li>
+<li>可靠性</li>
+<li>可用性</li>
+</ul>
+<h1 id="各个队列的优缺点："><a href="#各个队列的优缺点：" class="headerlink" title="各个队列的优缺点："></a>各个队列的优缺点：</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:center">RabbitMQ</th>
+<th style="text-align:center">ActiveMQ</th>
+<th style="text-align:center">RocketMQ</th>
+<th style="text-align:center">Kafka</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>所属社区/公司</td>
+<td style="text-align:center">Mozilia Publice License</td>
+<td style="text-align:center">Apache</td>
+<td style="text-align:center">Ali</td>
+<td style="text-align:center">Apache</td>
+</tr>
+<tr>
+<td>开发语言</td>
+<td style="text-align:center">Erlang</td>
+<td style="text-align:center">Java</td>
+<td style="text-align:center">Java</td>
+<td style="text-align:center">Scala &amp; Java</td>
+</tr>
+<tr>
+<td>客户端支持语言</td>
+<td style="text-align:center">大多数的主流语言</td>
+<td style="text-align:center">大多数的主流语言</td>
+<td style="text-align:center">Java</td>
+<td style="text-align:center">大多数的主流语言</td>
+</tr>
+<tr>
+<td>协议支持</td>
+<td style="text-align:center">多协议支持：AMQP，XMPP、SMTP、STOMP</td>
+<td style="text-align:center">AMQP，XMPP、SMTP、STOMP</td>
+<td style="text-align:center">自定义，社区提供 JMS（不成熟）</td>
+<td style="text-align:center">自有协议，社区封装了HTTP协议支持</td>
+</tr>
+<tr>
+<td>消息的批量操作</td>
+<td style="text-align:center">❌</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">✔️</td>
+<td style="text-align:center">✔️</td>
+</tr>
+<tr>
+<td>消息推拉模式</td>
+<td style="text-align:center">PULL / PUSH</td>
+<td style="text-align:center">PULL / PUSH</td>
+<td style="text-align:center">PULL / PUSH</td>
+<td style="text-align:center">PULL</td>
+</tr>
+<tr>
+<td>高可用</td>
+<td style="text-align:center">master/slave模式，master提供服务，slave仅做备份</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">支持replica机制，leader宕掉后，备份自动顶替，并重新选举leader（基于Zookeeper）</td>
+</tr>
+<tr>
+<td>数据可靠性</td>
+<td style="text-align:center">数据可靠，有slave做备份</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">数据可看到，有replica机制，有容错容灾能力</td>
+</tr>
+<tr>
+<td>单机吞吐量</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关注可靠性，AMQP协议支持点对点的订阅（路由）。</p>
+<p>起源于Kafka，阿里对可靠性做了优化。ack机制</p>
+<p>关注吞吐量，不支持事物。适用于高吞吐量的（ELK）日志收集。</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    <div>
+          
+            
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/learning/mq/">消息队列</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
+  <p><span>发布时间:</span>2019年06月21日 - 21:06</p>
+  <p><span>最后更新:</span>2019年08月25日 - 22:08</p>
+  <p><span>原始链接:</span><a href="/learning/mq/" title="消息队列">https://tianbin.org/learning/mq/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/learning/mq/" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          icon: "success",
+          showConfirmButton: true
+          });
+    });
+    });
+</script>
+
+
+          
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag">
+              <i class="fa fa-tag"></i>
+              面试
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/misc/hello_world/" rel="prev" title="Hello World Mac版">
+                Hello World Mac版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -456,8 +770,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -499,9 +822,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -556,9 +877,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -670,6 +989,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用场景"><span class="nav-number">1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何保证消息队列的高可用"><span class="nav-number">2.</span> <span class="nav-text">如何保证消息队列的高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消费模式："><span class="nav-number">2.1.</span> <span class="nav-text">消费模式：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#各个队列的优缺点："><span class="nav-number">3.</span> <span class="nav-text">各个队列的优缺点：</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -712,7 +1048,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共 22.4k 字
+        博客全站共 23.6k 字
       </span>
     </div>
 
@@ -837,6 +1173,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
 
   
 
@@ -880,6 +1220,8 @@
 
 
 
+
+  
 
 
   

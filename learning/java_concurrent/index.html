@@ -107,13 +107,18 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="TBlogs">
-<meta property="og:url" content="https://tianbin.org/tags/SpringBoot/index.html">
+  <meta name="description" content="并发编程的本质（微观:可见性、原子性、有序性；宏观:分工、协作、互斥） AIO、BIO、NIO 同步（synchronized）、互斥（锁） 线程池">
+<meta name="keywords" content="IO,锁,JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发编程">
+<meta property="og:url" content="https://tianbin.org/learning/java_concurrent/index.html">
 <meta property="og:site_name" content="TBlogs">
+<meta property="og:description" content="并发编程的本质（微观:可见性、原子性、有序性；宏观:分工、协作、互斥） AIO、BIO、NIO 同步（synchronized）、互斥（锁） 线程池">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-01T18:42:56.600Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TBlogs">
+<meta name="twitter:title" content="Java并发编程">
+<meta name="twitter:description" content="并发编程的本质（微观:可见性、原子性、有序性；宏观:分工、协作、互斥） AIO、BIO、NIO 同步（synchronized）、互斥（锁） 线程池">
 
 
 
@@ -123,7 +128,7 @@
 
   
   
-  <link rel="canonical" href="https://tianbin.org/tags/SpringBoot/">
+  <link rel="canonical" href="https://tianbin.org/learning/java_concurrent/">
 
 
 
@@ -133,7 +138,7 @@
   };
 </script>
 
-  <title>标签: SpringBoot | TBlogs</title>
+  <title>Java并发编程 | TBlogs</title>
   
 
 
@@ -181,7 +186,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -267,7 +272,7 @@
         
         
           
-          <li class="menu-item menu-item-tags menu-item-active">
+          <li class="menu-item menu-item-tags">
 
     
     
@@ -311,28 +316,6 @@
 
   
     
-
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
 
   
 
@@ -386,57 +369,373 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>SpringBoot<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tianbin.org/learning/java_concurrent/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="NibNait&nbsp&nbsp">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="TBlogs">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <a class="post-title-link" href="/project/project_start/" itemprop="url">
-            
-              <span itemprop="name">微服务项目实战（一）环境搭建</span>
-            
-          </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">Java并发编程
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-08-04T19:19:38+08:00" content="2019-08-04">
-          08-04
-        </time>
-      </div>
+              
+            
+          </h1>
+        
 
-    </header>
-  </article>
+        <div class="post-meta">
+          <span class="post-time">
 
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-13 00:20:10" itemprop="dateCreated datePublished" datetime="2019-08-13T00:20:10+08:00">2019-08-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-02 02:42:56" itemprop="dateModified" datetime="2019-09-02T02:42:56+08:00">2019-09-02</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+              
+            </span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-pencil"></i>&nbsp 1.8k 字</span>
+            <span class="post-count"> &nbsp | &nbsp <i class="fa fa-clock-o"></i>&nbsp 6 分钟</span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/learning/java_concurrent/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/learning/java_concurrent/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>并发编程的本质（微观:可见性、原子性、有序性；宏观:分工、协作、互斥）</p>
+<p>AIO、BIO、NIO</p>
+<p>同步（synchronized）、互斥（锁）</p>
+<p>线程池</p>
+<a id="more"></a>
+<h1 id="先从IO说起"><a href="#先从IO说起" class="headerlink" title="先从IO说起"></a>先从IO说起</h1><p>BIO（blocking IO）：阻塞IO，用户线程进行IO操作时，有可能造成线程的阻塞会知道内核将数据准备好之后，再解除阻塞状态，回到待执行队列中，进行IO操作。</p>
+<p>NIO（no-blocking IO）：非阻塞IO。</p>
+<ul>
+<li><p>典型的非阻塞IO，是采用一个死循环的机制，进行对内核的IO请求，知道内核将数据准备好，则跳出循环进行IO的读写。</p>
+</li>
+<li><p>多路复用IO，采用一个selector内核线程，去轮询用户线程，是否需要进行IO操作，需要则提用户线程去准备数据，然后也是由用户现场进行IO读写。</p>
+<p>缺点就是：当某一个用户线程的IO块较大时，会影响后续的用户线程以及新的IO事件。</p>
+</li>
+<li><p>信号驱动IO，用户线程在需要IO操作时，会向内核注册一个IO操作事件，然后内核去准备数据，数据在缓存区准备好之后，会再次通知用户线程来进行数据读取。</p>
+</li>
+</ul>
+<p>AIO（asyn IO)：异步驱动IO，用户线程需要IO操作时，会通知内核，然后内核会直接将数据拷贝到用户线程中，用户线程无需等待数据核实操作完成，即可继续执行下面的操作。</p>
+<p>NIO适用于连接数多且连接较短的场景比如聊天服务器。AIO适用于连接数多且连接较长的场景比如相册上传服务器。实际上AIO与NIO相比，性能并没有显著提升，因此Netty采用的是异步时间驱动的NIO模型。</p>
+<hr>
+<h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><p>当修饰静态方法的时候,锁定的是当前类的Class对象,在上面的例子中就是Class X<br>当修饰非静态方法的时候,锁定的是当前实例对象this</p>
+<p>synchronized关键字 及wait()、notify()、notifyAll()共同组成了 <a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/BlockedQueue.java" target="_blank" rel="noopener">管程</a>（管理共享变量 以及对共享变量的操作过程） </p>
+<p>与Lock相比：</p>
+<ul>
+<li>都是可重入锁</li>
+<li>synchronized是非公平锁。ReentrantLock默认是分非公平锁，可手动设为公平锁。</li>
+<li>synchronized不可中断（只有在执行过程中抛异常、或执行结束，才会自动释放锁）<br> LockInterruptibly()方法可以中断自己，也可以被其他线程中断。Lock必须手动unlock()，否则会造成死锁<ul>
+<li>使用synchronized，有时等待线程会一直等下去，不会响应中断</li>
+<li>Lock 还可以滴啊用await() 方法让出锁资源，同时调用notify() 通知其他线程来重新获取资源。</li>
+</ul>
+</li>
+</ul>
+<p>synchronized适合低并发的场景，锁竞争发生的概率很小，此时锁处于偏向锁或者轻量级锁状态，因此性能更加好，比如jdk1.8concurrentHashMap使用synchronized的原因就是，每个hash槽上的锁竞争很少，用synchronized比lock更好</p>
+<h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><p>AbstractQueuedSynchronizer 是一个抽象类，内部提供了一个基于CLH 自旋锁实现的一个隐式的FIFO队列，来管理多线程间的同步状态。</p>
+<p>独占锁（ReentrantLock），内部实现的是AQS的acquire() 和release()方法。<br>共享锁（ReeantrantReadWriteLock, Semaphore, CountDownLatch），内部实现的是AQS的acquireShared() 和releaseShared() 方法。</p>
+<p>以ReentrantLock 的公平锁和非公平锁为例，详解获取和释放锁的过程 使用CAS的方式去尝试修改state变量。<br><a href="https://github.com/nibnait/algorithm/tree/master/src/main/java/jdk/concurrent/AQS" target="_blank" rel="noopener">AQS</a></p>
+<h2 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h2><p>使用Semaphore 信号量来对对象池进行限流 <a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/ObjectPool.java" target="_blank" rel="noopener">ObjectPool</a></p>
+<h2 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h2><p>ReadWriteLock 读锁无法升级为写锁。但是支持锁的降级 <a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/Cache.java" target="_blank" rel="noopener">Cache</a></p>
+<p>StamptedLock 是不可重入锁。支持锁的降级（通过tryConvertToReadLock() 方法实现）和升级（通过tryConvertToWriteLock() 方法实现）<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/Point.java" target="_blank" rel="noopener">Point</a></p>
+<h2 id="如何预防死锁"><a href="#如何预防死锁" class="headerlink" title="如何预防死锁"></a>如何预防死锁</h2><p>造成死锁的条件：</p>
+<ol>
+<li>共享资源本身互斥（只能被1个线程占用）</li>
+<li>“占用且等待”：A线程已取得共享资源X，在等待资源Y时，不会释放X</li>
+<li>线程内部资源“不可抢占“</li>
+<li>“循环等待”：A等待B的Y，B等待A的X</li>
+</ol>
+<p>解决方案：</p>
+<ul>
+<li>破坏“占用且等待”条件：创建线程前，一次性申请所有资源。</li>
+<li>破坏“不可抢占”条件：设置超时机制，如果A线程迟迟获取不到某资源，超时主动释放它所占有的全部资源</li>
+<li>破坏“循环等待”条件：将资源编号，X(1号)，Y(2号)，线程申请资源时，按编号顺序申请，在拿到Y之前必须先申请X。</li>
+</ul>
+<h3 id="无锁化编程"><a href="#无锁化编程" class="headerlink" title="无锁化编程"></a>无锁化编程</h3><ol>
+<li><p>COW（CopyOnWriteArrayList）</p>
+<p>读的是原array。写操作时是将原array复制出来，写操作完毕，再将原array执行新array[0]的地址。因此迭代时对原array进行修改是无效的。</p>
+<p>只适用于读多写少 且允许读写短暂不一致的场景。</p>
+</li>
+<li><p>CAS（CompareAndSwap）——ABA问题：</p>
+<p>线程1 expect=100元, update=50元<br>线程2 expect=100元, update=50元<br>假设银行的提款机采用普通的CAS方式来进行更新余额操作。小明打算取50块钱，第一次点击提交产生线程<code>1</code>，没反应（线程<code>1</code>阻塞了），第二点击提交，产生线程<code>2</code>，线程<code>2</code>取值和期望值相等，执行更新value为50元。<br>此时小李给小明汇了50元，线程<code>3</code> expect=50元, update=100元，执行成功。<br>此时线程<code>1</code>恢复运行，取值value和expect相等，执行更新value为50元。。。。GG 小明莫名丢了50块钱。</p>
+<p>解决方案：加版本号，更新成功将值的版本号加1，</p>
+<p>更新前校验value==expectValue且version==exptctValue才执行更新操作。</p>
+</li>
+<li><p>线程本地存储（Thread Local Storage）</p>
+</li>
+<li><p>乐观读（StamptedLock.tryOptimisticRead()）在真正执行写操作前 validate(stamp)，不一致则升级为悲观读锁。</p>
+</li>
+<li><p>原子类</p>
+</li>
+<li><p>Disruptor 有界内存队列</p>
+<ul>
+<li>内存分配更加合理（RingBuffer），数组元素在初始化时一次性全部创建 提升缓存命中率。</li>
+<li>对象循环利用，避免频繁GC。</li>
+<li>避免伪共享，提升缓存利用率。</li>
+<li>采用CAS方式设置入队索引。避免频繁加锁、解锁的性能消耗。</li>
+<li>支持批量消费，消费者可以无锁方式消费多个消息。</li>
+</ul>
+</li>
+</ol>
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><h2 id="核心线程数如何设置"><a href="#核心线程数如何设置" class="headerlink" title="核心线程数如何设置"></a>核心线程数如何设置</h2><ul>
+<li>CPU密集型的计算（很少进行IO请求）：corePoolSize = CPU核数。（+1，为了防止某个线程因内存失效或其他原因产生阻塞后还能有线程直接上来 保证CPU的利用率）</li>
+<li>IO密集型计算（系统IO请求比较频繁）：corePoolSize = CPU核数 <em> [ 1 + (I/O 耗时 / CPU耗时) ] 才能使CPU的利用率达到理论上的100%。如果耗时无法确定，可以先将corePoolSize设置为 2 </em> CPU核数 + 1。然后根据压测结果，灵活调整，已确定最佳线程数。</li>
+</ul>
+<h2 id="如何多线程步调一致"><a href="#如何多线程步调一致" class="headerlink" title="如何多线程步调一致"></a>如何多线程步调一致</h2><p>join</p>
+<p><a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/a0_多线程同步.java" target="_blank" rel="noopener">多线程同步</a>：<strong>CountDownLatch</strong>、<strong>CyclicBarrier</strong></p>
+<h2 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h2><p>简单的并行任务：<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/b1_FutureTaskDemo.java" target="_blank" rel="noopener">FutureTaskDemo</a></p>
+<p>任务之间有聚合关系：<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/b2_CompletableFutureDemo.java" target="_blank" rel="noopener">CompletableFutureDemo</a></p>
+<p>管理批量并行任务：<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/b3_CompletionServiceDemo.java" target="_blank" rel="noopener">CompletionServiceDemo</a></p>
+<p><strong>ForkJoinPool</strong> 单机版的MapReduce <a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/c1_FockJoinDemo.java" target="_blank" rel="noopener">FockJoinDemo</a>、<a href="https://github.com/nibnait/algorithm/blob/master/src/main/java/jdk/concurrent/demo/threadpool/c2_FockJoinDemo2.java" target="_blank" rel="noopener">WordCountDemo</a></p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    <div>
+          
+            
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/learning/java_concurrent/">Java并发编程</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 NibNait&nbsp&nbsp 的个人博客">NibNait&nbsp&nbsp</a></p>
+  <p><span>发布时间:</span>2019年08月13日 - 00:08</p>
+  <p><span>最后更新:</span>2019年09月02日 - 02:09</p>
+  <p><span>原始链接:</span><a href="/learning/java_concurrent/" title="Java并发编程">https://tianbin.org/learning/java_concurrent/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://tianbin.org/learning/java_concurrent/" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+    $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({
+          title: "",
+          text: '复制成功',
+          icon: "success",
+          showConfirmButton: true
+          });
+    });
+    });
+</script>
+
+
+          
+    </div>
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/IO/" rel="tag">
+              <i class="fa fa-tag"></i>
+              IO
+            </a>
+          
+            <a href="/tags/锁/" rel="tag">
+              <i class="fa fa-tag"></i>
+              锁
+            </a>
+          
+            <a href="/tags/JDK/" rel="tag">
+              <i class="fa fa-tag"></i>
+              JDK
+            </a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tool/docker/" rel="next" title="Docker 常用命令">
+                <i class="fa fa-chevron-left"></i> Docker 常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/learning/Java_collections/" rel="prev" title="Java 都有哪些集合类？">
+                Java 都有哪些集合类？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -456,8 +755,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -499,9 +807,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -556,9 +862,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -670,6 +974,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#先从IO说起"><span class="nav-number">1.</span> <span class="nav-text">先从IO说起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized"><span class="nav-number">2.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#锁"><span class="nav-number">3.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AQS"><span class="nav-number">3.1.</span> <span class="nav-text">AQS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量"><span class="nav-number">3.2.</span> <span class="nav-text">信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#读写锁"><span class="nav-number">3.3.</span> <span class="nav-text">读写锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何预防死锁"><span class="nav-number">3.4.</span> <span class="nav-text">如何预防死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无锁化编程"><span class="nav-number">3.4.1.</span> <span class="nav-text">无锁化编程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">4.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心线程数如何设置"><span class="nav-number">4.1.</span> <span class="nav-text">核心线程数如何设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何多线程步调一致"><span class="nav-number">4.2.</span> <span class="nav-text">如何多线程步调一致</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发工具类"><span class="nav-number">4.3.</span> <span class="nav-text">并发工具类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -712,7 +1033,7 @@
       &nbsp&nbsp
       <i class="fa fa-pencil"></i>
       <span class="post-count">
-        博客全站共 22.4k 字
+        博客全站共 23.6k 字
       </span>
     </div>
 
@@ -837,6 +1158,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
 
   
 
@@ -880,6 +1205,8 @@
 
 
 
+
+  
 
 
   
